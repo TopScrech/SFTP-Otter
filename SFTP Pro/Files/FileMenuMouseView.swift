@@ -2,11 +2,16 @@
 import AppKit
 import SwiftUI
 
-final class FileMenuMouseView: NSView {
+final class FileMenuMouseView: NSView, NSDraggingSource {
+    var dragItems: () -> [NSDraggingItem] = { [] }
+    private var mouseDownEvent: NSEvent?
+    private var deferredSelection = false
+    private var activeDragItems: [NSDraggingItem] = []
     var action: (FileMenuAction) -> Void = { _ in }
     var select: (Bool, Bool, Bool) -> Void = { _, _, _ in }
     var parentOnly = false
     var keyboardFocused = false
+    var rowSelected = false
     var moveSelection: (Int, Bool) -> Void = { _, _ in }
     var openSelection: () -> Void = {}
     var goToParent: () -> Void = {}
@@ -28,9 +33,35 @@ final class FileMenuMouseView: NSView {
     override func mouseDown(with event: NSEvent) {
         if event.modifierFlags.contains(.control) { rightMouseDown(with: event); return }
         window?.makeFirstResponder(self)
-        select(event.modifierFlags.contains(.shift), event.modifierFlags.contains(.command), false)
+        mouseDownEvent = event
+        deferredSelection = rowSelected && event.modifierFlags.intersection([.shift, .command]).isEmpty && event.clickCount == 1
+        select(event.modifierFlags.contains(.shift), event.modifierFlags.contains(.command), deferredSelection)
         if event.clickCount == 2 { action(.open) }
     }
+
+    override func mouseUp(with event: NSEvent) {
+        if deferredSelection { select(false, false, false) }
+        deferredSelection = false
+        mouseDownEvent = nil
+    }
+
+    override func mouseDragged(with event: NSEvent) {
+        guard !parentOnly, let start = mouseDownEvent,
+              hypot(event.locationInWindow.x - start.locationInWindow.x, event.locationInWindow.y - start.locationInWindow.y) >= 4 else { return }
+        let items = dragItems()
+        guard !items.isEmpty else { return }
+        let point = convert(event.locationInWindow, from: nil)
+        for (index, item) in items.enumerated() {
+            item.setDraggingFrame(NSRect(x: point.x + CGFloat(index * 4), y: point.y - 16, width: 32, height: 32), contents: NSImage(systemSymbolName: "doc.fill", accessibilityDescription: nil))
+        }
+        activeDragItems = items
+        mouseDownEvent = nil
+        deferredSelection = false
+        let session = beginDraggingSession(with: items, event: event, source: self)
+        session.draggingFormation = .pile
+    }
+
+    func draggingSession(_ session: NSDraggingSession, sourceOperationMaskFor context: NSDraggingContext) -> NSDragOperation { .copy }
 
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 125 || event.keyCode == 126 {

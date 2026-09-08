@@ -148,7 +148,7 @@ final class FileActionsModel {
         return destination
     }
 
-    private func downloadTree(_ file: RemoteFile, to target: URL, using transport: any SFTPTransport, depth: Int = 0) async throws {
+    func downloadTree(_ file: RemoteFile, to target: URL, using transport: any SFTPTransport, depth: Int = 0) async throws {
         guard depth < 64, !file.permissions.hasPrefix("l") else { throw FileActionError.symbolicLink }
         guard !FileManager.default.fileExists(atPath: target.path(percentEncoded: false)) else { throw CocoaError(.fileWriteFileExists) }
         if file.isDirectory {

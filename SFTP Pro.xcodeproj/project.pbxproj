@@ -47,6 +47,7 @@
 		EF0000000000000000000405 /* SFTP Pro/Files/LocalFileBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000305 /* SFTP Pro/Files/LocalFileBrowserModel.swift */; };
 		EF0000000000000000000406 /* SFTP Pro/Files/BrowserPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */; };
 		EF0000000000000000000407 /* SFTP Pro/Files/FileMenuNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */; };
+		EF0000000000000000000408 /* SFTP Pro/Files/FileDragPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000308 /* SFTP Pro/Files/FileDragPromise.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		EF0000000000000000000305 /* SFTP Pro/Files/LocalFileBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/LocalFileBrowserModel.swift"; sourceTree = SOURCE_ROOT; };
 		EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/BrowserPane.swift"; sourceTree = SOURCE_ROOT; };
 		EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuNavigation.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000308 /* SFTP Pro/Files/FileDragPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileDragPromise.swift"; sourceTree = SOURCE_ROOT; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +178,7 @@
 				EF0000000000000000000305 /* SFTP Pro/Files/LocalFileBrowserModel.swift */,
 				EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */,
 				EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */,
+				EF0000000000000000000308 /* SFTP Pro/Files/FileDragPromise.swift */,
 				EF0000000000000000000100 /* SFTP Pro/Files/FileActionsModel.swift */,
 			);
 			name = "Recovered References";
@@ -319,6 +322,7 @@
 				EF0000000000000000000405 /* SFTP Pro/Files/LocalFileBrowserModel.swift in Sources */,
 				EF0000000000000000000406 /* SFTP Pro/Files/BrowserPane.swift in Sources */,
 				EF0000000000000000000407 /* SFTP Pro/Files/FileMenuNavigation.swift in Sources */,
+				EF0000000000000000000408 /* SFTP Pro/Files/FileDragPromise.swift in Sources */,
 				EF0000000000000000000200 /* SFTP Pro/Files/FileActionsModel.swift in Sources */,
 			);
 		};
