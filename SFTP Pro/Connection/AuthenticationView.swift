@@ -5,36 +5,37 @@ struct AuthenticationView: View {
     @Environment(\.dismiss) private var dismiss
     let host: Host
     @State private var password = ""
+    @FocusState private var passwordFocused: Bool
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    Label(host.displayName, systemImage: "server.rack")
-                    Text(host.endpoint).foregroundStyle(.secondary)
-                }
-                Section("Password") {
-                    SecureField("Password", text: $password)
-                    Text("Used for this connection only and never saved to disk")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+        WorkspaceDialogView(title: "Connect", close: { dismiss() }) {
+            VStack(alignment: .leading) {
+                Label(host.displayName, systemImage: "server.rack")
+                Text(host.endpoint).foregroundStyle(WorkspaceTheme.muted)
             }
-            .formStyle(.grouped)
-            .navigationTitle("Connect")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+            VStack(alignment: .leading) {
+                Text("Password").foregroundStyle(WorkspaceTheme.muted)
+                SecureField("Password", text: $password)
+                    .textFieldStyle(.plain)
+                    .padding()
+                    .overlay { RoundedRectangle(cornerRadius: 12).stroke(WorkspaceTheme.muted.opacity(0.3)) }
+                    .focused($passwordFocused)
+                Text("Used for this connection only and never saved to disk")
+                    .font(.caption)
+                    .foregroundStyle(WorkspaceTheme.muted)
+            }
+            HStack {
+                Spacer()
+                Button("Connect") {
+                    workspace.submitAuthentication(host, password: password)
+                    password = ""
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Connect") {
-                        workspace.submitAuthentication(host, password: password)
-                        password = ""
-                    }
-                    .disabled(password.isEmpty)
-                }
+                .buttonStyle(DialogActionStyle())
+                .keyboardShortcut(.defaultAction)
+                .disabled(password.isEmpty)
             }
         }
-        .frame(minWidth: 320, idealWidth: 420, minHeight: 320)
+        .frame(width: 460)
+        .onAppear { passwordFocused = true }
     }
 }

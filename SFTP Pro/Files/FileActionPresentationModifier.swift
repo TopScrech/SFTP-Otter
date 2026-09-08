@@ -7,12 +7,15 @@ struct FileActionPresentationModifier: ViewModifier {
     func body(content: Content) -> some View {
         @Bindable var actions = actions
         content
-            .alert(actions.deletionTitle, isPresented: $actions.showDeleteConfirmation) {
-                Button("Cancel", role: .cancel) {}
-                Button("Delete", role: .destructive) { actions.run(.delete) }
-                    .keyboardShortcut(.defaultAction)
-            } message: {
-                Text(actions.transport == nil ? "The item will be moved to the Trash" : "This permanently deletes the remote item and its contents and cannot be undone")
+            .sheet(isPresented: $actions.showDeleteConfirmation) {
+                MessageDialogView(
+                    title: actions.deletionTitle,
+                    message: actions.transport == nil ? "The selected items will be moved to the Trash" : "This permanently deletes the selected remote items and their contents and cannot be undone",
+                    actionTitle: "Delete",
+                    destructive: true
+                ) {
+                    actions.run(.delete)
+                }
             }
             .sheet(item: $actions.prompt) { action in
                 if action == .permissions {

@@ -6,7 +6,7 @@ struct SettingsView: View {
     @State private var keys: [String: String] = [:]
     @State private var pendingRemoval: String?
     @State private var showConfirmation = false
-    @State private var showTrustedHostsHelp = true
+    @State private var showTrustedHostsHelp = false
     @State private var errorMessage: String?
 
     var body: some View {
@@ -15,6 +15,8 @@ struct SettingsView: View {
             Form {
                 Section("Startup") {
                     Toggle("Reopen hosts and local folders after relaunch", isOn: $workspace.reopenConnectedHosts)
+                    Toggle("Remember last opened folder in connected hosts", isOn: $workspace.rememberHostLocations)
+                        .disabled(!workspace.reopenConnectedHosts)
                 }
                 Section {
                     if let errorMessage {
@@ -44,16 +46,11 @@ struct SettingsView: View {
                     HStack {
                         Text("Trusted SSH hosts")
                         Spacer()
-                        Button(showTrustedHostsHelp ? "Hide explanation" : "Show explanation", systemImage: "questionmark.circle") {
-                            showTrustedHostsHelp.toggle()
+                        Button("About trusted SSH hosts", systemImage: "questionmark.circle") {
+                            showTrustedHostsHelp = true
                         }
                         .labelStyle(.iconOnly)
                         .buttonStyle(.plain)
-                        .accessibilityValue(showTrustedHostsHelp ? "Expanded" : "Collapsed")
-                    }
-                } footer: {
-                    if showTrustedHostsHelp {
-                        Text("These server keys were approved when connecting. Forgetting a key asks you to verify the server again on your next connection")
                     }
                 }
             }
@@ -64,16 +61,17 @@ struct SettingsView: View {
                     Button("Done") { dismiss() }
                 }
             }
-            .confirmationDialog("Forget this trusted host?", isPresented: $showConfirmation, titleVisibility: .visible) {
-                Button("Forget host", role: .destructive) {
+            .sheet(isPresented: $showConfirmation) {
+                MessageDialogView(title: "Forget this trusted host?", message: pendingRemoval ?? "", actionTitle: "Forget host", destructive: true) {
                     guard let endpoint = pendingRemoval else { return }
                     do {
                         try workspace.trustStore.forget(endpoint: endpoint)
                         keys = try workspace.trustStore.load()
                     } catch { errorMessage = error.localizedDescription }
                 }
-            } message: {
-                Text(pendingRemoval ?? "")
+            }
+            .sheet(isPresented: $showTrustedHostsHelp) {
+                MessageDialogView(title: "Trusted SSH hosts", message: "These server keys were approved when connecting. Forgetting a key asks you to verify the server again on your next connection")
             }
             .onAppear {
                 do { keys = try workspace.trustStore.load() }

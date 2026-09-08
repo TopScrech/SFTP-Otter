@@ -30,12 +30,39 @@ final class WorkspaceModel {
     private var hostsLoaded = false
     private var didRestoreConnections = false
     private var restorationQueue: [Host] = []
+    private var restorationPaths: [String: String] = [:]
     private var restorationPanes: [UUID: BrowserPane] = [:]
     var reopenConnectedHosts = UserDefaults.standard.bool(forKey: "reopenConnectedHosts") {
         didSet {
             UserDefaults.standard.set(reopenConnectedHosts, forKey: "reopenConnectedHosts")
             rememberConnectedHosts()
+            updateRememberedLocations()
         }
+    }
+
+    var rememberHostLocations = UserDefaults.standard.bool(forKey: "rememberHostLocations") {
+        didSet {
+            UserDefaults.standard.set(rememberHostLocations, forKey: "rememberHostLocations")
+            updateRememberedLocations()
+        }
+    }
+
+    private func updateRememberedLocations() {
+        guard reopenConnectedHosts && rememberHostLocations else {
+            UserDefaults.standard.removeObject(forKey: "connectedHost.locations")
+            restorationPaths = [:]
+            return
+        }
+        for session in sessions where session.isConnected && !session.isPreview && !session.isLoading {
+            rememberLocation(session.path, for: session.host.id)
+        }
+    }
+
+    private func rememberLocation(_ path: String, for hostID: UUID) {
+        guard reopenConnectedHosts && rememberHostLocations else { return }
+        var locations = UserDefaults.standard.dictionary(forKey: "connectedHost.locations") as? [String: String] ?? [:]
+        locations[hostID.uuidString] = path
+        UserDefaults.standard.set(locations, forKey: "connectedHost.locations")
     }
 
     var connectedHostIDs: [String] {
@@ -52,7 +79,11 @@ final class WorkspaceModel {
         guard !didRestoreConnections else { return }
         didRestoreConnections = true
         guard reopenConnectedHosts else { return }
+        if rememberHostLocations {
+            restorationPaths = UserDefaults.standard.dictionary(forKey: "connectedHost.locations") as? [String: String] ?? [:]
+        }
         let ids = UserDefaults.standard.stringArray(forKey: "connectedHostIDs") ?? []
+        restorationPaths = restorationPaths.filter { ids.contains($0.key) }
         for (key, pane) in [("connectedHost.primary", BrowserPane.primary), ("connectedHost.secondary", BrowserPane.secondary)] {
             if let value = UserDefaults.standard.string(forKey: key), let id = UUID(uuidString: value) { restorationPanes[id] = pane }
         }
@@ -163,6 +194,14 @@ final class WorkspaceModel {
         let session = SFTPSession(host: host, transport: CitadelSFTPTransport { key, endpoint in
             try await trust.verify(key: key, endpoint: endpoint)
         })
+        if reopenConnectedHosts && rememberHostLocations,
+           let path = restorationPaths.removeValue(forKey: host.id.uuidString) {
+            session.path = path
+            session.pathInput = path
+        }
+        session.didLoadLocation = { [weak self] path in
+            self?.rememberLocation(path, for: host.id)
+        }
         sessions.append(session)
         select(session)
         session.connect(password: password)

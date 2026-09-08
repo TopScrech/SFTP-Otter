@@ -38,10 +38,8 @@ struct ContentView: View {
             HostKeyVerificationView(challenge: $0)
                 .environment(trustStore)
         }
-        .alert("Something went wrong", isPresented: $workspace.showError) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(workspace.errorMessage)
+        .sheet(isPresented: $workspace.showError) {
+            MessageDialogView(title: "Something went wrong", message: workspace.errorMessage)
         }
     }
 }

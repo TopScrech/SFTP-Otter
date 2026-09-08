@@ -5,9 +5,7 @@ struct HostKeyVerificationView: View {
     let challenge: HostKeyChallenge
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Label("Verify server identity", systemImage: "lock.shield")
-                .font(.title2).bold()
+        WorkspaceDialogView(title: "Verify server identity", close: { trustStore.resolve(trust: false) }) {
             Text("Verify the server key for \(challenge.endpoint)")
             Text("Compare this fingerprint with the one provided by your server administrator before trusting the server")
                 .foregroundStyle(.secondary)
@@ -17,16 +15,15 @@ struct HostKeyVerificationView: View {
                 .padding()
                 .background(WorkspaceTheme.surface, in: .rect(cornerRadius: 8))
             HStack {
-                Button("Cancel", role: .cancel) { trustStore.resolve(trust: false) }
                 Spacer()
                 Button("Trust, save and connect", systemImage: "checkmark.shield") {
                     trustStore.resolve(trust: true)
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(DialogActionStyle())
+                .keyboardShortcut(.defaultAction)
             }
         }
-        .padding()
-        .frame(minWidth: 320, idealWidth: 520)
+        .frame(width: 520)
         .interactiveDismissDisabled()
     }
 }

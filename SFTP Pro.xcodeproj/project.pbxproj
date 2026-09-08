@@ -87,6 +87,7 @@
 		EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuNavigation.swift"; sourceTree = SOURCE_ROOT; };
 		EF0000000000000000000308 /* SFTP Pro/Files/FileDragPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileDragPromise.swift"; sourceTree = SOURCE_ROOT; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F34FD1383050D33600F7829B /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -128,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				F34FB25C304E1C7400F7829B /* README.md */,
+				F34FD1383050D33600F7829B /* AGENTS.md */,
 				000000000000000000000010 /* SFTP Pro */,
 				DD0000000000000000000002 /* Tests */,
 				000000000000000000000020 /* Products */,

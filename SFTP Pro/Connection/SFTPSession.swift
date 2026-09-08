@@ -8,6 +8,7 @@ final class SFTPSession: Identifiable {
     let host: Host
     var path: String
     var pathInput: String
+    var didLoadLocation: (String) -> Void = { _ in }
     var files: [RemoteFile] = []
     var search = ""
     var showHidden = false
@@ -93,6 +94,7 @@ final class SFTPSession: Identifiable {
             path = result.path
             pathInput = result.path
             files = result.files
+            didLoadLocation(result.path)
         } catch {
             guard generation == token else { return }
             pendingHistoryIndex = nil

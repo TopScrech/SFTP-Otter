@@ -1,0 +1,37 @@
+import SwiftUI
+
+struct WorkspaceDialogView<Content: View>: View {
+    let title: String
+    let close: () -> Void
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text(title).font(.title2)
+                Spacer()
+                Button("Close", systemImage: "xmark", action: close)
+                    .labelStyle(.iconOnly)
+                    .buttonStyle(.plain)
+                    .keyboardShortcut(.cancelAction)
+            }
+            .padding(30)
+            .background(WorkspaceTheme.raised)
+            VStack(alignment: .leading, spacing: 28) {
+                content
+            }
+            .padding(30)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .font(.title3)
+        .foregroundStyle(WorkspaceTheme.text)
+        .tint(WorkspaceTheme.accent)
+        .background(WorkspaceTheme.surface)
+        .clipShape(.rect(cornerRadius: 24))
+        .presentationBackground(.clear)
+        .presentationCornerRadius(24)
+        .preferredColorScheme(.dark)
+        .frame(idealWidth: 460)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+}

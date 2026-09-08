@@ -22,14 +22,14 @@ struct RemoteBreadcrumbsView: View {
                 ScrollView(.horizontal) {
                     HStack {
                         Button("/", systemImage: "folder.fill") { session.navigate(to: "/") }
-                            .labelStyle(.titleAndIcon)
+                            .labelStyle(BreadcrumbLabelStyle())
                             .tint(.cyan)
                         ForEach(session.path.split(separator: "/").enumerated(), id: \.offset) { index, component in
                             Image(systemName: "chevron.right")
                             Button(String(component), systemImage: "folder.fill") {
                                 session.navigate(to: "/" + session.path.split(separator: "/").prefix(index + 1).joined(separator: "/"))
                             }
-                            .labelStyle(.titleAndIcon)
+                            .labelStyle(BreadcrumbLabelStyle())
                             .tint(.cyan)
                         }
                     }

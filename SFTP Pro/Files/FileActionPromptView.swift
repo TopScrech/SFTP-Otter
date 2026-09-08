@@ -4,29 +4,38 @@ import SwiftUI
 struct FileActionPromptView: View {
     @Environment(FileActionsModel.self) private var actions
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var nameFocused: Bool
     let action: FileMenuAction
 
     var body: some View {
         @Bindable var actions = actions
-        VStack(alignment: .leading) {
-            Text(action.rawValue).font(.title2).bold()
-            if action == .delete {
-                Text("Delete “\(actions.file?.name ?? "")”\(actions.file?.isDirectory == true ? " and its contents" : "")?")
-                Text(actions.transport == nil ? "The item will be moved to the Trash" : "This permanently deletes the remote item and cannot be undone")
-                    .foregroundStyle(.secondary)
-            } else {
-                TextField(action == .permissions ? "Octal permissions, e.g. 755" : "Name", text: $actions.input)
-                    .onSubmit { actions.run(action) }
+        WorkspaceDialogView(title: action.rawValue, close: { dismiss() }) {
+            VStack(alignment: .leading, spacing: 0) {
+                Text(action == .rename ? "New filename *" : "Folder name *")
+                    .font(.callout)
+                    .foregroundStyle(WorkspaceTheme.muted)
+                    .padding(.horizontal, 6)
+                    .background(WorkspaceTheme.surface)
+                    .padding(.leading, 10)
+                    .offset(y: 8)
+                    .zIndex(1)
+                TextField("", text: $actions.input)
+                    .textFieldStyle(.plain)
+                    .padding()
+                    .overlay { RoundedRectangle(cornerRadius: 12).stroke(WorkspaceTheme.muted.opacity(0.3)) }
+                    .focused($nameFocused)
+                    .onSubmit { if !actions.input.isEmpty { actions.run(action) } }
             }
             HStack {
                 Spacer()
-                Button("Cancel", role: .cancel) { dismiss() }
-                Button(action == .delete ? "Delete" : "Save", role: action == .delete ? .destructive : nil) { actions.run(action) }
+                Button("Confirm") { actions.run(action) }
+                    .buttonStyle(DialogActionStyle())
+                    .disabled(actions.input.isEmpty)
                     .keyboardShortcut(.defaultAction)
             }
         }
-        .padding(24)
-        .frame(width: 380)
+        .frame(width: 460)
+        .onAppear { nameFocused = true }
     }
 }
 #endif
