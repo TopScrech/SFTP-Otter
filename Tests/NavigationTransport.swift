@@ -8,5 +8,7 @@ actor NavigationTransport: SFTPTransport {
     }
     func upload(local: URL, remote: String, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {}
     func download(remote: String, local: URL, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {}
+    var removedPaths: [String] = []
+    func remove(path: String, isDirectory: Bool) async throws { removedPaths.append(path) }
     func close() async {}
 }

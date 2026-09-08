@@ -11,6 +11,10 @@ struct ContentView: View {
                 .frame(minWidth: 760)
             MobileWorkspaceView()
         }
+        .task { workspace.restoreConnections() }
+        .onChange(of: workspace.connectedHostIDs) { workspace.rememberConnectedHosts() }
+        .onChange(of: workspace.selectedSessionID) { workspace.rememberConnectedHosts() }
+        .onChange(of: workspace.secondarySessionID) { workspace.rememberConnectedHosts() }
         .background(WorkspaceTheme.background)
         .foregroundStyle(WorkspaceTheme.text)
         .tint(WorkspaceTheme.accent)

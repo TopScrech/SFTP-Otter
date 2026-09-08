@@ -3,7 +3,7 @@ import SwiftUI
 struct FileMenuButtonView: View {
     let item: FileMenuAction
     let action: () -> Void
-    @State private var hovered = false
+    @Environment(FileMenuNavigation.self) private var navigation
 
     var body: some View {
         Button(action: action) {
@@ -13,10 +13,10 @@ struct FileMenuButtonView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 14)
-                .background(hovered ? Color.white.opacity(0.08) : .clear)
+                .background(navigation.selected == item ? Color.white.opacity(0.08) : .clear)
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)
-        .onHover { hovered = $0 }
+        .onHover { if $0 { navigation.selected = item } }
     }
 }

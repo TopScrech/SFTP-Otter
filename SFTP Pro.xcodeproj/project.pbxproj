@@ -39,6 +39,14 @@
 		EF0000000000000000000203 /* SFTP Pro/Files/FileContextMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000103 /* SFTP Pro/Files/FileContextMenuView.swift */; };
 		EF0000000000000000000204 /* SFTP Pro/Files/FileMenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000104 /* SFTP Pro/Files/FileMenuButtonView.swift */; };
 		EF0000000000000000000205 /* SFTP Pro/Design/WorkspaceTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000105 /* SFTP Pro/Design/WorkspaceTheme.swift */; };
+		EF0000000000000000000400 /* SFTP Pro/Files/FileSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000300 /* SFTP Pro/Files/FileSelection.swift */; };
+		EF0000000000000000000401 /* SFTP Pro/Files/PermissionAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000301 /* SFTP Pro/Files/PermissionAccess.swift */; };
+		EF0000000000000000000402 /* SFTP Pro/Files/PermissionsEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000302 /* SFTP Pro/Files/PermissionsEditorView.swift */; };
+		EF0000000000000000000403 /* SFTP Pro/Files/PermissionAccessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000303 /* SFTP Pro/Files/PermissionAccessRowView.swift */; };
+		EF0000000000000000000404 /* SFTP Pro/Files/PermissionToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000304 /* SFTP Pro/Files/PermissionToggleStyle.swift */; };
+		EF0000000000000000000405 /* SFTP Pro/Files/LocalFileBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000305 /* SFTP Pro/Files/LocalFileBrowserModel.swift */; };
+		EF0000000000000000000406 /* SFTP Pro/Files/BrowserPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */; };
+		EF0000000000000000000407 /* SFTP Pro/Files/FileMenuNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +76,14 @@
 		EF0000000000000000000103 /* SFTP Pro/Files/FileContextMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileContextMenuView.swift"; sourceTree = SOURCE_ROOT; };
 		EF0000000000000000000104 /* SFTP Pro/Files/FileMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuButtonView.swift"; sourceTree = SOURCE_ROOT; };
 		EF0000000000000000000105 /* SFTP Pro/Design/WorkspaceTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Design/WorkspaceTheme.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000300 /* SFTP Pro/Files/FileSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileSelection.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000301 /* SFTP Pro/Files/PermissionAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/PermissionAccess.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000302 /* SFTP Pro/Files/PermissionsEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/PermissionsEditorView.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000303 /* SFTP Pro/Files/PermissionAccessRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/PermissionAccessRowView.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000304 /* SFTP Pro/Files/PermissionToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/PermissionToggleStyle.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000305 /* SFTP Pro/Files/LocalFileBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/LocalFileBrowserModel.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/BrowserPane.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuNavigation.swift"; sourceTree = SOURCE_ROOT; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -152,6 +168,14 @@
 				EF0000000000000000000103 /* SFTP Pro/Files/FileContextMenuView.swift */,
 				EF0000000000000000000102 /* SFTP Pro/Files/FileMenuAction.swift */,
 				EF0000000000000000000101 /* SFTP Pro/Files/FileActionError.swift */,
+				EF0000000000000000000300 /* SFTP Pro/Files/FileSelection.swift */,
+				EF0000000000000000000301 /* SFTP Pro/Files/PermissionAccess.swift */,
+				EF0000000000000000000302 /* SFTP Pro/Files/PermissionsEditorView.swift */,
+				EF0000000000000000000303 /* SFTP Pro/Files/PermissionAccessRowView.swift */,
+				EF0000000000000000000304 /* SFTP Pro/Files/PermissionToggleStyle.swift */,
+				EF0000000000000000000305 /* SFTP Pro/Files/LocalFileBrowserModel.swift */,
+				EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */,
+				EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */,
 				EF0000000000000000000100 /* SFTP Pro/Files/FileActionsModel.swift */,
 			);
 			name = "Recovered References";
@@ -287,6 +311,14 @@
 				EF0000000000000000000203 /* SFTP Pro/Files/FileContextMenuView.swift in Sources */,
 				EF0000000000000000000202 /* SFTP Pro/Files/FileMenuAction.swift in Sources */,
 				EF0000000000000000000201 /* SFTP Pro/Files/FileActionError.swift in Sources */,
+				EF0000000000000000000400 /* SFTP Pro/Files/FileSelection.swift in Sources */,
+				EF0000000000000000000401 /* SFTP Pro/Files/PermissionAccess.swift in Sources */,
+				EF0000000000000000000402 /* SFTP Pro/Files/PermissionsEditorView.swift in Sources */,
+				EF0000000000000000000403 /* SFTP Pro/Files/PermissionAccessRowView.swift in Sources */,
+				EF0000000000000000000404 /* SFTP Pro/Files/PermissionToggleStyle.swift in Sources */,
+				EF0000000000000000000405 /* SFTP Pro/Files/LocalFileBrowserModel.swift in Sources */,
+				EF0000000000000000000406 /* SFTP Pro/Files/BrowserPane.swift in Sources */,
+				EF0000000000000000000407 /* SFTP Pro/Files/FileMenuNavigation.swift in Sources */,
 				EF0000000000000000000200 /* SFTP Pro/Files/FileActionsModel.swift in Sources */,
 			);
 		};

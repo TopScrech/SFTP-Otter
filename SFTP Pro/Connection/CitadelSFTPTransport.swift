@@ -107,7 +107,10 @@ actor CitadelSFTPTransport: SFTPTransport {
                     name: name, isDirectory: mode & 0o170000 == 0o040000,
                     size: entry.attributes.size ?? 0,
                     modified: entry.attributes.accessModificationTime?.modificationTime,
-                    permissions: Self.permissions(mode)
+                    permissions: Self.permissions(mode),
+                    mode: mode,
+                    owner: entry.attributes.uidgid.map { String($0.userId) },
+                    group: entry.attributes.uidgid.map { String($0.groupId) }
                 )
             }
             Self.logger.notice("event=directory_listing_completed request_id=\(requestID, privacy: .public) outcome=success file_count=\(files.count)")

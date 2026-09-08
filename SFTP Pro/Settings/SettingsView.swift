@@ -10,8 +10,12 @@ struct SettingsView: View {
     @State private var errorMessage: String?
 
     var body: some View {
+        @Bindable var workspace = workspace
         NavigationStack {
             Form {
+                Section("Startup") {
+                    Toggle("Reopen hosts and local folders after relaunch", isOn: $workspace.reopenConnectedHosts)
+                }
                 Section {
                     if let errorMessage {
                         Text(errorMessage).foregroundStyle(.red)

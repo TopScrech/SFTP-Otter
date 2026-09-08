@@ -6,6 +6,7 @@ final class WorkspaceModel {
     #if DEBUG
     var localPreviewURL: URL?
     #endif
+    var refreshFiles: () -> Void = {}
     var section = WorkspaceSection.files
     var hosts: [Host] = []
     var sessions: [SFTPSession] = []
@@ -27,6 +28,46 @@ final class WorkspaceModel {
     let trustStore = HostKeyTrustStore()
     private let store = HostStore()
     private var hostsLoaded = false
+    private var didRestoreConnections = false
+    private var restorationQueue: [Host] = []
+    private var restorationPanes: [UUID: BrowserPane] = [:]
+    var reopenConnectedHosts = UserDefaults.standard.bool(forKey: "reopenConnectedHosts") {
+        didSet {
+            UserDefaults.standard.set(reopenConnectedHosts, forKey: "reopenConnectedHosts")
+            rememberConnectedHosts()
+        }
+    }
+
+    var connectedHostIDs: [String] {
+        sessions.filter { $0.isConnected && !$0.isPreview }.map { $0.host.id.uuidString }
+    }
+
+    func rememberConnectedHosts() {
+        UserDefaults.standard.set(reopenConnectedHosts ? connectedHostIDs : [], forKey: "connectedHostIDs")
+        UserDefaults.standard.set(reopenConnectedHosts ? session(in: .primary)?.host.id.uuidString : nil, forKey: "connectedHost.primary")
+        UserDefaults.standard.set(reopenConnectedHosts ? session(in: .secondary)?.host.id.uuidString : nil, forKey: "connectedHost.secondary")
+    }
+
+    func restoreConnections() {
+        guard !didRestoreConnections else { return }
+        didRestoreConnections = true
+        guard reopenConnectedHosts else { return }
+        let ids = UserDefaults.standard.stringArray(forKey: "connectedHostIDs") ?? []
+        for (key, pane) in [("connectedHost.primary", BrowserPane.primary), ("connectedHost.secondary", BrowserPane.secondary)] {
+            if let value = UserDefaults.standard.string(forKey: key), let id = UUID(uuidString: value) { restorationPanes[id] = pane }
+        }
+        restorationQueue = ids.compactMap { id in hosts.first { $0.id.uuidString == id } }
+        restoreNextConnection()
+    }
+
+    private func restoreNextConnection() {
+        while !restorationQueue.isEmpty {
+            let host = restorationQueue.removeFirst()
+            activePane = restorationPanes[host.id] ?? .primary
+            requestConnection(host)
+            if connectingHost != nil { return }
+        }
+    }
 
     init() {
         do {
@@ -109,9 +150,11 @@ final class WorkspaceModel {
     }
 
     func authenticationDismissed() {
-        guard let authentication = pendingAuthentication else { return }
-        pendingAuthentication = nil
-        connect(authentication.host, password: authentication.password)
+        if let authentication = pendingAuthentication {
+            pendingAuthentication = nil
+            connect(authentication.host, password: authentication.password)
+        }
+        restoreNextConnection()
     }
 
     func connect(_ host: Host, password: String) {

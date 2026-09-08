@@ -7,23 +7,58 @@ import UniformTypeIdentifiers
 @Observable
 final class FileActionsModel {
     var file: RemoteFile?
+    var selectedFiles: [RemoteFile] = []
+    var permissionGroups = PermissionAccess.groups(mode: 0o644)
+    var permissionOwner = "Unavailable"
+    var permissionGroup = "Unavailable"
+
+    var editedPermissionMode: UInt32 {
+        let special = (UInt32(input, radix: 8) ?? 0) & 0o7000
+        return permissionGroups.reduce(special) { $0 | ($1.bits << ((2 - $1.id) * 3)) }
+    }
+
+    var permissionsChanged: Bool { editedPermissionMode != UInt32(input, radix: 8) }
+
+    func savePermissions() {
+        guard permissionsChanged else { return }
+        input = String(editedPermissionMode, radix: 8)
+        run(.permissions)
+    }
+
+    var deletionTitle: String {
+        selectedFiles.count > 1 ? "Delete \(selectedFiles.count) items?" : "Delete “\(file?.name ?? "")”?"
+    }
     var transport: (any SFTPTransport)?
     var directory = ""
     var refresh: () -> Void = {}
     var navigate: (String) -> Void = { _ in }
     var prompt: FileMenuAction?
+    var showDeleteConfirmation = false
     var input = ""
     var error: String?
     var busy = false
 
     func choose(_ action: FileMenuAction) {
         guard !busy, let file else { return }
-        if [.rename, .newFolder, .permissions, .delete].contains(action) {
+        if action == .delete {
+            guard file.name != "..", file.path != "/" else { return }
+            showDeleteConfirmation = true
+        } else if [.rename, .newFolder, .permissions].contains(action) {
             input = action == .rename ? file.name : action == .permissions ? Self.mode(from: file.permissions) : ""
             if action == .permissions, transport == nil,
                let attributes = try? FileManager.default.attributesOfItem(atPath: file.path),
                let mode = attributes[.posixPermissions] as? NSNumber {
                 input = String(mode.uint32Value, radix: 8)
+            }
+            if action == .permissions {
+                if let mode = file.mode { input = String(mode & 0o7777, radix: 8) }
+                permissionOwner = file.owner ?? "Unavailable"
+                permissionGroup = file.group ?? "Unavailable"
+                if transport == nil, let attributes = try? FileManager.default.attributesOfItem(atPath: file.path) {
+                    permissionOwner = attributes[.ownerAccountName] as? String ?? "Unavailable"
+                    permissionGroup = attributes[.groupOwnerAccountName] as? String ?? "Unavailable"
+                }
+                permissionGroups = PermissionAccess.groups(mode: UInt32(input, radix: 8) ?? 0o644)
             }
             prompt = action
         } else {
@@ -33,6 +68,7 @@ final class FileActionsModel {
 
     func run(_ action: FileMenuAction) {
         guard !busy, let file else { return }
+        let targets = selectedFiles.isEmpty ? [file] : selectedFiles
         let input = self.input
         prompt = nil
         error = nil
@@ -92,9 +128,11 @@ final class FileActionsModel {
                     else { try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: mode)], ofItemAtPath: file.path) }
                     refresh()
                 case .delete:
-                    guard file.name != "..", file.path != "/" else { throw FileActionError.invalidName }
-                    if let transport { try await removeTree(file, using: transport) }
-                    else { try FileManager.default.trashItem(at: URL(filePath: file.path), resultingItemURL: nil) }
+                    for target in targets {
+                        guard target.name != "..", target.path != "/" else { throw FileActionError.invalidName }
+                        if let transport { try await removeTree(target, using: transport) }
+                        else { try FileManager.default.trashItem(at: URL(filePath: target.path), resultingItemURL: nil) }
+                    }
                     refresh()
                 }
             } catch { self.error = error.localizedDescription }

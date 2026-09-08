@@ -6,7 +6,7 @@ struct DesktopSessionBrowserView: View {
     @Environment(SFTPSession.self) private var session
     @State private var showImporter = false
     @State private var showFilter = false
-    @State private var selection: RemoteFile.ID?
+    @State private var selection = FileSelection()
     let pane: BrowserPane
 
     var body: some View {
@@ -27,17 +27,17 @@ struct DesktopSessionBrowserView: View {
                         Button("Upload files", systemImage: "arrow.up.to.line") { showImporter = true }
                             .disabled(!session.isConnected || session.isPreview)
                         Button("Download selected file", systemImage: "arrow.down.to.line") {
-                            if let file = session.files.first(where: { $0.id == selection }) {
+                            for file in session.files where selection.ids.contains(file.id) && !file.isDirectory {
                                 workspace.download(file, from: session)
                             }
                         }
-                        .disabled(session.isPreview || !session.files.contains { $0.id == selection && !$0.isDirectory })
+                        .disabled(session.isPreview || !session.files.contains { selection.ids.contains($0.id) && !$0.isDirectory })
                         Divider()
                         Button("Refresh", systemImage: "arrow.clockwise", action: session.refresh)
                             .disabled(session.isPreview || !session.isConnected)
                         Toggle("Show hidden files", isOn: $session.showHidden)
                         Button("Choose host", systemImage: "server.rack") { workspace.chooseHost(for: pane) }
-                        Button("Disconnect", systemImage: "xmark.circle") { workspace.close(session) }
+                        Button("Disconnect", systemImage: "xmark.circle", role: .destructive) { workspace.close(session) }
                     }
                     .fixedSize()
                 }
@@ -62,9 +62,11 @@ struct DesktopSessionBrowserView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .onAppear { workspace.refreshFiles = session.refresh }
         .overlay {
             if session.isLoading && session.isConnected { ProgressView("Loading files") }
         }
+        .modifier(UploadDropZoneModifier())
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data, .content], allowsMultipleSelection: true) {
             switch $0 {
             case .success(let urls): urls.forEach { workspace.upload($0, to: session) }

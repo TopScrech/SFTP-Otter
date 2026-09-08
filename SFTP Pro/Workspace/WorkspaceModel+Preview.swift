@@ -7,6 +7,9 @@ extension WorkspaceModel {
             let directory = URL.temporaryDirectory.appending(path: "SFTP Pro Preview/" + UUID().uuidString)
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             try Data("Disposable local file for UI verification".utf8).write(to: directory.appending(path: "example.txt"))
+            for name in ["second.txt", "third.txt", "fourth.txt"] {
+                try Data("Disposable local file".utf8).write(to: directory.appending(path: name))
+            }
             localPreviewURL = directory
         } catch { report(error) }
     }

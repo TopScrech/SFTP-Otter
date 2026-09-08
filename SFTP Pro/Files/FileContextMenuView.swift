@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct FileContextMenuView: View {
-    var parentOnly = false
+    @Environment(FileMenuNavigation.self) private var navigation
     let action: (FileMenuAction) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(parentOnly ? [.open, .refresh] : FileMenuAction.allCases) { item in
+            ForEach(navigation.items) { item in
                 FileMenuButtonView(item: item) { action(item) }
             }
         }

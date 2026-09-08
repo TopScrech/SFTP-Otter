@@ -7,6 +7,9 @@ nonisolated struct RemoteFile: Identifiable, Sendable {
     var size: UInt64
     var modified: Date?
     var permissions: String
+    var mode: UInt32?
+    var owner: String?
+    var group: String?
 
     var id: String { path }
     var icon: String {

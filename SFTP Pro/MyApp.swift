@@ -15,6 +15,10 @@ import SwiftUI
         .defaultSize(width: 1180, height: 760)
         #if os(macOS)
         .commands {
+            CommandGroup(after: .newItem) {
+                Button("Refresh files") { workspace.refreshFiles() }
+                    .keyboardShortcut("r")
+            }
             CommandGroup(replacing: .appSettings) {
                 Button("Settings…") { workspace.showSettings = true }
                     .keyboardShortcut(",")
