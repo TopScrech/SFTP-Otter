@@ -33,12 +33,12 @@
 		EE0000000000000000000201 /* SFTP Pro/Hosts/KeychainHostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000101 /* SFTP Pro/Hosts/KeychainHostData.swift */; };
 		EE0000000000000000000202 /* SFTP Pro/Hosts/KeychainStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000102 /* SFTP Pro/Hosts/KeychainStoreError.swift */; };
 		EE0000000000000000000203 /* SFTP Pro/Connection/SSHNegotiationLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000103 /* SFTP Pro/Connection/SSHNegotiationLogger.swift */; };
-		EF0000000000000000000200 /* FileActionsModel in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000100; };
-		EF0000000000000000000201 /* FileActionError in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000101; };
-		EF0000000000000000000202 /* FileMenuAction in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000102; };
-		EF0000000000000000000203 /* FileContextMenuView in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000103; };
-		EF0000000000000000000204 /* FileMenuButtonView in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000104; };
-		EF0000000000000000000205 /* WorkspaceTheme in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000105; };
+		EF0000000000000000000200 /* SFTP Pro/Files/FileActionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000100 /* SFTP Pro/Files/FileActionsModel.swift */; };
+		EF0000000000000000000201 /* SFTP Pro/Files/FileActionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000101 /* SFTP Pro/Files/FileActionError.swift */; };
+		EF0000000000000000000202 /* SFTP Pro/Files/FileMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000102 /* SFTP Pro/Files/FileMenuAction.swift */; };
+		EF0000000000000000000203 /* SFTP Pro/Files/FileContextMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000103 /* SFTP Pro/Files/FileContextMenuView.swift */; };
+		EF0000000000000000000204 /* SFTP Pro/Files/FileMenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000104 /* SFTP Pro/Files/FileMenuButtonView.swift */; };
+		EF0000000000000000000205 /* SFTP Pro/Design/WorkspaceTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000105 /* SFTP Pro/Design/WorkspaceTheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,13 +62,13 @@
 		EE0000000000000000000101 /* SFTP Pro/Hosts/KeychainHostData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Hosts/KeychainHostData.swift"; sourceTree = SOURCE_ROOT; };
 		EE0000000000000000000102 /* SFTP Pro/Hosts/KeychainStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Hosts/KeychainStoreError.swift"; sourceTree = SOURCE_ROOT; };
 		EE0000000000000000000103 /* SFTP Pro/Connection/SSHNegotiationLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/SSHNegotiationLogger.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000100 /* SFTP Pro/Files/FileActionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileActionsModel.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000101 /* SFTP Pro/Files/FileActionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileActionError.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000102 /* SFTP Pro/Files/FileMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuAction.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000103 /* SFTP Pro/Files/FileContextMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileContextMenuView.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000104 /* SFTP Pro/Files/FileMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuButtonView.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000105 /* SFTP Pro/Design/WorkspaceTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Design/WorkspaceTheme.swift"; sourceTree = SOURCE_ROOT; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		EF0000000000000000000100 /* FileActionsModel */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileActionsModel.swift"; sourceTree = SOURCE_ROOT; };
-		EF0000000000000000000101 /* FileActionError */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileActionError.swift"; sourceTree = SOURCE_ROOT; };
-		EF0000000000000000000102 /* FileMenuAction */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuAction.swift"; sourceTree = SOURCE_ROOT; };
-		EF0000000000000000000103 /* FileContextMenuView */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileContextMenuView.swift"; sourceTree = SOURCE_ROOT; };
-		EF0000000000000000000104 /* FileMenuButtonView */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuButtonView.swift"; sourceTree = SOURCE_ROOT; };
-		EF0000000000000000000105 /* WorkspaceTheme */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Design/WorkspaceTheme.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -147,6 +147,12 @@
 				EE0000000000000000000100 /* SFTP Pro/Hosts/HostStore.swift */,
 				EE0000000000000000000101 /* SFTP Pro/Hosts/KeychainHostData.swift */,
 				EE0000000000000000000102 /* SFTP Pro/Hosts/KeychainStoreError.swift */,
+				EF0000000000000000000105 /* SFTP Pro/Design/WorkspaceTheme.swift */,
+				EF0000000000000000000104 /* SFTP Pro/Files/FileMenuButtonView.swift */,
+				EF0000000000000000000103 /* SFTP Pro/Files/FileContextMenuView.swift */,
+				EF0000000000000000000102 /* SFTP Pro/Files/FileMenuAction.swift */,
+				EF0000000000000000000101 /* SFTP Pro/Files/FileActionError.swift */,
+				EF0000000000000000000100 /* SFTP Pro/Files/FileActionsModel.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -276,12 +282,12 @@
 				DD000000000000000000020B /* SFTP Pro/Connection/TransferPipeline.swift in Sources */,
 				DD000000000000000000020C /* SFTP Pro/Files/RemoteFile.swift in Sources */,
 				DD000000000000000000020D /* SFTP Pro/Hosts/Host.swift in Sources */,
-				EF0000000000000000000205 /* WorkspaceTheme in Sources */,
-				EF0000000000000000000204 /* FileMenuButtonView in Sources */,
-				EF0000000000000000000203 /* FileContextMenuView in Sources */,
-				EF0000000000000000000202 /* FileMenuAction in Sources */,
-				EF0000000000000000000201 /* FileActionError in Sources */,
-				EF0000000000000000000200 /* FileActionsModel in Sources */,
+				EF0000000000000000000205 /* SFTP Pro/Design/WorkspaceTheme.swift in Sources */,
+				EF0000000000000000000204 /* SFTP Pro/Files/FileMenuButtonView.swift in Sources */,
+				EF0000000000000000000203 /* SFTP Pro/Files/FileContextMenuView.swift in Sources */,
+				EF0000000000000000000202 /* SFTP Pro/Files/FileMenuAction.swift in Sources */,
+				EF0000000000000000000201 /* SFTP Pro/Files/FileActionError.swift in Sources */,
+				EF0000000000000000000200 /* SFTP Pro/Files/FileActionsModel.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
@@ -426,7 +432,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8FQUA2F388;
 				ENABLE_APP_SANDBOX = YES;
-				LM_SKIP_METADATA_EXTRACTION = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readwrite;
@@ -444,6 +449,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "devplaceholder.$(PROJECT_UNIQUE_VALUE:identifier).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -467,7 +473,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8FQUA2F388;
 				ENABLE_APP_SANDBOX = YES;
-				LM_SKIP_METADATA_EXTRACTION = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readwrite;
@@ -485,6 +490,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "devplaceholder.$(PROJECT_UNIQUE_VALUE:identifier).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -512,9 +518,9 @@
 					"@loader_path/../Frameworks",
 					"@executable_path/../Frameworks",
 				);
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				MACOSX_DEPLOYMENT_TARGET = 27;
 				PRODUCT_BUNDLE_IDENTIFIER = devplaceholder.SFTPProTests;
-				LM_SKIP_METADATA_EXTRACTION = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
@@ -533,9 +539,9 @@
 					"@loader_path/../Frameworks",
 					"@executable_path/../Frameworks",
 				);
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				MACOSX_DEPLOYMENT_TARGET = 27;
 				PRODUCT_BUNDLE_IDENTIFIER = devplaceholder.SFTPProTests;
-				LM_SKIP_METADATA_EXTRACTION = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
