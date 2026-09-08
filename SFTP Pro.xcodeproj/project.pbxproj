@@ -48,6 +48,9 @@
 		EF0000000000000000000406 /* SFTP Pro/Files/BrowserPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */; };
 		EF0000000000000000000407 /* SFTP Pro/Files/FileMenuNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */; };
 		EF0000000000000000000408 /* SFTP Pro/Files/FileDragPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000308 /* SFTP Pro/Files/FileDragPromise.swift */; };
+		AB1000000000000000000200 /* SFTP Pro/Design/WorkspaceDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1000000000000000000100 /* SFTP Pro/Design/WorkspaceDialogView.swift */; };
+		AB1000000000000000000201 /* SFTP Pro/Design/DialogActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1000000000000000000101 /* SFTP Pro/Design/DialogActionStyle.swift */; };
+		AB1000000000000000000202 /* SFTP Pro/Files/FileActionsModel+Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1000000000000000000102 /* SFTP Pro/Files/FileActionsModel+Selection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +91,9 @@
 		EF0000000000000000000308 /* SFTP Pro/Files/FileDragPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileDragPromise.swift"; sourceTree = SOURCE_ROOT; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F34FD1383050D33600F7829B /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
+		AB1000000000000000000100 /* SFTP Pro/Design/WorkspaceDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Design/WorkspaceDialogView.swift"; sourceTree = SOURCE_ROOT; };
+		AB1000000000000000000101 /* SFTP Pro/Design/DialogActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Design/DialogActionStyle.swift"; sourceTree = SOURCE_ROOT; };
+		AB1000000000000000000102 /* SFTP Pro/Files/FileActionsModel+Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileActionsModel+Selection.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -180,6 +186,9 @@
 				EF0000000000000000000305 /* SFTP Pro/Files/LocalFileBrowserModel.swift */,
 				EF0000000000000000000306 /* SFTP Pro/Files/BrowserPane.swift */,
 				EF0000000000000000000307 /* SFTP Pro/Files/FileMenuNavigation.swift */,
+				AB1000000000000000000100 /* SFTP Pro/Design/WorkspaceDialogView.swift */,
+				AB1000000000000000000101 /* SFTP Pro/Design/DialogActionStyle.swift */,
+				AB1000000000000000000102 /* SFTP Pro/Files/FileActionsModel+Selection.swift */,
 				EF0000000000000000000308 /* SFTP Pro/Files/FileDragPromise.swift */,
 				EF0000000000000000000100 /* SFTP Pro/Files/FileActionsModel.swift */,
 			);
@@ -324,6 +333,9 @@
 				EF0000000000000000000405 /* SFTP Pro/Files/LocalFileBrowserModel.swift in Sources */,
 				EF0000000000000000000406 /* SFTP Pro/Files/BrowserPane.swift in Sources */,
 				EF0000000000000000000407 /* SFTP Pro/Files/FileMenuNavigation.swift in Sources */,
+				AB1000000000000000000200 /* SFTP Pro/Design/WorkspaceDialogView.swift in Sources */,
+				AB1000000000000000000201 /* SFTP Pro/Design/DialogActionStyle.swift in Sources */,
+				AB1000000000000000000202 /* SFTP Pro/Files/FileActionsModel+Selection.swift in Sources */,
 				EF0000000000000000000408 /* SFTP Pro/Files/FileDragPromise.swift in Sources */,
 				EF0000000000000000000200 /* SFTP Pro/Files/FileActionsModel.swift in Sources */,
 			);

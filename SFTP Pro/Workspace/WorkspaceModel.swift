@@ -1,11 +1,10 @@
 import Foundation
-import Observation
 
 @Observable
 final class WorkspaceModel {
-    #if DEBUG
+#if DEBUG
     var localPreviewURL: URL?
-    #endif
+#endif
     var refreshFiles: () -> Void = {}
     var section = WorkspaceSection.files
     var hosts: [Host] = []
@@ -39,14 +38,14 @@ final class WorkspaceModel {
             updateRememberedLocations()
         }
     }
-
+    
     var rememberHostLocations = UserDefaults.standard.bool(forKey: "rememberHostLocations") {
         didSet {
             UserDefaults.standard.set(rememberHostLocations, forKey: "rememberHostLocations")
             updateRememberedLocations()
         }
     }
-
+    
     private func updateRememberedLocations() {
         guard reopenConnectedHosts && rememberHostLocations else {
             UserDefaults.standard.removeObject(forKey: "connectedHost.locations")
@@ -57,24 +56,24 @@ final class WorkspaceModel {
             rememberLocation(session.path, for: session.host.id)
         }
     }
-
+    
     private func rememberLocation(_ path: String, for hostID: UUID) {
         guard reopenConnectedHosts && rememberHostLocations else { return }
         var locations = UserDefaults.standard.dictionary(forKey: "connectedHost.locations") as? [String: String] ?? [:]
         locations[hostID.uuidString] = path
         UserDefaults.standard.set(locations, forKey: "connectedHost.locations")
     }
-
+    
     var connectedHostIDs: [String] {
         sessions.filter { $0.isConnected && !$0.isPreview }.map { $0.host.id.uuidString }
     }
-
+    
     func rememberConnectedHosts() {
         UserDefaults.standard.set(reopenConnectedHosts ? connectedHostIDs : [], forKey: "connectedHostIDs")
         UserDefaults.standard.set(reopenConnectedHosts ? session(in: .primary)?.host.id.uuidString : nil, forKey: "connectedHost.primary")
         UserDefaults.standard.set(reopenConnectedHosts ? session(in: .secondary)?.host.id.uuidString : nil, forKey: "connectedHost.secondary")
     }
-
+    
     func restoreConnections() {
         guard !didRestoreConnections else { return }
         didRestoreConnections = true
@@ -90,7 +89,7 @@ final class WorkspaceModel {
         restorationQueue = ids.compactMap { id in hosts.first { $0.id.uuidString == id } }
         restoreNextConnection()
     }
-
+    
     private func restoreNextConnection() {
         while !restorationQueue.isEmpty {
             let host = restorationQueue.removeFirst()
@@ -99,7 +98,7 @@ final class WorkspaceModel {
             if connectingHost != nil { return }
         }
     }
-
+    
     init() {
         do {
             hosts = try store.load()
@@ -107,15 +106,15 @@ final class WorkspaceModel {
         }
         catch { report(error) }
     }
-
+    
     var filteredHosts: [Host] {
         hosts.filter {
             hostSearch.isEmpty || $0.displayName.localizedStandardContains(hostSearch) || $0.address.localizedStandardContains(hostSearch)
         }
     }
-
+    
     var selectedSession: SFTPSession? { session(in: activePane) ?? session(in: .primary) }
-
+    
     @discardableResult
     func save(_ host: Host) -> Bool {
         guard hostsLoaded else { report(KeychainStoreError.unavailable); return false }
@@ -133,12 +132,12 @@ final class WorkspaceModel {
             return true
         } catch { report(error); return false }
     }
-
+    
     func edit(_ host: Host) {
         editingHost = host
         addHost()
     }
-
+    
     func remove(_ host: Host) {
         guard hostsLoaded else { report(KeychainStoreError.unavailable); return }
         let updated = hosts.filter { $0.id != host.id }
@@ -147,19 +146,19 @@ final class WorkspaceModel {
             hosts = updated
         } catch { report(error) }
     }
-
+    
     func addHost() {
         if showHostPicker { showPickerEditor = true }
         else { showHostEditor = true }
     }
-
+    
     func hostPickerDismissed() {
         if let host = pendingConnection {
             pendingConnection = nil
             requestConnection(host)
         }
     }
-
+    
     func requestConnection(_ host: Host) {
         if showHostPicker {
             pendingConnection = host
@@ -174,12 +173,12 @@ final class WorkspaceModel {
             connectingHost = host
         }
     }
-
+    
     func submitAuthentication(_ host: Host, password: String) {
         pendingAuthentication = (host, password)
         connectingHost = nil
     }
-
+    
     func authenticationDismissed() {
         if let authentication = pendingAuthentication {
             pendingAuthentication = nil
@@ -187,7 +186,7 @@ final class WorkspaceModel {
         }
         restoreNextConnection()
     }
-
+    
     func connect(_ host: Host, password: String) {
         if let old = sessions.first(where: { $0.host.id == host.id }) { close(old) }
         let trust = trustStore
@@ -206,23 +205,23 @@ final class WorkspaceModel {
         select(session)
         session.connect(password: password)
     }
-
+    
     func session(in pane: BrowserPane) -> SFTPSession? {
         let id = pane == .primary ? selectedSessionID : secondarySessionID
         return sessions.first { $0.id == id }
     }
-
+    
     func chooseHost(for pane: BrowserPane) {
         activePane = pane
         showHostPicker = true
     }
-
+    
     func select(_ session: SFTPSession) {
         if activePane == .primary { selectedSessionID = session.id }
         else { secondarySessionID = session.id }
         section = .files
     }
-
+    
     func close(_ session: SFTPSession) {
         trustStore.cancel(endpoint: "\(session.host.address.lowercased()):\(session.host.port)")
         session.close()
@@ -230,7 +229,7 @@ final class WorkspaceModel {
         if selectedSessionID == session.id { selectedSessionID = nil }
         if secondarySessionID == session.id { secondarySessionID = nil }
     }
-
+    
     func upload(_ url: URL, to session: SFTPSession) {
         guard session.isConnected && !session.isPreview else { return }
         let transfer = FileTransfer(name: url.lastPathComponent, isUpload: true)
@@ -258,7 +257,7 @@ final class WorkspaceModel {
             transfer.task = nil
         }
     }
-
+    
     func download(_ file: RemoteFile, from session: SFTPSession) {
         guard session.isConnected && !session.isPreview && !file.isDirectory else { return }
         let transfer = FileTransfer(name: file.name, isUpload: false)
@@ -286,7 +285,7 @@ final class WorkspaceModel {
             transfer.task = nil
         }
     }
-
+    
     func report(_ error: any Error) {
         errorMessage = error.localizedDescription
         showError = true

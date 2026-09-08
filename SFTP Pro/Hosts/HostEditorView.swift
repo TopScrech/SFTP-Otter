@@ -3,30 +3,27 @@ import SwiftUI
 struct HostEditorView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(\.dismiss) private var dismiss
-    @State private var host = Host()
-    @State private var savePassword = false
-    @State private var password = ""
-    @State private var port = "22"
+    @State private var editor = HostEditorModel()
 
     var body: some View {
         NavigationStack {
             Form {
                 Section("General") {
-                    TextField("Label", text: $host.name)
-                    TextField("Address", text: $host.address)
+                    TextField("Label", text: $editor.host.name)
+                    TextField("Address", text: $editor.host.address)
                         .autocorrectionDisabled()
-                    TextField("Port", text: $port)
+                    TextField("Port", text: $editor.port)
                 }
                 Section("Authentication") {
-                    TextField("Username", text: $host.username)
+                    TextField("Username", text: $editor.host.username)
                         .autocorrectionDisabled()
-                    Toggle("Save password in Keychain", isOn: $savePassword)
-                    if savePassword {
-                        SecureField("Password", text: $password)
+                    Toggle("Save password in Keychain", isOn: $editor.savePassword)
+                    if editor.savePassword {
+                        SecureField("Password", text: $editor.password)
                     }
                 }
                 Section("SFTP") {
-                    TextField("Initial directory", text: $host.initialPath)
+                    TextField("Initial directory", text: $editor.host.initialPath)
                         .autocorrectionDisabled()
                     Label("SFTP connection", systemImage: "lock.shield")
                         .foregroundStyle(.secondary)
@@ -40,22 +37,13 @@ struct HostEditorView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        host.port = Int(port) ?? 22
-                        host.savedPassword = savePassword ? password : nil
-                        if workspace.save(host) { dismiss() }
+                        if editor.save(to: workspace) { dismiss() }
                     }
-                    .disabled(host.address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || host.username.isEmpty || !(1...65535).contains(Int(port) ?? 0))
+                    .disabled(!editor.canSave)
                 }
             }
         }
         .frame(minWidth: 320, idealWidth: 460, minHeight: 460)
-        .onAppear {
-            if let editing = workspace.editingHost {
-                host = editing
-                port = String(editing.port)
-                savePassword = editing.savedPassword != nil
-                password = editing.savedPassword ?? ""
-            }
-        }
+        .onAppear { editor.load(workspace.editingHost) }
     }
 }
