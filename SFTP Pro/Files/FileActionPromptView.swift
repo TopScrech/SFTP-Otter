@@ -1,5 +1,5 @@
 #if os(macOS)
-import SwiftUI
+import ScrechKit
 
 struct FileActionPromptView: View {
     @Environment(FileActionsModel.self) private var actions
@@ -12,7 +12,7 @@ struct FileActionPromptView: View {
         WorkspaceDialogView(title: action.rawValue, close: { dismiss() }) {
             VStack(alignment: .leading, spacing: 0) {
                 Text(action == .rename ? "New filename *" : "Folder name *")
-                    .font(.callout)
+                    .callout()
                     .foregroundStyle(WorkspaceTheme.muted)
                     .padding(.horizontal, 6)
                     .background(WorkspaceTheme.surface)

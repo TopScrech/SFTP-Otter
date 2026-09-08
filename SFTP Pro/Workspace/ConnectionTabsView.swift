@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct ConnectionTabsView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -49,7 +49,7 @@ struct ConnectionTabsView: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
         }
-        .font(.subheadline)
+        .subheadline()
         .buttonStyle(.plain)
         .padding(.horizontal)
         .padding(.vertical, 4)

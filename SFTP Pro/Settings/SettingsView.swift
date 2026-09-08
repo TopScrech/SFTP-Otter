@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct SettingsView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -24,12 +24,12 @@ struct SettingsView: View {
                     Button("Done") { dismiss() }
                 }
             }
-            .sheet(isPresented: $settings.showConfirmation) {
+            .sheet($settings.showConfirmation) {
                 MessageDialogView(title: "Forget this trusted host?", message: settings.pendingRemoval ?? "", actionTitle: "Forget host", destructive: true) {
                     settings.forget(in: workspace.trustStore)
                 }
             }
-            .sheet(isPresented: $settings.showTrustedHostsHelp) {
+            .sheet($settings.showTrustedHostsHelp) {
                 MessageDialogView(title: "Trusted SSH hosts", message: "These server keys were approved when connecting. Forgetting a key asks you to verify the server again on your next connection")
             }
             .onAppear { settings.load(from: workspace.trustStore) }

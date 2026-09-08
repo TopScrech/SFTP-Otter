@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct HostPickerView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -15,7 +15,7 @@ struct HostPickerView: View {
                 }
         }
         .frame(minWidth: 320, idealWidth: 600, minHeight: 450)
-        .sheet(isPresented: $workspace.showPickerEditor) {
+        .sheet($workspace.showPickerEditor) {
             HostEditorView()
         }
         .onChange(of: workspace.showPickerEditor) {

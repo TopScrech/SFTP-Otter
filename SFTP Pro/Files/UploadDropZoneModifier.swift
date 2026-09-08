@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 import UniformTypeIdentifiers
 
 struct UploadDropZoneModifier: ViewModifier {
@@ -23,7 +23,7 @@ struct UploadDropZoneModifier: ViewModifier {
                         }
                         .overlay {
                             Label("Upload to \(session.path)", systemImage: "arrow.up.doc")
-                                .font(.title2)
+                                .title2()
                                 .padding()
                                 .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
                         }

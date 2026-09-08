@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct WorkspaceDialogView<Content: View>: View {
     let title: String
@@ -8,7 +8,7 @@ struct WorkspaceDialogView<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text(title).font(.title2)
+                Text(title).title2()
                 Spacer()
                 Button("Close", systemImage: "xmark", action: close)
                     .labelStyle(.iconOnly)
@@ -17,20 +17,21 @@ struct WorkspaceDialogView<Content: View>: View {
             }
             .padding(30)
             .background(WorkspaceTheme.raised)
+
             VStack(alignment: .leading, spacing: 28) {
                 content
             }
             .padding(30)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .font(.title3)
+        .title3()
         .foregroundStyle(WorkspaceTheme.text)
         .tint(WorkspaceTheme.accent)
         .background(WorkspaceTheme.surface)
         .clipShape(.rect(cornerRadius: 24))
         .presentationBackground(.clear)
         .presentationCornerRadius(24)
-        .preferredColorScheme(.dark)
+        .darkSchemePreferred()
         .frame(idealWidth: 460)
         .fixedSize(horizontal: false, vertical: true)
     }

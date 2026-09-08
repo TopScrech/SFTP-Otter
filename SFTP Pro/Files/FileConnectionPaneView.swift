@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 import UniformTypeIdentifiers
 
 struct FileConnectionPaneView: View {
@@ -19,7 +19,7 @@ struct FileConnectionPaneView: View {
                 FileConnectionEmptyView(pane: pane, showLocalFolderPicker: $showLocalFolderPicker)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .maxFrame(.infinity)
         .fileImporter(isPresented: $showLocalFolderPicker, allowedContentTypes: [.folder]) { result in
             switch result {
             case .success(let url): localBrowser.open(url)

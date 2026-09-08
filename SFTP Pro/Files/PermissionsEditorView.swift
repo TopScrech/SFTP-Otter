@@ -1,5 +1,5 @@
 #if os(macOS)
-import SwiftUI
+import ScrechKit
 
 struct PermissionsEditorView: View {
     @Environment(FileActionsModel.self) private var actions
@@ -9,7 +9,7 @@ struct PermissionsEditorView: View {
         @Bindable var actions = actions
         WorkspaceDialogView(title: "Edit permissions", close: { dismiss() }) {
             VStack(alignment: .leading, spacing: 24) {
-                Text(actions.file?.path ?? "").lineLimit(2).textSelection(.enabled)
+                Text(actions.file?.path ?? "").lineLimit(2).enableSelection()
                 Grid(alignment: .leading, horizontalSpacing: 36, verticalSpacing: 8) {
                     GridRow {
                         Text("File Access").frame(maxWidth: .infinity, alignment: .leading)

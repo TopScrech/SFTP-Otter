@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct HostCardView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -10,16 +10,16 @@ struct HostCardView: View {
         } label: {
             HStack {
                 Image(systemName: "server.rack")
-                    .font(.title2)
+                    .title2()
                     .padding()
                     .background(WorkspaceTheme.accent.opacity(0.2), in: .rect(cornerRadius: 10))
                     .foregroundStyle(WorkspaceTheme.accent)
                 VStack(alignment: .leading) {
-                    Text(host.displayName).font(.headline)
-                    Text(host.address).font(.subheadline)
+                    Text(host.displayName).headline()
+                    Text(host.address).subheadline()
                         .foregroundStyle(WorkspaceTheme.muted)
                     Text("SFTP · \(host.username)")
-                        .font(.caption)
+                        .caption()
                         .foregroundStyle(WorkspaceTheme.muted)
                 }
                 Spacer()

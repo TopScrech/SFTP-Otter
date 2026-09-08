@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct FileRowView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -13,24 +13,24 @@ struct FileRowView: View {
             } label: {
                 HStack {
                     Image(systemName: file.icon)
-                        .font(.title2)
+                        .title2()
                         .foregroundStyle(file.isDirectory ? Color(red: 0.72, green: 0.76, blue: 0.79) : WorkspaceTheme.muted)
                         .frame(width: 32)
                     VStack(alignment: .leading) {
                         Text(file.name).lineLimit(1)
                         Text(file.permissions)
-                            .font(.caption.monospaced())
+                            .caption(design: .monospaced)
                             .foregroundStyle(WorkspaceTheme.muted)
                     }
                     Spacer()
                     if !file.isDirectory {
                         Text(Int64(clamping: file.size), format: .byteCount(style: .file))
-                            .font(.caption)
+                            .caption()
                             .foregroundStyle(WorkspaceTheme.muted)
                     }
                     if let date = file.modified {
                         Text(date, format: .dateTime.month(.abbreviated).day().year())
-                            .font(.caption)
+                            .caption()
                             .foregroundStyle(WorkspaceTheme.muted)
                     }
                 }

@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct ContentView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -18,14 +18,14 @@ struct ContentView: View {
         .background(WorkspaceTheme.background)
         .foregroundStyle(WorkspaceTheme.text)
         .tint(WorkspaceTheme.accent)
-        .preferredColorScheme(.dark)
-        .sheet(isPresented: $workspace.showSettings) {
+        .darkSchemePreferred()
+        .sheet($workspace.showSettings) {
             SettingsView()
         }
         .sheet(isPresented: $workspace.showHostPicker, onDismiss: workspace.hostPickerDismissed) {
             HostPickerView()
         }
-        .sheet(isPresented: $workspace.showHostEditor) {
+        .sheet($workspace.showHostEditor) {
             HostEditorView()
         }
         .sheet(item: $workspace.connectingHost, onDismiss: workspace.authenticationDismissed) {
@@ -38,7 +38,7 @@ struct ContentView: View {
             HostKeyVerificationView(challenge: $0)
                 .environment(trustStore)
         }
-        .sheet(isPresented: $workspace.showError) {
+        .sheet($workspace.showError) {
             MessageDialogView(title: "Something went wrong", message: workspace.errorMessage)
         }
     }

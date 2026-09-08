@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct DesktopFileRowView: View {
     let file: RemoteFile
@@ -10,12 +10,12 @@ struct DesktopFileRowView: View {
         HStack(spacing: 0) {
             HStack {
                 Image(systemName: file.isDirectory ? "folder.fill" : "doc.fill")
-                    .font(.title2)
+                    .title2()
                     .foregroundStyle(file.isDirectory ? .cyan : .white)
                 VStack(alignment: .leading, spacing: 0) {
                     Text(file.name).foregroundStyle(.white)
                     if !file.permissions.isEmpty {
-                        Text(file.permissions).font(.caption)
+                        Text(file.permissions).caption()
                     }
                 }
             }

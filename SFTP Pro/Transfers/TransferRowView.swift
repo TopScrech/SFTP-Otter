@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct TransferRowView: View {
     let transfer: FileTransfer
@@ -6,14 +6,14 @@ struct TransferRowView: View {
     var body: some View {
         HStack {
             Image(systemName: transfer.isUpload ? "arrow.up.doc" : "arrow.down.doc")
-                .font(.title2)
+                .title2()
                 .padding()
                 .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 10))
             VStack(alignment: .leading) {
                 HStack {
-                    Text(transfer.name).font(.headline)
+                    Text(transfer.name).headline()
                     Spacer()
-                    Text(transfer.status).font(.caption)
+                    Text(transfer.status).caption()
                         .foregroundStyle(transfer.failure == nil ? WorkspaceTheme.muted : .red)
                 }
                 ProgressView(value: transfer.progress)
@@ -27,10 +27,10 @@ struct TransferRowView: View {
                         Text("MB/s")
                     }
                 }
-                .font(.caption)
+                .caption()
                 .foregroundStyle(WorkspaceTheme.muted)
                 if let failure = transfer.failure {
-                    Text(failure).font(.caption).foregroundStyle(.red)
+                    Text(failure).caption().foregroundStyle(.red)
                 }
             }
             if let url = transfer.localURL {

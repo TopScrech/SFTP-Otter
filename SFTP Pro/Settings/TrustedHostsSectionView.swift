@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct TrustedHostsSectionView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -9,7 +9,7 @@ struct TrustedHostsSectionView: View {
             if let errorMessage = settings.errorMessage {
                 Text(errorMessage).foregroundStyle(.red)
             } else if settings.keys.isEmpty {
-                Text("No trusted hosts yet").foregroundStyle(.secondary)
+                Text("No trusted hosts yet").secondary()
             }
             ForEach(settings.keys.keys.sorted(), id: \.self) { endpoint in
                 VStack(alignment: .leading) {
@@ -22,9 +22,9 @@ struct TrustedHostsSectionView: View {
                     }
                     if let key = settings.keys[endpoint] {
                         Text(workspace.trustStore.fingerprint(for: key))
-                            .font(.caption.monospaced())
-                            .textSelection(.enabled)
-                            .foregroundStyle(.secondary)
+                            .caption(design: .monospaced)
+                            .enableSelection()
+                            .secondary()
                     }
                 }
             }

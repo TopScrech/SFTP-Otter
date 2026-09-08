@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct FileMenuButtonView: View {
     let item: FileMenuAction
@@ -8,7 +8,7 @@ struct FileMenuButtonView: View {
     var body: some View {
         Button(action: action) {
             Text(item.rawValue)
-                .font(.title3)
+                .title3()
                 .foregroundStyle(item == .delete ? .red : .white)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)

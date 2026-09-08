@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 import UniformTypeIdentifiers
 
 struct DesktopSessionBrowserView: View {
@@ -59,7 +59,7 @@ struct DesktopSessionBrowserView: View {
                 ContentUnavailableView("Connection unavailable", systemImage: "network.slash", description: Text(error))
             } else {
                 ProgressView("Connecting")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .maxFrame(.infinity)
             }
         }
         .onAppear { workspace.refreshFiles = session.refresh }

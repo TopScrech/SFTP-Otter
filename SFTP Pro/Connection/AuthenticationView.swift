@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct AuthenticationView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -21,7 +21,7 @@ struct AuthenticationView: View {
                     .overlay { RoundedRectangle(cornerRadius: 12).stroke(WorkspaceTheme.muted.opacity(0.3)) }
                     .focused($passwordFocused)
                 Text("Used for this connection only and never saved to disk")
-                    .font(.caption)
+                    .caption()
                     .foregroundStyle(WorkspaceTheme.muted)
             }
             HStack {

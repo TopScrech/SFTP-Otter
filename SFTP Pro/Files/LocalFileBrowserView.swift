@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct LocalFileBrowserView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -26,7 +26,7 @@ struct LocalFileBrowserView: View {
             Text(browser.directory?.path(percentEncoded: false) ?? "")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
-                .textSelection(.enabled)
+                .enableSelection()
                 .background(WorkspaceTheme.raised)
             if let error = browser.error {
                 ContentUnavailableView("Folder unavailable", systemImage: "folder.badge.questionmark", description: Text(error))

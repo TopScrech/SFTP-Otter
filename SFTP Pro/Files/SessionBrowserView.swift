@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 import UniformTypeIdentifiers
 
 struct SessionBrowserView: View {
@@ -11,7 +11,7 @@ struct SessionBrowserView: View {
             FileBrowserToolbarView(showImporter: $showImporter)
             if session.isLoading {
                 ProgressView("Loading directory")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .maxFrame(.infinity)
             } else if let error = session.error {
                 ContentUnavailableView {
                     Label("Connection unavailable", systemImage: "network.slash")
@@ -47,7 +47,7 @@ struct SessionBrowserView: View {
                 Text("\(session.files.count) items")
                 Text("SFTP")
             }
-            .font(.caption)
+            .caption()
             .foregroundStyle(WorkspaceTheme.muted)
             .padding()
         }

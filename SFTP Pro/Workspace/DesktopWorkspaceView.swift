@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct DesktopWorkspaceView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -14,7 +14,7 @@ struct DesktopWorkspaceView: View {
                     DesktopFileWorkspaceView()
                 } else {
                     WorkspaceDetailView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .maxFrame(.infinity)
                 }
             }
         }

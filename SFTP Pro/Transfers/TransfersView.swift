@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct TransfersView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -6,7 +6,7 @@ struct TransfersView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("Transfers").font(.largeTitle).bold()
+                Text("Transfers").largeTitle().bold()
                 Spacer()
                 Button("Clear finished", systemImage: "checkmark.circle") {
                     workspace.transfers.removeAll { $0.finished }

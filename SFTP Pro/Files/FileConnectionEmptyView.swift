@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct FileConnectionEmptyView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -12,13 +12,13 @@ struct FileConnectionEmptyView: View {
                 .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
                 .padding(.bottom)
             Text("Connect to host")
-                .font(.subheadline).bold()
+                .subheadline().bold()
             Text("Start by connecting to a saved host\nto manage your files with SFTP")
-                .font(.caption2)
+                .caption2()
                 .foregroundStyle(WorkspaceTheme.muted)
                 .multilineTextAlignment(.center)
             Button("Select host") { workspace.chooseHost(for: pane) }
-                .font(.caption).bold()
+                .caption().bold()
                 .buttonStyle(.plain)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
@@ -29,11 +29,11 @@ struct FileConnectionEmptyView: View {
                 showLocalFolderPicker = true
             }
             .buttonStyle(.plain)
-            .font(.caption)
+            .caption()
             .padding()
             #endif
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .maxFrame(.infinity)
     }
 }

@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct HostKeyVerificationView: View {
     @Environment(HostKeyTrustStore.self) private var trustStore
@@ -8,10 +8,10 @@ struct HostKeyVerificationView: View {
         WorkspaceDialogView(title: "Verify server identity", close: { trustStore.resolve(trust: false) }) {
             Text("Verify the server key for \(challenge.endpoint)")
             Text("Compare this fingerprint with the one provided by your server administrator before trusting the server")
-                .foregroundStyle(.secondary)
+                .secondary()
             Text(challenge.fingerprint)
                 .font(.body.monospaced())
-                .textSelection(.enabled)
+                .enableSelection()
                 .padding()
                 .background(WorkspaceTheme.surface, in: .rect(cornerRadius: 8))
             HStack {

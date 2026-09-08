@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct PermissionToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -11,7 +11,7 @@ struct PermissionToggleStyle: ToggleStyle {
                 .overlay(alignment: configuration.isOn ? .trailing : .leading) {
                     Circle()
                         .fill(configuration.isOn ? WorkspaceTheme.accent : WorkspaceTheme.muted)
-                        .frame(width: 22, height: 22)
+                        .frame(22)
                 }
                 .frame(height: 26)
                 .contentShape(.rect)

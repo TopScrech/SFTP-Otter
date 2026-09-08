@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct HostsView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -7,7 +7,7 @@ struct HostsView: View {
         @Bindable var workspace = workspace
         VStack(alignment: .leading) {
             HStack {
-                Text("Hosts").font(.largeTitle).bold()
+                Text("Hosts").largeTitle().bold()
                 Spacer()
                 Button("New host", systemImage: "plus") {
                     workspace.addHost()
@@ -23,7 +23,7 @@ struct HostsView: View {
             .padding()
             .background(WorkspaceTheme.surface, in: .rect(cornerRadius: 10))
             Text("SAVED HOSTS")
-                .font(.caption)
+                .caption()
                 .foregroundStyle(WorkspaceTheme.muted)
                 .padding(.top)
             if workspace.hosts.isEmpty {

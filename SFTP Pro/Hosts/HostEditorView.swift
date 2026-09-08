@@ -1,4 +1,4 @@
-import SwiftUI
+import ScrechKit
 
 struct HostEditorView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -26,7 +26,7 @@ struct HostEditorView: View {
                     TextField("Initial directory", text: $editor.host.initialPath)
                         .autocorrectionDisabled()
                     Label("SFTP connection", systemImage: "lock.shield")
-                        .foregroundStyle(.secondary)
+                        .secondary()
                 }
             }
             .formStyle(.grouped)
