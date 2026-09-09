@@ -55,7 +55,8 @@ struct LocalFileBrowserView: View {
                 }
             }
         }
-        .onAppear { workspace.refreshFiles = browser.refresh }
+        .onAppear { workspace.visibleLocalBrowsers[ObjectIdentifier(browser)] = browser }
+        .onDisappear { workspace.visibleLocalBrowsers.removeValue(forKey: ObjectIdentifier(browser)) }
         .buttonStyle(.plain)
         .background(WorkspaceTheme.surface)
 #if os(macOS)

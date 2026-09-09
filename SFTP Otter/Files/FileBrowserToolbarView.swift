@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct FileBrowserToolbarView: View {
+    @Environment(WorkspaceModel.self) private var workspace
     @Environment(SFTPSession.self) private var session
     @Binding var showImporter: Bool
     @State private var showSearch = false
@@ -21,7 +22,7 @@ struct FileBrowserToolbarView: View {
                     .buttonStyle(.bordered)
                     .disabled(!session.isConnected || session.isPreview)
                 Menu("File options", systemImage: "ellipsis") {
-                    Button("Refresh", systemImage: "arrow.clockwise", action: session.refresh)
+                    Button("Refresh", systemImage: "arrow.clockwise", action: workspace.refreshFiles)
                         .disabled(!session.isConnected || session.isPreview)
                     Toggle("Show hidden files", isOn: $session.showHidden)
                 }

@@ -5,7 +5,17 @@ final class WorkspaceModel {
 #if DEBUG
     var localPreviewURL: URL?
 #endif
-    var refreshFiles: () -> Void = {}
+    var visibleLocalBrowsers: [ObjectIdentifier: LocalFileBrowserModel] = [:]
+
+    func refreshFiles() {
+        let visibleSessionIDs = [selectedSessionID, secondarySessionID].compactMap { $0 }
+        for session in sessions where visibleSessionIDs.contains(session.id) && session.isConnected && !session.isPreview {
+            session.refresh()
+        }
+        for browser in visibleLocalBrowsers.values {
+            browser.refresh()
+        }
+    }
     var section = WorkspaceSection.files
     var hosts: [Host] = []
     var sessions: [SFTPSession] = []

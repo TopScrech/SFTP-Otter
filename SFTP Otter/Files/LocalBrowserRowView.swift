@@ -55,7 +55,6 @@ struct LocalBrowserRowView: View {
                 },
                 select: { shift, command, context in
                     keyboardNavigationActive = true
-                    workspace.refreshFiles = browser.refresh
                     browser.selection.click(
                         file.id, in: browser.files.map(\.id), extending: shift, toggling: command, contextMenu: context)
                 }

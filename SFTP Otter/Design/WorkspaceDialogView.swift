@@ -13,10 +13,14 @@ struct WorkspaceDialogView<Content: View>: View {
                 
                 Spacer()
                 
-                Button("Close", systemImage: "xmark", action: close)
-                    .labelStyle(.iconOnly)
-                    .buttonStyle(.plain)
-                    .keyboardShortcut(.cancelAction)
+                Button(action: close) {
+                    Label("Close", systemImage: "xmark")
+                        .labelStyle(.iconOnly)
+                        .frame(width: 44, height: 44)
+                        .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+                .keyboardShortcut(.cancelAction)
             }
             .padding(30)
             .background(WorkspaceTheme.raised)

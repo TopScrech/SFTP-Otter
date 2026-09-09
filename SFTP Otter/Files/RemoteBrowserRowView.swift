@@ -59,7 +59,6 @@ struct RemoteBrowserRowView: View {
                 },
                 select: { shift, command, context in
                     keyboardNavigationActive = true
-                    workspace.refreshFiles = session.refresh
                     selection.click(
                         file.id, in: session.browserFiles.map(\.id), extending: shift, toggling: command, contextMenu: context)
                 }

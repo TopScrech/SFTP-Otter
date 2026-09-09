@@ -33,7 +33,7 @@ struct DesktopSessionBrowserView: View {
                         }
                         .disabled(session.isPreview || !session.files.contains { selection.ids.contains($0.id) && !$0.isDirectory })
                         Divider()
-                        Button("Refresh", systemImage: "arrow.clockwise", action: session.refresh)
+                        Button("Refresh", systemImage: "arrow.clockwise", action: workspace.refreshFiles)
                             .disabled(session.isPreview || !session.isConnected)
                         Toggle("Show hidden files", isOn: $session.showHidden)
                         Button("Choose host", systemImage: "server.rack") { workspace.chooseHost(for: pane) }
@@ -62,7 +62,6 @@ struct DesktopSessionBrowserView: View {
                     .maxFrame(.infinity)
             }
         }
-        .onAppear { workspace.refreshFiles = session.refresh }
         .overlay {
             if session.isLoading && session.isConnected { ProgressView("Loading files") }
         }
