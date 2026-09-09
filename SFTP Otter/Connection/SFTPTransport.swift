@@ -4,6 +4,7 @@ nonisolated protocol SFTPTransport: AnyObject, Sendable {
     func connect(host: Host, password: String) async throws
     func list(path: String) async throws -> (path: String, files: [RemoteFile])
     func upload(local: URL, remote: String, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws
+    func upload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws
     func download(remote: String, local: URL, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws
     func rename(path: String, to destination: String) async throws
     func createDirectory(path: String) async throws
@@ -13,6 +14,11 @@ nonisolated protocol SFTPTransport: AnyObject, Sendable {
 }
 
 nonisolated extension SFTPTransport {
+    func upload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
+        guard !replacing else { throw CocoaError(.featureUnsupported) }
+        try await upload(local: local, remote: remote, progress: progress)
+    }
+
     func rename(path: String, to destination: String) async throws { throw CocoaError(.featureUnsupported) }
     func createDirectory(path: String) async throws { throw CocoaError(.featureUnsupported) }
     func remove(path: String, isDirectory: Bool) async throws { throw CocoaError(.featureUnsupported) }

@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 @Observable
 final class FileTransfer: Identifiable {
     let id = UUID()
@@ -13,6 +14,7 @@ final class FileTransfer: Identifiable {
     var localURL: URL?
     var started = Date()
     var task: Task<Void, Never>?
+    var cancellationRequested = false
     
     init(name: String, isUpload: Bool) {
         self.name = name
@@ -28,6 +30,7 @@ final class FileTransfer: Identifiable {
     }
     
     func cancel() {
+        cancellationRequested = true
         task?.cancel()
     }
 }

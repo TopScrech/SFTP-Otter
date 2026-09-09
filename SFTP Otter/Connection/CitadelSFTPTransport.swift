@@ -122,14 +122,18 @@ actor CitadelSFTPTransport: SFTPTransport {
     }
     
     func upload(local: URL, remote: String, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
-        try await gate.run { try await self.performUpload(local: local, remote: remote, progress: progress) }
+        try await upload(local: local, remote: remote, replacing: false, progress: progress)
+    }
+
+    func upload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
+        try await gate.run { try await self.performUpload(local: local, remote: remote, replacing: replacing, progress: progress) }
     }
     
     func download(remote: String, local: URL, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
         try await gate.run { try await self.performDownload(remote: remote, local: local, progress: progress) }
     }
     
-    private func performUpload(local: URL, remote: String, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
+    private func performUpload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
         guard let ssh else { throw ConnectionError.notConnected }
         let sftp = try await ssh.openSFTP()
         defer { Task { try? await sftp.close() } }
@@ -147,8 +151,20 @@ actor CitadelSFTPTransport: SFTPTransport {
                     try await handle.close()
                     try await disk.close()
                     try Task.checkCancellation()
-                    // SFTP v3 rename refuses an existing destination, preserving the user's files
-                    try await sftp.rename(at: temporary, to: remote)
+                    if replacing {
+                        // Keep the original until the completed upload is installed
+                        let backup = remote + ".sftp-otter-" + UUID().uuidString + ".backup"
+                        try await sftp.rename(at: remote, to: backup)
+                        do {
+                            try await sftp.rename(at: temporary, to: remote)
+                        } catch {
+                            try await sftp.rename(at: backup, to: remote)
+                            throw error
+                        }
+                        try await sftp.remove(at: backup)
+                    } else {
+                        try await sftp.rename(at: temporary, to: remote)
+                    }
                 } catch {
                     try? await handle.close()
                     throw error

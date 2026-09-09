@@ -8,7 +8,7 @@ struct TransfersView: View {
             HStack {
                 Text("Transfers").largeTitle().bold()
                 Spacer()
-                Button("Clear finished", systemImage: "checkmark.circle") {
+                Button("Clear") {
                     workspace.transfers.removeAll { $0.finished }
                 }
                 .disabled(!workspace.transfers.contains { $0.finished })

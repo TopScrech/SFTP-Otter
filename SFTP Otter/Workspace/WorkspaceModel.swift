@@ -10,6 +10,7 @@ final class WorkspaceModel {
     var hosts: [Host] = []
     var sessions: [SFTPSession] = []
     var transfers: [FileTransfer] = []
+    let uploads = UploadQueue()
     var selectedSessionID: UUID?
     var secondarySessionID: UUID?
     var activePane = BrowserPane.primary
@@ -233,29 +234,8 @@ final class WorkspaceModel {
     func upload(_ url: URL, to session: SFTPSession) {
         guard session.isConnected && !session.isPreview else { return }
         let transfer = FileTransfer(name: url.lastPathComponent, isUpload: true)
-        let destination = session.path + (session.path.hasSuffix("/") ? "" : "/") + url.lastPathComponent
         transfers.insert(transfer, at: 0)
-        transfer.task = Task {
-            let access = url.startAccessingSecurityScopedResource()
-            defer { if access { url.stopAccessingSecurityScopedResource() } }
-            do {
-                try await session.transport.upload(local: url, remote: destination) { completed, total in
-                    await MainActor.run {
-                        if completed == 0 { transfer.started = Date() }
-                        transfer.status = transfer.isUpload ? "Uploading" : "Downloading"
-                        transfer.completedBytes = completed
-                        transfer.totalBytes = total
-                    }
-                }
-                transfer.status = "Uploaded"
-                session.refresh()
-            } catch {
-                transfer.status = Task.isCancelled ? "Cancelled" : "Failed"
-                transfer.failure = Task.isCancelled ? nil : error.localizedDescription
-            }
-            transfer.finished = true
-            transfer.task = nil
-        }
+        uploads.enqueue(url, session: session, transfer: transfer)
     }
     
     func download(_ file: RemoteFile, from session: SFTPSession) {

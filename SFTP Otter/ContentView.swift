@@ -5,6 +5,7 @@ struct ContentView: View {
     
     var body: some View {
         @Bindable var workspace = workspace
+        @Bindable var uploads = workspace.uploads
         @Bindable var trustStore = workspace.trustStore
         ViewThatFits(in: .horizontal) {
             DesktopWorkspaceView()
@@ -39,6 +40,10 @@ struct ContentView: View {
         .sheet(item: $trustStore.challenge) {
             HostKeyVerificationView(challenge: $0)
                 .environment(trustStore)
+        }
+        .sheet(item: $uploads.conflict, onDismiss: uploads.dialogDismissed) {
+            UploadConflictView(name: $0.name)
+                .environment(uploads)
         }
         .sheet($workspace.showError) {
             MessageDialogView(title: "Something went wrong", message: workspace.errorMessage)
