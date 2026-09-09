@@ -40,14 +40,11 @@ struct ConnectionTabsView: View {
             .padding(.vertical, 6)
             Spacer(minLength: 0)
             Button("Settings", systemImage: "gearshape") { workspace.showSettings = true }
-                .labelStyle(.iconOnly)
-                .padding(.horizontal)
+                .buttonStyle(CircularToolbarButtonStyle())
             Button("Transfers", systemImage: "arrow.down.circle") {
                 workspace.section = .transfers
             }
-            .labelStyle(.iconOnly)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+            .buttonStyle(CircularToolbarButtonStyle())
         }
         .subheadline()
         .buttonStyle(.plain)

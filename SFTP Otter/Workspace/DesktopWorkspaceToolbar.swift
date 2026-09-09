@@ -23,10 +23,12 @@ struct DesktopWorkspaceToolbar: ToolbarContent {
         
         ToolbarItem(placement: .primaryAction) {
             Button("Settings", systemImage: "gearshape") { workspace.showSettings = true }
+                .buttonStyle(CircularToolbarButtonStyle())
         }
         .sharedBackgroundVisibility(.hidden)
         ToolbarItem(placement: .primaryAction) {
             Button("Transfers", systemImage: "arrow.down.circle") { workspace.section = .transfers }
+                .buttonStyle(CircularToolbarButtonStyle())
         }
         .sharedBackgroundVisibility(.hidden)
     }

@@ -44,6 +44,31 @@ final class LocalFileBrowserModel {
     private(set) var files: [RemoteFile] = []
     private(set) var error: String?
     var selection = FileSelection()
+    var showHidden = false {
+        didSet { refresh() }
+    }
+
+    var selectedURLs: [URL] {
+        files.filter { selection.ids.contains($0.id) && $0.name != ".." }.map { URL(filePath: $0.path) }
+    }
+
+    func copyFiles(_ sources: [URL], to destination: URL) {
+        let destinationAccess = destination.startAccessingSecurityScopedResource()
+        defer { if destinationAccess { destination.stopAccessingSecurityScopedResource() } }
+        var failures: [String] = []
+        for source in sources {
+            let sourceAccess = source.startAccessingSecurityScopedResource()
+            defer { if sourceAccess { source.stopAccessingSecurityScopedResource() } }
+            do {
+                try FileManager.default.copyItem(at: source, to: destination.appending(path: source.lastPathComponent))
+            } catch { failures.append("\(source.lastPathComponent): \(error.localizedDescription)") }
+        }
+        refresh()
+        if !failures.isEmpty { error = failures.joined(separator: "\n") }
+    }
+
+    func report(_ failure: any Error) { error = failure.localizedDescription }
+
     
     func open(_ url: URL) {
         close(forget: false)
@@ -55,7 +80,7 @@ final class LocalFileBrowserModel {
     func navigate(to url: URL) {
         do {
             let keys: Set<URLResourceKey> = [.isDirectoryKey, .fileSizeKey, .contentModificationDateKey]
-            let urls = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: Array(keys), options: [.skipsHiddenFiles])
+            let urls = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: Array(keys), options: showHidden ? [] : [.skipsHiddenFiles])
             var entries = try urls.map { item in
                 let values = try item.resourceValues(forKeys: keys)
                 return RemoteFile(path: item.path(percentEncoded: false), name: item.lastPathComponent, isDirectory: values.isDirectory == true, size: UInt64(max(0, values.fileSize ?? 0)), modified: values.contentModificationDate, permissions: "")

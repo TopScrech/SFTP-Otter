@@ -1,4 +1,5 @@
 import ScrechKit
+import UniformTypeIdentifiers
 
 struct LocalFileBrowserView: View {
     @Environment(WorkspaceModel.self) private var workspace
@@ -10,6 +11,9 @@ struct LocalFileBrowserView: View {
     @State private var actions = FileActionsModel()
 #endif
     
+    @State private var showActions = false
+    @State private var showImporter = false
+    @State private var showCopyDestination = false
     @State private var scrollTarget: String?
     @State private var keyboardNavigationActive = false
     
@@ -23,8 +27,10 @@ struct LocalFileBrowserView: View {
                     Text("My Mac")
                     Spacer()
                     Button("Choose folder", systemImage: "folder") { showFolderPicker = true }
-                    Button("Close", systemImage: "xmark", action: { browser.close() })
-                        .labelStyle(.iconOnly)
+                    Button("Actions", systemImage: "chevron.down") { showActions.toggle() }
+                        .popover(isPresented: $showActions, arrowEdge: .bottom) {
+                            LocalActionsMenuView(showFolderPicker: $showFolderPicker, showImporter: $showImporter, showCopyDestination: $showCopyDestination)
+                        }
                 }
             } path: {
                 Text(browser.directory?.path(percentEncoded: false) ?? "")
@@ -58,6 +64,19 @@ struct LocalFileBrowserView: View {
                         }
                     }
                 }
+            }
+        }
+        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
+            switch result {
+            case .success(let urls):
+                if let directory = browser.directory { browser.copyFiles(urls, to: directory) }
+            case .failure(let error): browser.report(error)
+            }
+        }
+        .fileImporter(isPresented: $showCopyDestination, allowedContentTypes: [.folder]) { result in
+            switch result {
+            case .success(let destination): browser.copyFiles(browser.selectedURLs, to: destination)
+            case .failure(let error): browser.report(error)
             }
         }
         .onAppear { workspace.visibleLocalBrowsers[ObjectIdentifier(browser)] = browser }
