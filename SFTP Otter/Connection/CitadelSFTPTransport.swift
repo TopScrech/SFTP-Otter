@@ -5,7 +5,7 @@ import NIOSSH
 @preconcurrency import Citadel
 
 actor CitadelSFTPTransport: SFTPTransport {
-    private static let logger = Logger(subsystem: "SFTPPro", category: "Connection")
+    private static let logger = Logger(subsystem: "SFTPOtter", category: "Connection")
     private static var connectionAlgorithms: SSHAlgorithms {
         // Citadel 0.12.1 provides RSA and AES128CTR in this preset
         // Keep NIOSSH’s default key exchanges by removing the preset’s DH additions
@@ -136,7 +136,7 @@ actor CitadelSFTPTransport: SFTPTransport {
         try await withTaskCancellationHandler {
             try Task.checkCancellation()
             let disk = try TransferDiskFile(reading: local)
-            let temporary = remote + ".sftp-pro-" + UUID().uuidString + ".part"
+            let temporary = remote + ".sftp-otter-" + UUID().uuidString + ".part"
             do {
                 let total = try await disk.size()
                 let file = try await sftp.openFile(filePath: temporary, flags: [.write, .create, .forceCreate])

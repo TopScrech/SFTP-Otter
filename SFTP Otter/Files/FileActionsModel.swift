@@ -140,7 +140,7 @@ final class FileActionsModel {
 
     private func materialize(_ file: RemoteFile) async throws -> URL {
         guard let transport else { return URL(filePath: file.path) }
-        let root = URL.temporaryDirectory.appending(path: "SFTP Pro Open/" + UUID().uuidString)
+        let root = URL.temporaryDirectory.appending(path: "SFTP Otter Open/" + UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         let destination = root.appending(path: file.name)
         try await downloadTree(file, to: destination, using: transport)

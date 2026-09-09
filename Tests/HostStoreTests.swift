@@ -6,7 +6,7 @@ import Testing
 struct HostStoreTests {
     @Test
     func savedHostsPersistAcrossStoreInstancesAndUpdates() throws {
-        let service = "SFTPPro.tests.\(UUID().uuidString)"
+        let service = "SFTPOtter.tests.\(UUID().uuidString)"
         defer { removeKeychainEntry(service: service) }
         let legacyURL = URL.temporaryDirectory.appending(path: UUID().uuidString).appending(path: "hosts.json")
         let host = Host(name: "Fixture", address: "example.invalid", port: 2222, username: "fixture", initialPath: "/backups", savedPassword: "fixture-only-password")
@@ -24,7 +24,7 @@ struct HostStoreTests {
 
     @Test
     func migratesLegacyHostsAndKeepsKeychainAuthoritative() throws {
-        let service = "SFTPPro.tests.\(UUID().uuidString)"
+        let service = "SFTPOtter.tests.\(UUID().uuidString)"
         defer { removeKeychainEntry(service: service) }
         let directory = URL.temporaryDirectory.appending(path: UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -41,7 +41,7 @@ struct HostStoreTests {
 
     @Test
     func corruptKeychainDataDoesNotFallBackToEmptyHosts() throws {
-        let service = "SFTPPro.tests.\(UUID().uuidString)"
+        let service = "SFTPOtter.tests.\(UUID().uuidString)"
         defer { removeKeychainEntry(service: service) }
         try KeychainHostData(service: service).save(Data("invalid JSON".utf8))
         let url = URL.temporaryDirectory.appending(path: UUID().uuidString)

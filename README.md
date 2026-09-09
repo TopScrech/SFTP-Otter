@@ -2,7 +2,7 @@
 
 Citadel 0.12.1 is integrated through the Xcode project
 
-The project is a regular Xcode application with an SFTPProTests unit-test target and a shared SFTP Pro scheme
+The project is a regular Xcode application with an SFTPOtterTests unit-test target and a shared SFTP Otter scheme
 
 The standalone Package.swift, root Package.resolved, and package workspace metadata have been removed
 
@@ -25,9 +25,9 @@ The Xcode workspace retains its dependency lockfile for Citadel and SwiftNIO
 Both Xcode app builds passed in Swift 6 language mode
 
 ```sh
-xcodebuild -project 'SFTP Pro.xcodeproj' -scheme 'SFTP Pro' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project 'SFTP Pro.xcodeproj' -scheme 'SFTP Pro' -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project 'SFTP Pro.xcodeproj' -scheme 'SFTP Pro' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test
+xcodebuild -project 'SFTP Otter.xcodeproj' -scheme 'SFTP Otter' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project 'SFTP Otter.xcodeproj' -scheme 'SFTP Otter' -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project 'SFTP Otter.xcodeproj' -scheme 'SFTP Otter' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test
 ```
 
 Eight Swift 6 tests passed with no failures

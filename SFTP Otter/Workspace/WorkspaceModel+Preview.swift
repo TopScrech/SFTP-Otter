@@ -4,7 +4,7 @@ import Foundation
 extension WorkspaceModel {
     func loadLocalFilePreview() {
         do {
-            let directory = URL.temporaryDirectory.appending(path: "SFTP Pro Preview/" + UUID().uuidString)
+            let directory = URL.temporaryDirectory.appending(path: "SFTP Otter Preview/" + UUID().uuidString)
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             try Data("Disposable local file for UI verification".utf8).write(to: directory.appending(path: "example.txt"))
             for name in ["second.txt", "third.txt", "fourth.txt"] {

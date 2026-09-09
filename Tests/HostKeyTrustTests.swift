@@ -6,7 +6,7 @@ import Security
 struct HostKeyTrustTests {
     @Test
     func acceptedKeyPersistsAndChangedKeyFails() async throws {
-        let service = "SFTPPro.tests.\(UUID().uuidString)"
+        let service = "SFTPOtter.tests.\(UUID().uuidString)"
         defer { removeKeychainEntry(service: service) }
         let directory = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -28,7 +28,7 @@ struct HostKeyTrustTests {
 
     @Test
     func forgettingKeyRequiresVerificationAgain() async throws {
-        let service = "SFTPPro.tests.\(UUID().uuidString)"
+        let service = "SFTPOtter.tests.\(UUID().uuidString)"
         defer { removeKeychainEntry(service: service) }
         let directory = URL.temporaryDirectory.appending(path: UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -49,7 +49,7 @@ struct HostKeyTrustTests {
 
     @Test
     func rejectedAndCancelledKeysAreNotSaved() async throws {
-        let service = "SFTPPro.tests.\(UUID().uuidString)"
+        let service = "SFTPOtter.tests.\(UUID().uuidString)"
         defer { removeKeychainEntry(service: service) }
         let url = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString).appending(path: "known-hosts.json")
         let store = HostKeyTrustStore(url: url, service: service)
@@ -72,7 +72,7 @@ struct HostKeyTrustTests {
 
     @Test
     func corruptSavedTrustFailsWithoutRequestingNewApproval() async throws {
-        let service = "SFTPPro.tests.\(UUID().uuidString)"
+        let service = "SFTPOtter.tests.\(UUID().uuidString)"
         defer { removeKeychainEntry(service: service) }
         try KeychainHostData(service: service).save(Data("invalid".utf8))
         let store = HostKeyTrustStore(url: URL.temporaryDirectory.appending(path: UUID().uuidString), service: service)

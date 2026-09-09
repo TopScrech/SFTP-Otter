@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 struct HostStore {
-    private static let logger = Logger(subsystem: "SFTPPro", category: "SavedHosts")
+    private static let logger = Logger(subsystem: "SFTPOtter", category: "SavedHosts")
     private let keychain: KeychainHostData
     private let legacyURL: URL
 

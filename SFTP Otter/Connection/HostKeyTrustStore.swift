@@ -7,7 +7,7 @@ import OSLog
 final class HostKeyTrustStore {
     var challenge: HostKeyChallenge?
     private var requests: [(challenge: HostKeyChallenge, key: String, continuation: CheckedContinuation<Void, any Error>)] = []
-    private static let logger = Logger(subsystem: "SFTPPro", category: "TrustedHosts")
+    private static let logger = Logger(subsystem: "SFTPOtter", category: "TrustedHosts")
     private let keychain: KeychainHostData
     private let url: URL
 

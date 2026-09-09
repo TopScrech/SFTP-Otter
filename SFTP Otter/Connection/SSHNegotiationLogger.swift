@@ -8,7 +8,7 @@ nonisolated final class SSHNegotiationLogger: ChannelInboundHandler, @unchecked 
     typealias InboundIn = ByteBuffer
     typealias InboundOut = ByteBuffer
 
-    private static let logger = Logger(subsystem: "SFTPPro", category: "Connection")
+    private static let logger = Logger(subsystem: "SFTPOtter", category: "Connection")
     private let requestID: String
     private var timeout: Scheduled<Void>?
     private var buffer = ByteBuffer()
@@ -39,7 +39,7 @@ nonisolated final class SSHNegotiationLogger: ChannelInboundHandler, @unchecked 
             channel.close(promise: nil)
         }
         var version = context.channel.allocator.buffer(capacity: 32)
-        version.writeString("SSH-2.0-SFTPPro_Diagnostics\r\n")
+        version.writeString("SSH-2.0-SFTPOtter_Diagnostics\r\n")
         context.writeAndFlush(NIOAny(version), promise: nil)
         context.fireChannelActive()
     }

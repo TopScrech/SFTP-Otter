@@ -32,7 +32,7 @@ struct KeychainHostData {
         if status == errSecItemNotFound {
             var item = query
             item[kSecValueData as String] = data
-            item[kSecAttrLabel as String] = "SFTP Pro saved hosts"
+            item[kSecAttrLabel as String] = "SFTP Otter saved hosts"
             item[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
             let added = SecItemAdd(item as CFDictionary, nil)
             guard added == errSecSuccess else { throw KeychainStoreError.status(added) }
