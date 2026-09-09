@@ -15,20 +15,7 @@ struct UploadDropZoneModifier: ViewModifier {
             } isTargeted: { targeted = $0 }
             .overlay {
                 if targeted, session.isConnected, !session.isPreview {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(WorkspaceTheme.accent.opacity(0.18))
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 16)
-                                .strokeBorder(WorkspaceTheme.accent, style: StrokeStyle(lineWidth: 2, dash: [8]))
-                        }
-                        .overlay {
-                            Label("Upload to \(session.path)", systemImage: "arrow.up.doc")
-                                .title2()
-                                .padding()
-                                .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
-                        }
-                        .padding()
-                        .allowsHitTesting(false)
+                    FileDropHighlightView(title: "Upload to \(session.path)", systemImage: "arrow.up.doc")
                 }
             }
     }

@@ -53,8 +53,8 @@ struct RemoteBrowserRowView: View {
                         (selection.ids.contains(file.id) ? selection.ids.contains($0.id) : $0.id == file.id) && $0.name != ".."
                     }
                     return files.map {
-                        NSDraggingItem(
-                            pasteboardWriter: FileDragPromise(file: $0, transport: session.transport) { actions.error = $0 }.provider())
+                        FileRowDragPreview.item(file: $0, width: width,
+                            writer: FileDragPromise(file: $0, transport: session.transport) { actions.error = $0 }.provider())
                     }
                 },
                 select: { shift, command, context in

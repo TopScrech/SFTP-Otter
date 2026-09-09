@@ -50,9 +50,10 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
               hypot(event.locationInWindow.x - start.locationInWindow.x, event.locationInWindow.y - start.locationInWindow.y) >= 4 else { return }
         let items = dragItems()
         guard !items.isEmpty else { return }
-        let point = convert(event.locationInWindow, from: nil)
         for (index, item) in items.enumerated() {
-            item.setDraggingFrame(NSRect(x: point.x + CGFloat(index * 4), y: point.y - 16, width: 32, height: 32), contents: NSImage(systemSymbolName: "doc.fill", accessibilityDescription: nil))
+            var frame = item.draggingFrame
+            frame.origin = NSPoint(x: CGFloat(index * 4), y: -CGFloat(index * 4))
+            item.draggingFrame = frame
         }
         activeDragItems = items
         mouseDownEvent = nil

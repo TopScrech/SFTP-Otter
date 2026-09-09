@@ -51,7 +51,9 @@ struct LocalBrowserRowView: View {
                         (browser.selection.ids.contains(file.id) ? browser.selection.ids.contains($0.id) : $0.id == file.id)
                             && $0.name != ".."
                     }
-                    return files.map { NSDraggingItem(pasteboardWriter: URL(filePath: $0.path) as NSURL) }
+                    return files.map {
+                        FileRowDragPreview.item(file: $0, width: width, writer: URL(filePath: $0.path) as NSURL)
+                    }
                 },
                 select: { shift, command, context in
                     keyboardNavigationActive = true

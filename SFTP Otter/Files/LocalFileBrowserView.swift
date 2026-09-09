@@ -6,6 +6,7 @@ struct LocalFileBrowserView: View {
     @Binding var showFolderPicker: Bool
     
 #if os(macOS)
+    @State private var dropTargeted = false
     @State private var actions = FileActionsModel()
 #endif
     
@@ -60,6 +61,12 @@ struct LocalFileBrowserView: View {
         .buttonStyle(.plain)
         .background(WorkspaceTheme.surface)
 #if os(macOS)
+        .overlay { LocalFileDropView(targeted: $dropTargeted) }
+        .overlay {
+            if dropTargeted, let directory = browser.directory {
+                FileDropHighlightView(title: "Copy to \(directory.path(percentEncoded: false))", systemImage: "arrow.down.doc")
+            }
+        }
         .modifier(FileActionPresentationModifier())
         .environment(actions)
 #endif
