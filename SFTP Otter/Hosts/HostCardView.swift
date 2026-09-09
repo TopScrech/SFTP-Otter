@@ -27,7 +27,7 @@ struct HostCardView: View {
                     .foregroundStyle(WorkspaceTheme.muted)
             }
             .padding()
-            .background(WorkspaceTheme.surface, in: .rect(cornerRadius: 12))
+            .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
         }
         .buttonStyle(.plain)
         .contextMenu {

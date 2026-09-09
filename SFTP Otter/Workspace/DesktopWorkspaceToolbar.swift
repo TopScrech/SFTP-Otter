@@ -8,13 +8,14 @@ struct DesktopWorkspaceToolbar: ToolbarContent {
         ToolbarItem(placement: .navigation) {
             Button("SFTP", systemImage: "folder.fill") { workspace.section = .files }
                 .labelStyle(.titleAndIcon)
+                .buttonStyle(.plain)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
                 .background(workspace.section == .files ? WorkspaceTheme.raised : WorkspaceTheme.background, in: .rect(cornerRadius: 8))
         }
         .sharedBackgroundVisibility(.hidden)
         ToolbarItem(placement: .navigation) {
-            Button("New host", systemImage: "plus") { workspace.addHost() }
+            Button("New tab", systemImage: "plus") { workspace.chooseHost(for: workspace.activePane) }
                 .labelStyle(.iconOnly)
         }
         .sharedBackgroundVisibility(.hidden)

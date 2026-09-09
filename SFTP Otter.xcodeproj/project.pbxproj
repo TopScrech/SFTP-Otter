@@ -12,6 +12,11 @@
 		AB1000000000000000000202 /* SFTP Otter/Files/FileActionsModel+Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1000000000000000000102 /* SFTP Otter/Files/FileActionsModel+Selection.swift */; };
 		AC0000000000000000000020 /* ScrechKit in Frameworks */ = {isa = PBXBuildFile; productRef = AC0000000000000000000010 /* ScrechKit */; };
 		AC0000000000000000000021 /* ScrechKit in Frameworks */ = {isa = PBXBuildFile; productRef = AC0000000000000000000011 /* ScrechKit */; };
+		AF1000000000000000000200 /* SFTP Otter/Transfers/UploadConflictChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000100 /* SFTP Otter/Transfers/UploadConflictChoice.swift */; };
+		AF1000000000000000000201 /* SFTP Otter/Transfers/UploadConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000101 /* SFTP Otter/Transfers/UploadConflict.swift */; };
+		AF1000000000000000000202 /* SFTP Otter/Transfers/QueuedUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000102 /* SFTP Otter/Transfers/QueuedUpload.swift */; };
+		AF1000000000000000000203 /* SFTP Otter/Transfers/UploadQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000103 /* SFTP Otter/Transfers/UploadQueue.swift */; };
+		AF1000000000000000000204 /* SFTP Otter/Transfers/FileTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000104 /* SFTP Otter/Transfers/FileTransfer.swift */; };
 		CC0000000000000000000000 /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000000 /* Citadel */; };
 		CC0000000000000000000001 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000001 /* NIOCore */; };
 		CC0000000000000000000002 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000002 /* NIOSSH */; };
@@ -53,11 +58,6 @@
 		EF0000000000000000000406 /* SFTP Otter/Files/BrowserPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000306 /* SFTP Otter/Files/BrowserPane.swift */; };
 		EF0000000000000000000407 /* SFTP Otter/Files/FileMenuNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000307 /* SFTP Otter/Files/FileMenuNavigation.swift */; };
 		EF0000000000000000000408 /* SFTP Otter/Files/FileDragPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000308 /* SFTP Otter/Files/FileDragPromise.swift */; };
-		AF1000000000000000000200 /* UploadConflictChoice in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000100; };
-		AF1000000000000000000201 /* UploadConflict in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000101; };
-		AF1000000000000000000202 /* QueuedUpload in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000102; };
-		AF1000000000000000000203 /* UploadQueue in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000103; };
-		AF1000000000000000000204 /* FileTransfer in Sources */ = {isa = PBXBuildFile; fileRef = AF1000000000000000000104; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +65,11 @@
 		AB1000000000000000000100 /* SFTP Otter/Design/WorkspaceDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Design/WorkspaceDialogView.swift"; sourceTree = SOURCE_ROOT; };
 		AB1000000000000000000101 /* SFTP Otter/Design/DialogActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Design/DialogActionStyle.swift"; sourceTree = SOURCE_ROOT; };
 		AB1000000000000000000102 /* SFTP Otter/Files/FileActionsModel+Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Files/FileActionsModel+Selection.swift"; sourceTree = SOURCE_ROOT; };
+		AF1000000000000000000100 /* SFTP Otter/Transfers/UploadConflictChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/UploadConflictChoice.swift"; sourceTree = SOURCE_ROOT; };
+		AF1000000000000000000101 /* SFTP Otter/Transfers/UploadConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/UploadConflict.swift"; sourceTree = SOURCE_ROOT; };
+		AF1000000000000000000102 /* SFTP Otter/Transfers/QueuedUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/QueuedUpload.swift"; sourceTree = SOURCE_ROOT; };
+		AF1000000000000000000103 /* SFTP Otter/Transfers/UploadQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/UploadQueue.swift"; sourceTree = SOURCE_ROOT; };
+		AF1000000000000000000104 /* SFTP Otter/Transfers/FileTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/FileTransfer.swift"; sourceTree = SOURCE_ROOT; };
 		DD0000000000000000000001 /* SFTPOtterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SFTPOtterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD0000000000000000000100 /* SFTP Otter/Connection/CitadelSFTPTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Connection/CitadelSFTPTransport.swift"; sourceTree = SOURCE_ROOT; };
 		DD0000000000000000000101 /* SFTP Otter/Connection/ConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Connection/ConnectionError.swift"; sourceTree = SOURCE_ROOT; };
@@ -101,11 +106,6 @@
 		EF0000000000000000000308 /* SFTP Otter/Files/FileDragPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Files/FileDragPromise.swift"; sourceTree = SOURCE_ROOT; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F34FD1383050D33600F7829B /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
-		AF1000000000000000000100 /* UploadConflictChoice */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/UploadConflictChoice.swift"; sourceTree = SOURCE_ROOT; };
-		AF1000000000000000000101 /* UploadConflict */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/UploadConflict.swift"; sourceTree = SOURCE_ROOT; };
-		AF1000000000000000000102 /* QueuedUpload */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/QueuedUpload.swift"; sourceTree = SOURCE_ROOT; };
-		AF1000000000000000000103 /* UploadQueue */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/UploadQueue.swift"; sourceTree = SOURCE_ROOT; };
-		AF1000000000000000000104 /* FileTransfer */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Otter/Transfers/FileTransfer.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -205,6 +205,11 @@
 				AB1000000000000000000102 /* SFTP Otter/Files/FileActionsModel+Selection.swift */,
 				EF0000000000000000000308 /* SFTP Otter/Files/FileDragPromise.swift */,
 				EF0000000000000000000100 /* SFTP Otter/Files/FileActionsModel.swift */,
+				AF1000000000000000000103 /* SFTP Otter/Transfers/UploadQueue.swift */,
+				AF1000000000000000000104 /* SFTP Otter/Transfers/FileTransfer.swift */,
+				AF1000000000000000000102 /* SFTP Otter/Transfers/QueuedUpload.swift */,
+				AF1000000000000000000101 /* SFTP Otter/Transfers/UploadConflict.swift */,
+				AF1000000000000000000100 /* SFTP Otter/Transfers/UploadConflictChoice.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -351,11 +356,11 @@
 				EF0000000000000000000406 /* SFTP Otter/Files/BrowserPane.swift in Sources */,
 				EF0000000000000000000407 /* SFTP Otter/Files/FileMenuNavigation.swift in Sources */,
 				AB1000000000000000000200 /* SFTP Otter/Design/WorkspaceDialogView.swift in Sources */,
-				AF1000000000000000000203 /* UploadQueue in Sources */,
-				AF1000000000000000000204 /* FileTransfer in Sources */,
-				AF1000000000000000000202 /* QueuedUpload in Sources */,
-				AF1000000000000000000201 /* UploadConflict in Sources */,
-				AF1000000000000000000200 /* UploadConflictChoice in Sources */,
+				AF1000000000000000000203 /* SFTP Otter/Transfers/UploadQueue.swift in Sources */,
+				AF1000000000000000000204 /* SFTP Otter/Transfers/FileTransfer.swift in Sources */,
+				AF1000000000000000000202 /* SFTP Otter/Transfers/QueuedUpload.swift in Sources */,
+				AF1000000000000000000201 /* SFTP Otter/Transfers/UploadConflict.swift in Sources */,
+				AF1000000000000000000200 /* SFTP Otter/Transfers/UploadConflictChoice.swift in Sources */,
 				AB1000000000000000000201 /* SFTP Otter/Design/DialogActionStyle.swift in Sources */,
 				AB1000000000000000000202 /* SFTP Otter/Files/FileActionsModel+Selection.swift in Sources */,
 				EF0000000000000000000408 /* SFTP Otter/Files/FileDragPromise.swift in Sources */,

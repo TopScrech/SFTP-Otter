@@ -5,23 +5,14 @@ struct HostsView: View {
     
     var body: some View {
         @Bindable var workspace = workspace
-        VStack(alignment: .leading) {
-            HStack {
-                Text("Hosts").largeTitle().bold()
-                Spacer()
-                Button("New host", systemImage: "plus") {
-                    workspace.addHost()
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .padding(.vertical)
+        VStack(alignment: .leading, spacing: 20) {
             HStack {
                 Image(systemName: "magnifyingglass")
                 TextField("Search hosts", text: $workspace.hostSearch)
                     .textFieldStyle(.plain)
             }
             .padding()
-            .background(WorkspaceTheme.surface, in: .rect(cornerRadius: 10))
+            .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
             Text("SAVED HOSTS")
                 .caption()
                 .foregroundStyle(WorkspaceTheme.muted)
@@ -35,7 +26,7 @@ struct HostsView: View {
                     Button("Add your first host", systemImage: "plus") {
                         workspace.addHost()
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(DialogActionStyle())
                 }
                 .frame(maxHeight: .infinity)
             } else if workspace.filteredHosts.isEmpty {
@@ -49,8 +40,16 @@ struct HostsView: View {
                     }
                 }
             }
+
+            HStack {
+                Spacer()
+
+                Button("Add host", systemImage: "plus") {
+                    workspace.addHost()
+                }
+                .buttonStyle(DialogActionStyle())
+            }
         }
-        .padding()
-        .background(WorkspaceTheme.background)
+        .frame(height: 420)
     }
 }

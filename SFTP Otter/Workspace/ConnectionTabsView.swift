@@ -32,8 +32,8 @@ struct ConnectionTabsView: View {
                 }
                 .scrollIndicators(.hidden)
             }
-            Button("New host", systemImage: "plus") {
-                workspace.addHost()
+            Button("New tab", systemImage: "plus") {
+                workspace.chooseHost(for: workspace.activePane)
             }
             .labelStyle(.iconOnly)
             .padding(.horizontal, 10)

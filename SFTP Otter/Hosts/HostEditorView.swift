@@ -4,46 +4,65 @@ struct HostEditorView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(\.dismiss) private var dismiss
     @State private var editor = HostEditorModel()
-    
+
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("General") {
-                    TextField("Label", text: $editor.host.name)
-                    TextField("Address", text: $editor.host.address)
-                        .autocorrectionDisabled()
-                    TextField("Port", text: $editor.port)
+        WorkspaceDialogView(title: workspace.editingHost == nil ? "Add host" : "Edit host", close: { dismiss() }) {
+            VStack(alignment: .leading, spacing: 16) {
+                DialogFieldView(title: "Label") {
+                    TextField("", text: $editor.host.name)
+                        .accessibilityLabel("Label")
                 }
-                Section("Authentication") {
-                    TextField("Username", text: $editor.host.username)
+
+                HStack(alignment: .top) {
+                    DialogFieldView(title: "Address *") {
+                        TextField("", text: $editor.host.address)
+                            .autocorrectionDisabled()
+                            .accessibilityLabel("Address")
+                    }
+
+                    DialogFieldView(title: "Port *") {
+                        TextField("", text: $editor.port)
+                            .accessibilityLabel("Port")
+                    }
+                    .frame(width: 100)
+                }
+
+                DialogFieldView(title: "Username *") {
+                    TextField("", text: $editor.host.username)
                         .autocorrectionDisabled()
-                    Toggle("Save password in Keychain", isOn: $editor.savePassword)
-                    if editor.savePassword {
-                        SecureField("Password", text: $editor.password)
+                        .accessibilityLabel("Username")
+                }
+
+                Toggle("Save password in Keychain", isOn: $editor.savePassword)
+                    .toggleStyle(.switch)
+                    .padding(.top)
+
+                if editor.savePassword {
+                    DialogFieldView(title: "Password") {
+                        SecureField("", text: $editor.password)
+                            .accessibilityLabel("Password")
                     }
                 }
-                Section("SFTP") {
-                    TextField("Initial directory", text: $editor.host.initialPath)
+
+                DialogFieldView(title: "Initial directory") {
+                    TextField("", text: $editor.host.initialPath)
                         .autocorrectionDisabled()
-                    Label("SFTP connection", systemImage: "lock.shield")
-                        .secondary()
+                        .accessibilityLabel("Initial directory")
                 }
             }
-            .formStyle(.grouped)
-            .navigationTitle(workspace.editingHost == nil ? "New host" : "Edit host")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+
+            HStack {
+                Spacer()
+
+                Button("Save") {
+                    if editor.save(to: workspace) { dismiss() }
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        if editor.save(to: workspace) { dismiss() }
-                    }
-                    .disabled(!editor.canSave)
-                }
+                .buttonStyle(DialogActionStyle())
+                .disabled(!editor.canSave)
+                .keyboardShortcut(.defaultAction)
             }
         }
-        .frame(minWidth: 320, idealWidth: 460, minHeight: 460)
+        .frame(width: 520)
         .onAppear { editor.load(workspace.editingHost) }
     }
 }
