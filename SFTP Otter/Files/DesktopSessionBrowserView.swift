@@ -12,7 +12,7 @@ struct DesktopSessionBrowserView: View {
     var body: some View {
         @Bindable var session = session
         VStack(spacing: 0) {
-            VStack {
+            FileBrowserHeaderView {
                 HStack {
                     Image(systemName: "server.rack")
                         .padding(8)
@@ -41,18 +41,14 @@ struct DesktopSessionBrowserView: View {
                     }
                     .fixedSize()
                 }
-                .buttonStyle(.plain)
+            } path: {
                 RemoteBreadcrumbsView()
-                    .padding(.top)
                 if showFilter {
                     TextField("Filter files", text: $session.search)
                         .textFieldStyle(.plain)
                         .accessibilityLabel("Filter files")
                 }
             }
-            .font(.body)
-            .padding()
-            .background(WorkspaceTheme.raised)
             if session.isConnected && session.error == nil {
                 DesktopFileTableView(selection: $selection)
             } else if let error = session.error {

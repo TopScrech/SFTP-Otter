@@ -15,20 +15,24 @@ struct LocalFileBrowserView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Label("My Mac", systemImage: "desktopcomputer")
-                Spacer()
-                Button("Choose folder", systemImage: "folder") { showFolderPicker = true }
-                Button("Close", systemImage: "xmark", action: { browser.close() })
-                    .labelStyle(.iconOnly)
+            FileBrowserHeaderView {
+                HStack {
+                    Image(systemName: "desktopcomputer")
+                        .padding(8)
+                        .background(Color(red: 0, green: 0.30, blue: 0.46), in: .rect(cornerRadius: 10))
+                    Text("My Mac")
+                    Spacer()
+                    Button("Choose folder", systemImage: "folder") { showFolderPicker = true }
+                    Button("Close", systemImage: "xmark", action: { browser.close() })
+                        .labelStyle(.iconOnly)
+                }
+            } path: {
+                Text(browser.directory?.path(percentEncoded: false) ?? "")
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .enableSelection()
             }
-            .padding()
-            .background(WorkspaceTheme.raised)
-            Text(browser.directory?.path(percentEncoded: false) ?? "")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .enableSelection()
-                .background(WorkspaceTheme.raised)
             if let error = browser.error {
                 ContentUnavailableView("Folder unavailable", systemImage: "folder.badge.questionmark", description: Text(error))
             } else {
