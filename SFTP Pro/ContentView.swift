@@ -1,17 +1,48 @@
 import SwiftUI
-import Playgrounds
 
 struct ContentView: View {
+    @Environment(WorkspaceModel.self) private var workspace
+
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        @Bindable var workspace = workspace
+        @Bindable var trustStore = workspace.trustStore
+        ViewThatFits(in: .horizontal) {
+            DesktopWorkspaceView()
+                .frame(minWidth: 760)
+            MobileWorkspaceView()
+        }
+        .background(WorkspaceTheme.background)
+        .foregroundStyle(WorkspaceTheme.text)
+        .tint(WorkspaceTheme.accent)
+        .preferredColorScheme(.dark)
+        .sheet(isPresented: $workspace.showSettings) {
+            SettingsView()
+        }
+        .sheet(isPresented: $workspace.showHostPicker, onDismiss: workspace.hostPickerDismissed) {
+            HostPickerView()
+        }
+        .sheet(isPresented: $workspace.showHostEditor) {
+            HostEditorView()
+        }
+        .sheet(item: $workspace.connectingHost, onDismiss: workspace.authenticationDismissed) {
+            AuthenticationView(host: $0)
+        }
+        .onChange(of: workspace.showHostEditor) {
+            if !workspace.showHostEditor { workspace.editingHost = nil }
+        }
+        .sheet(item: $trustStore.challenge) {
+            HostKeyVerificationView(challenge: $0)
+                .environment(trustStore)
+        }
+        .alert("Something went wrong", isPresented: $workspace.showError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(workspace.errorMessage)
+        }
     }
 }
 
 #Preview {
     ContentView()
-}
-
-#Playground {
-    _ = 1 + 2
+        .environment(WorkspaceModel())
 }

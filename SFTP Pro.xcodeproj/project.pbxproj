@@ -3,11 +3,72 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 90;
+	objectVersion = 100;
 	objects = {
+
+/* Begin PBXBuildFile section */
+		CC0000000000000000000000 /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000000 /* Citadel */; };
+		CC0000000000000000000001 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000001 /* NIOCore */; };
+		CC0000000000000000000002 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000002 /* NIOSSH */; };
+		CC0000000000000000000004 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000004 /* NIOPosix */; };
+		CC0000000000000000000005 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000005 /* NIOPosix */; };
+		DD0000000000000000000030 /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = DD0000000000000000000020 /* Citadel */; };
+		DD0000000000000000000031 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = DD0000000000000000000021 /* NIOCore */; };
+		DD0000000000000000000032 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = DD0000000000000000000022 /* NIOSSH */; };
+		DD0000000000000000000200 /* SFTP Pro/Connection/CitadelSFTPTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000100 /* SFTP Pro/Connection/CitadelSFTPTransport.swift */; };
+		DD0000000000000000000201 /* SFTP Pro/Connection/ConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000101 /* SFTP Pro/Connection/ConnectionError.swift */; };
+		DD0000000000000000000202 /* SFTP Pro/Connection/HostKeyChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000102 /* SFTP Pro/Connection/HostKeyChallenge.swift */; };
+		DD0000000000000000000203 /* SFTP Pro/Connection/HostKeyTrustStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000103 /* SFTP Pro/Connection/HostKeyTrustStore.swift */; };
+		DD0000000000000000000204 /* SFTP Pro/Connection/RemoteFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000104 /* SFTP Pro/Connection/RemoteFileHandle.swift */; };
+		DD0000000000000000000205 /* SFTP Pro/Connection/SFTPConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000105 /* SFTP Pro/Connection/SFTPConnectionError.swift */; };
+		DD0000000000000000000206 /* SFTP Pro/Connection/SFTPSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000106 /* SFTP Pro/Connection/SFTPSession.swift */; };
+		DD0000000000000000000207 /* SFTP Pro/Connection/SFTPTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000107 /* SFTP Pro/Connection/SFTPTransport.swift */; };
+		DD0000000000000000000208 /* SFTP Pro/Connection/ServerKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000108 /* SFTP Pro/Connection/ServerKeyValidator.swift */; };
+		DD0000000000000000000209 /* SFTP Pro/Connection/TransferDiskFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000109 /* SFTP Pro/Connection/TransferDiskFile.swift */; };
+		DD000000000000000000020A /* SFTP Pro/Connection/TransferGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000000010A /* SFTP Pro/Connection/TransferGate.swift */; };
+		DD000000000000000000020B /* SFTP Pro/Connection/TransferPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000000010B /* SFTP Pro/Connection/TransferPipeline.swift */; };
+		DD000000000000000000020C /* SFTP Pro/Files/RemoteFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000000010C /* SFTP Pro/Files/RemoteFile.swift */; };
+		DD000000000000000000020D /* SFTP Pro/Hosts/Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000000010D /* SFTP Pro/Hosts/Host.swift */; };
+		EE0000000000000000000200 /* SFTP Pro/Hosts/HostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000100 /* SFTP Pro/Hosts/HostStore.swift */; };
+		EE0000000000000000000201 /* SFTP Pro/Hosts/KeychainHostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000101 /* SFTP Pro/Hosts/KeychainHostData.swift */; };
+		EE0000000000000000000202 /* SFTP Pro/Hosts/KeychainStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000102 /* SFTP Pro/Hosts/KeychainStoreError.swift */; };
+		EE0000000000000000000203 /* SFTP Pro/Connection/SSHNegotiationLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000103 /* SFTP Pro/Connection/SSHNegotiationLogger.swift */; };
+		EF0000000000000000000200 /* FileActionsModel in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000100; };
+		EF0000000000000000000201 /* FileActionError in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000101; };
+		EF0000000000000000000202 /* FileMenuAction in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000102; };
+		EF0000000000000000000203 /* FileContextMenuView in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000103; };
+		EF0000000000000000000204 /* FileMenuButtonView in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000104; };
+		EF0000000000000000000205 /* WorkspaceTheme in Sources */ = {isa = PBXBuildFile; fileRef = EF0000000000000000000105; };
+/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* SFTP Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SFTP Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD0000000000000000000001 /* SFTPProTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SFTPProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD0000000000000000000100 /* SFTP Pro/Connection/CitadelSFTPTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/CitadelSFTPTransport.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000101 /* SFTP Pro/Connection/ConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/ConnectionError.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000102 /* SFTP Pro/Connection/HostKeyChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/HostKeyChallenge.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000103 /* SFTP Pro/Connection/HostKeyTrustStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/HostKeyTrustStore.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000104 /* SFTP Pro/Connection/RemoteFileHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/RemoteFileHandle.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000105 /* SFTP Pro/Connection/SFTPConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/SFTPConnectionError.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000106 /* SFTP Pro/Connection/SFTPSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/SFTPSession.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000107 /* SFTP Pro/Connection/SFTPTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/SFTPTransport.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000108 /* SFTP Pro/Connection/ServerKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/ServerKeyValidator.swift"; sourceTree = SOURCE_ROOT; };
+		DD0000000000000000000109 /* SFTP Pro/Connection/TransferDiskFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/TransferDiskFile.swift"; sourceTree = SOURCE_ROOT; };
+		DD000000000000000000010A /* SFTP Pro/Connection/TransferGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/TransferGate.swift"; sourceTree = SOURCE_ROOT; };
+		DD000000000000000000010B /* SFTP Pro/Connection/TransferPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/TransferPipeline.swift"; sourceTree = SOURCE_ROOT; };
+		DD000000000000000000010C /* SFTP Pro/Files/RemoteFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/RemoteFile.swift"; sourceTree = SOURCE_ROOT; };
+		DD000000000000000000010D /* SFTP Pro/Hosts/Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Hosts/Host.swift"; sourceTree = SOURCE_ROOT; };
+		EE0000000000000000000100 /* SFTP Pro/Hosts/HostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Hosts/HostStore.swift"; sourceTree = SOURCE_ROOT; };
+		EE0000000000000000000101 /* SFTP Pro/Hosts/KeychainHostData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Hosts/KeychainHostData.swift"; sourceTree = SOURCE_ROOT; };
+		EE0000000000000000000102 /* SFTP Pro/Hosts/KeychainStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Hosts/KeychainStoreError.swift"; sourceTree = SOURCE_ROOT; };
+		EE0000000000000000000103 /* SFTP Pro/Connection/SSHNegotiationLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Connection/SSHNegotiationLogger.swift"; sourceTree = SOURCE_ROOT; };
+		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EF0000000000000000000100 /* FileActionsModel */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileActionsModel.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000101 /* FileActionError */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileActionError.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000102 /* FileMenuAction */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuAction.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000103 /* FileContextMenuView */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileContextMenuView.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000104 /* FileMenuButtonView */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Files/FileMenuButtonView.swift"; sourceTree = SOURCE_ROOT; };
+		EF0000000000000000000105 /* WorkspaceTheme */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFTP Pro/Design/WorkspaceTheme.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,12 +77,30 @@
 			path = "SFTP Pro";
 			sourceTree = "<group>";
 		};
+		DD0000000000000000000002 /* Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		000000000000000130000000 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				CC0000000000000000000004 /* NIOPosix in Frameworks */,
+				CC0000000000000000000000 /* Citadel in Frameworks */,
+				CC0000000000000000000001 /* NIOCore in Frameworks */,
+				CC0000000000000000000002 /* NIOSSH in Frameworks */,
+			);
+		};
+		DD0000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				CC0000000000000000000005 /* NIOPosix in Frameworks */,
+				DD0000000000000000000030 /* Citadel in Frameworks */,
+				DD0000000000000000000031 /* NIOCore in Frameworks */,
+				DD0000000000000000000032 /* NIOSSH in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -30,8 +109,11 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				F34FB25C304E1C7400F7829B /* README.md */,
 				000000000000000000000010 /* SFTP Pro */,
+				DD0000000000000000000002 /* Tests */,
 				000000000000000000000020 /* Products */,
+				F34FB25D304E1E5300F7829B /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -39,8 +121,34 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000120 /* SFTP Pro.app */,
+				DD0000000000000000000001 /* SFTPProTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F34FB25D304E1E5300F7829B /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				DD0000000000000000000100 /* SFTP Pro/Connection/CitadelSFTPTransport.swift */,
+				DD0000000000000000000101 /* SFTP Pro/Connection/ConnectionError.swift */,
+				DD0000000000000000000102 /* SFTP Pro/Connection/HostKeyChallenge.swift */,
+				DD0000000000000000000103 /* SFTP Pro/Connection/HostKeyTrustStore.swift */,
+				DD0000000000000000000104 /* SFTP Pro/Connection/RemoteFileHandle.swift */,
+				DD0000000000000000000105 /* SFTP Pro/Connection/SFTPConnectionError.swift */,
+				DD0000000000000000000106 /* SFTP Pro/Connection/SFTPSession.swift */,
+				DD0000000000000000000107 /* SFTP Pro/Connection/SFTPTransport.swift */,
+				DD0000000000000000000108 /* SFTP Pro/Connection/ServerKeyValidator.swift */,
+				DD0000000000000000000109 /* SFTP Pro/Connection/TransferDiskFile.swift */,
+				DD000000000000000000010A /* SFTP Pro/Connection/TransferGate.swift */,
+				DD000000000000000000010B /* SFTP Pro/Connection/TransferPipeline.swift */,
+				DD000000000000000000010C /* SFTP Pro/Files/RemoteFile.swift */,
+				DD000000000000000000010D /* SFTP Pro/Hosts/Host.swift */,
+				EE0000000000000000000103 /* SFTP Pro/Connection/SSHNegotiationLogger.swift */,
+				EE0000000000000000000100 /* SFTP Pro/Hosts/HostStore.swift */,
+				EE0000000000000000000101 /* SFTP Pro/Hosts/KeychainHostData.swift */,
+				EE0000000000000000000102 /* SFTP Pro/Hosts/KeychainStoreError.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -60,9 +168,38 @@
 				000000000000000000000010 /* SFTP Pro */,
 			);
 			name = "SFTP Pro";
+			packageProductDependencies = (
+				AA0000000000000000000004 /* NIOPosix */,
+				AA0000000000000000000000 /* Citadel */,
+				AA0000000000000000000001 /* NIOCore */,
+				AA0000000000000000000002 /* NIOSSH */,
+			);
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* SFTP Pro.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DD0000000000000000000009 /* SFTPProTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD0000000000000000000008 /* Build configuration list for PBXNativeTarget "SFTPProTests" */;
+			buildPhases = (
+				DD0000000000000000000004 /* Sources */,
+				DD0000000000000000000005 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				DD0000000000000000000002 /* Tests */,
+			);
+			name = SFTPProTests;
+			packageProductDependencies = (
+				AA0000000000000000000005 /* NIOPosix */,
+				DD0000000000000000000020 /* Citadel */,
+				DD0000000000000000000021 /* NIOCore */,
+				DD0000000000000000000022 /* NIOSSH */,
+			);
+			productName = SFTPProTests;
+			productReference = DD0000000000000000000001 /* SFTPProTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -88,11 +225,17 @@
 			);
 			mainGroup = 000000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 90;
+			packageReferences = (
+				BB0000000000000000000000 /* XCRemoteSwiftPackageReference "Citadel" */,
+				BB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-nio" */,
+				BB0000000000000000000002 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */,
+			);
+			preferredProjectObjectVersion = 100;
 			productRefGroup = 000000000000000000000020 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				DD0000000000000000000009 /* SFTPProTests */,
 				000000000000000100000000 /* SFTP Pro */,
 			);
 		};
@@ -110,6 +253,35 @@
 		000000000000000120000000 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+			);
+		};
+		DD0000000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				EE0000000000000000000203 /* SFTP Pro/Connection/SSHNegotiationLogger.swift in Sources */,
+				EE0000000000000000000200 /* SFTP Pro/Hosts/HostStore.swift in Sources */,
+				EE0000000000000000000201 /* SFTP Pro/Hosts/KeychainHostData.swift in Sources */,
+				EE0000000000000000000202 /* SFTP Pro/Hosts/KeychainStoreError.swift in Sources */,
+				DD0000000000000000000200 /* SFTP Pro/Connection/CitadelSFTPTransport.swift in Sources */,
+				DD0000000000000000000201 /* SFTP Pro/Connection/ConnectionError.swift in Sources */,
+				DD0000000000000000000202 /* SFTP Pro/Connection/HostKeyChallenge.swift in Sources */,
+				DD0000000000000000000203 /* SFTP Pro/Connection/HostKeyTrustStore.swift in Sources */,
+				DD0000000000000000000204 /* SFTP Pro/Connection/RemoteFileHandle.swift in Sources */,
+				DD0000000000000000000205 /* SFTP Pro/Connection/SFTPConnectionError.swift in Sources */,
+				DD0000000000000000000206 /* SFTP Pro/Connection/SFTPSession.swift in Sources */,
+				DD0000000000000000000207 /* SFTP Pro/Connection/SFTPTransport.swift in Sources */,
+				DD0000000000000000000208 /* SFTP Pro/Connection/ServerKeyValidator.swift in Sources */,
+				DD0000000000000000000209 /* SFTP Pro/Connection/TransferDiskFile.swift in Sources */,
+				DD000000000000000000020A /* SFTP Pro/Connection/TransferGate.swift in Sources */,
+				DD000000000000000000020B /* SFTP Pro/Connection/TransferPipeline.swift in Sources */,
+				DD000000000000000000020C /* SFTP Pro/Files/RemoteFile.swift in Sources */,
+				DD000000000000000000020D /* SFTP Pro/Hosts/Host.swift in Sources */,
+				EF0000000000000000000205 /* WorkspaceTheme in Sources */,
+				EF0000000000000000000204 /* FileMenuButtonView in Sources */,
+				EF0000000000000000000203 /* FileContextMenuView in Sources */,
+				EF0000000000000000000202 /* FileMenuAction in Sources */,
+				EF0000000000000000000201 /* FileActionError in Sources */,
+				EF0000000000000000000200 /* FileActionsModel in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
@@ -254,9 +426,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8FQUA2F388;
 				ENABLE_APP_SANDBOX = YES;
+				LM_SKIP_METADATA_EXTRACTION = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to SFTP servers on your local network";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -280,7 +455,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Debug;
@@ -292,9 +467,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8FQUA2F388;
 				ENABLE_APP_SANDBOX = YES;
+				LM_SKIP_METADATA_EXTRACTION = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to SFTP servers on your local network";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -318,8 +496,50 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Release;
+		};
+		DD0000000000000000000006 /* Debug configuration for PBXNativeTarget "SFTPProTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8FQUA2F388;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27;
+				PRODUCT_BUNDLE_IDENTIFIER = devplaceholder.SFTPProTests;
+				LM_SKIP_METADATA_EXTRACTION = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		DD0000000000000000000007 /* Release configuration for PBXNativeTarget "SFTPProTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8FQUA2F388;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27;
+				PRODUCT_BUNDLE_IDENTIFIER = devplaceholder.SFTPProTests;
+				LM_SKIP_METADATA_EXTRACTION = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -342,7 +562,85 @@
 			);
 			defaultConfigurationName = Release;
 		};
+		DD0000000000000000000008 /* Build configuration list for PBXNativeTarget "SFTPProTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD0000000000000000000006 /* Debug configuration for PBXNativeTarget "SFTPProTests" */,
+				DD0000000000000000000007 /* Release configuration for PBXNativeTarget "SFTPProTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BB0000000000000000000000 /* XCRemoteSwiftPackageReference "Citadel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orlandos-nl/Citadel.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.12.1;
+			};
+		};
+		BB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.81.0;
+			};
+		};
+		BB0000000000000000000002 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Wellz26/swift-nio-ssh.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.3.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AA0000000000000000000000 /* Citadel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000000 /* XCRemoteSwiftPackageReference "Citadel" */;
+			productName = Citadel;
+		};
+		AA0000000000000000000001 /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
+		AA0000000000000000000002 /* NIOSSH */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000002 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */;
+			productName = NIOSSH;
+		};
+		AA0000000000000000000004 /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
+		};
+		AA0000000000000000000005 /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
+		};
+		DD0000000000000000000020 /* Citadel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000000 /* XCRemoteSwiftPackageReference "Citadel" */;
+			productName = Citadel;
+		};
+		DD0000000000000000000021 /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
+		DD0000000000000000000022 /* NIOSSH */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB0000000000000000000002 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */;
+			productName = NIOSSH;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;
 }
