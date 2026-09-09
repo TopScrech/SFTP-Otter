@@ -21,14 +21,14 @@ final class SFTPSession: Identifiable {
     private var request: Task<Void, Never>?
     private var generation = UUID()
     let transport: any SFTPTransport
-
+    
     init(host: Host, transport: any SFTPTransport) {
         self.host = host
         self.transport = transport
         path = host.initialPath
         pathInput = host.initialPath
     }
-
+    
     var filteredFiles: [RemoteFile] {
         files.filter {
             (showHidden || !$0.name.hasPrefix(".")) && (search.isEmpty || $0.name.localizedStandardContains(search))
@@ -37,13 +37,13 @@ final class SFTPSession: Identifiable {
             return $0.name.localizedStandardCompare($1.name) == .orderedAscending
         }
     }
-
+    
     var browserFiles: [RemoteFile] {
         guard path != "/" else { return filteredFiles }
         let parent = RemoteFile(path: path + "/..", name: "..", isDirectory: true, size: 0, permissions: "")
         return [parent] + filteredFiles
     }
-
+    
     func connect(password: String) {
         request?.cancel()
         let token = UUID()
@@ -65,7 +65,7 @@ final class SFTPSession: Identifiable {
             }
         }
     }
-
+    
     func navigate(to path: String) {
         guard isConnected && !isPreview else { return }
         pendingHistoryIndex = nil
@@ -76,7 +76,7 @@ final class SFTPSession: Identifiable {
         error = nil
         request = Task { await load(path, token: token) }
     }
-
+    
     private func load(_ destination: String, token: UUID) async {
         do {
             let result = try await transport.list(path: destination)
@@ -103,30 +103,30 @@ final class SFTPSession: Identifiable {
         guard generation == token else { return }
         isLoading = false
     }
-
+    
     var canGoBack: Bool { historyIndex > 0 }
     var canGoForward: Bool { historyIndex >= 0 && historyIndex < history.count - 1 }
-
+    
     func goBack() {
         guard canGoBack else { return }
         let index = historyIndex - 1
         navigate(to: history[index])
         pendingHistoryIndex = index
     }
-
+    
     func goForward() {
         guard canGoForward else { return }
         let index = historyIndex + 1
         navigate(to: history[index])
         pendingHistoryIndex = index
     }
-
+    
     func goUp() {
         navigate(to: path == "/" ? "/" : path + "/..")
     }
-
+    
     func refresh() { navigate(to: path) }
-
+    
     func close() {
         request?.cancel()
         generation = UUID()

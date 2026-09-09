@@ -4,7 +4,7 @@ struct FileBrowserToolbarView: View {
     @Environment(SFTPSession.self) private var session
     @Binding var showImporter: Bool
     @State private var showSearch = false
-
+    
     var body: some View {
         @Bindable var session = session
         VStack {

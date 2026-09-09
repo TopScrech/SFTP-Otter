@@ -4,17 +4,17 @@ import AppKit
 final class FileMenuPanel: NSPanel {
     var navigation = FileMenuNavigation()
     var perform: (FileMenuAction) -> Void = { _ in }
-
+    
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
-
+    
     override func resignKey() {
         super.resignKey()
         close()
     }
-
+    
     override func cancelOperation(_ sender: Any?) { close() }
-
+    
     override func sendEvent(_ event: NSEvent) {
         guard event.type == .keyDown else { super.sendEvent(event); return }
         switch event.keyCode {

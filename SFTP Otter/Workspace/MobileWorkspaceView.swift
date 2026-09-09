@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MobileWorkspaceView: View {
     @Environment(WorkspaceModel.self) private var workspace
-
+    
     var body: some View {
         @Bindable var workspace = workspace
         TabView(selection: $workspace.section) {

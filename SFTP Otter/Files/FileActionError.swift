@@ -2,7 +2,7 @@ import Foundation
 
 nonisolated enum FileActionError: LocalizedError {
     case invalidName, invalidPermissions, symbolicLink
-
+    
     var errorDescription: String? {
         switch self {
         case .invalidName: "Enter a file name without slashes, not . or .."

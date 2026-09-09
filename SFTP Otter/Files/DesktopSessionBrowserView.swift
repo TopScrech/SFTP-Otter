@@ -8,7 +8,7 @@ struct DesktopSessionBrowserView: View {
     @State private var showFilter = false
     @State private var selection = FileSelection()
     let pane: BrowserPane
-
+    
     var body: some View {
         @Bindable var session = session
         VStack(spacing: 0) {

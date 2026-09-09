@@ -4,7 +4,7 @@ struct FileRowView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(SFTPSession.self) private var session
     let file: RemoteFile
-
+    
     var body: some View {
         HStack {
             Button {

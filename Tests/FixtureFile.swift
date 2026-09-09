@@ -5,7 +5,7 @@ import NIOCore
 struct FixtureFile: SFTPFileHandle, Sendable {
     let path: String
     let filesystem: FixtureFilesystem
-
+    
     func read(at offset: UInt64, length: UInt32) async throws -> ByteBuffer {
         let bytes = try await filesystem.contents(path)
         let lower = min(bytes.count, Int(offset))

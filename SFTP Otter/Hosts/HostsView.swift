@@ -2,7 +2,7 @@ import ScrechKit
 
 struct HostsView: View {
     @Environment(WorkspaceModel.self) private var workspace
-
+    
     var body: some View {
         @Bindable var workspace = workspace
         VStack(alignment: .leading) {

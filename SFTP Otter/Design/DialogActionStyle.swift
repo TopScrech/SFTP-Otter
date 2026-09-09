@@ -3,7 +3,7 @@ import SwiftUI
 struct DialogActionStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     var destructive = false
-
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .bold()

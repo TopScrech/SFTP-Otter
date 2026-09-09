@@ -3,7 +3,7 @@ import SwiftUI
 
 struct PermissionAccessRowView: View {
     @Binding var access: PermissionAccess
-
+    
     var body: some View {
         GridRow {
             Text(access.title)

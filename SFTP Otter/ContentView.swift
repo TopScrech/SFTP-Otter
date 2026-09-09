@@ -2,7 +2,7 @@ import ScrechKit
 
 struct ContentView: View {
     @Environment(WorkspaceModel.self) private var workspace
-
+    
     var body: some View {
         @Bindable var workspace = workspace
         @Bindable var trustStore = workspace.trustStore
@@ -11,7 +11,9 @@ struct ContentView: View {
                 .frame(minWidth: 760)
             MobileWorkspaceView()
         }
-        .task { workspace.restoreConnections() }
+        .task {
+            workspace.restoreConnections()
+        }
         .onChange(of: workspace.connectedHostIDs) { workspace.rememberConnectedHosts() }
         .onChange(of: workspace.selectedSessionID) { workspace.rememberConnectedHosts() }
         .onChange(of: workspace.secondarySessionID) { workspace.rememberConnectedHosts() }

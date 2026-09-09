@@ -10,7 +10,7 @@ nonisolated struct RemoteFile: Identifiable, Sendable {
     var mode: UInt32?
     var owner: String?
     var group: String?
-
+    
     var id: String { path }
     var icon: String {
         if isDirectory { return "folder.fill" }

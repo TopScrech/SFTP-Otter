@@ -5,7 +5,7 @@ struct UploadDropZoneModifier: ViewModifier {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(SFTPSession.self) private var session
     @State private var targeted = false
-
+    
     func body(content: Content) -> some View {
         content
             .dropDestination(for: URL.self) { urls, _ in

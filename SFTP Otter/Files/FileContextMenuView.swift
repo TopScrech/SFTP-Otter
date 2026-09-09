@@ -3,7 +3,7 @@ import SwiftUI
 struct FileContextMenuView: View {
     @Environment(FileMenuNavigation.self) private var navigation
     let action: (FileMenuAction) -> Void
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(navigation.items) { item in

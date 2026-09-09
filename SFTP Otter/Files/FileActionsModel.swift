@@ -10,20 +10,20 @@ final class FileActionsModel {
     var permissionGroups = PermissionAccess.groups(mode: 0o644)
     var permissionOwner = "Unavailable"
     var permissionGroup = "Unavailable"
-
+    
     var editedPermissionMode: UInt32 {
         let special = (UInt32(input, radix: 8) ?? 0) & 0o7000
         return permissionGroups.reduce(special) { $0 | ($1.bits << ((2 - $1.id) * 3)) }
     }
-
+    
     var permissionsChanged: Bool { editedPermissionMode != UInt32(input, radix: 8) }
-
+    
     func savePermissions() {
         guard permissionsChanged else { return }
         input = String(editedPermissionMode, radix: 8)
         run(.permissions)
     }
-
+    
     var deletionTitle: String {
         selectedFiles.count > 1 ? "Delete \(selectedFiles.count) items?" : "Delete “\(file?.name ?? "")”?"
     }
@@ -36,7 +36,7 @@ final class FileActionsModel {
     var input = ""
     var error: String?
     var busy = false
-
+    
     func choose(_ action: FileMenuAction) {
         guard !busy, let file else { return }
         if action == .delete {
@@ -64,7 +64,7 @@ final class FileActionsModel {
             run(action)
         }
     }
-
+    
     func run(_ action: FileMenuAction) {
         guard !busy, let file else { return }
         let targets = selectedFiles.isEmpty ? [file] : selectedFiles
@@ -137,7 +137,7 @@ final class FileActionsModel {
             } catch { self.error = error.localizedDescription }
         }
     }
-
+    
     private func materialize(_ file: RemoteFile) async throws -> URL {
         guard let transport else { return URL(filePath: file.path) }
         let root = URL.temporaryDirectory.appending(path: "SFTP Otter Open/" + UUID().uuidString)
@@ -146,7 +146,7 @@ final class FileActionsModel {
         try await downloadTree(file, to: destination, using: transport)
         return destination
     }
-
+    
     func downloadTree(_ file: RemoteFile, to target: URL, using transport: any SFTPTransport, depth: Int = 0) async throws {
         guard depth < 64, !file.permissions.hasPrefix("l") else { throw FileActionError.symbolicLink }
         guard !FileManager.default.fileExists(atPath: target.path(percentEncoded: false)) else { throw CocoaError(.fileWriteFileExists) }
@@ -161,7 +161,7 @@ final class FileActionsModel {
             try await transport.download(remote: file.path, local: target) { _, _ in }
         }
     }
-
+    
     private func removeTree(_ file: RemoteFile, using transport: any SFTPTransport, depth: Int = 0) async throws {
         guard depth < 64 else { throw FileActionError.symbolicLink }
         let directory = file.isDirectory && !file.permissions.hasPrefix("l")
@@ -174,14 +174,14 @@ final class FileActionsModel {
         }
         try await transport.remove(path: file.path, isDirectory: directory)
     }
-
+    
     static func validName(_ name: String) throws -> String {
         guard !name.isEmpty, name != ".", name != "..", !name.contains("/"), !name.contains("\0") else { throw FileActionError.invalidName }
         return name
     }
-
+    
     static func child(_ parent: String, _ name: String) -> String { parent == "/" ? "/" + name : parent + "/" + name }
-
+    
     static func mode(from permissions: String) -> String {
         let characters = Array(permissions)
         guard characters.count == 10 else { return "644" }

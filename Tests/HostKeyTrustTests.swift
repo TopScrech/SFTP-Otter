@@ -25,7 +25,7 @@ struct HostKeyTrustTests {
             try await reloaded.verify(key: "ssh-ed25519 BAUG", endpoint: "fixture:22")
         }
     }
-
+    
     @Test
     func forgettingKeyRequiresVerificationAgain() async throws {
         let service = "SFTPOtter.tests.\(UUID().uuidString)"
@@ -46,7 +46,7 @@ struct HostKeyTrustTests {
         store.resolve(trust: false)
         await #expect(throws: SFTPConnectionError.self) { try await verification.value }
     }
-
+    
     @Test
     func rejectedAndCancelledKeysAreNotSaved() async throws {
         let service = "SFTPOtter.tests.\(UUID().uuidString)"
@@ -69,7 +69,7 @@ struct HostKeyTrustTests {
         #expect(store.challenge == nil)
         #expect(!FileManager.default.fileExists(atPath: url.path()))
     }
-
+    
     @Test
     func corruptSavedTrustFailsWithoutRequestingNewApproval() async throws {
         let service = "SFTPOtter.tests.\(UUID().uuidString)"
@@ -81,7 +81,7 @@ struct HostKeyTrustTests {
         }
         #expect(store.challenge == nil)
     }
-
+    
     private func removeKeychainEntry(service: String) {
         let status = SecItemDelete([
             kSecClass as String: kSecClassGenericPassword,

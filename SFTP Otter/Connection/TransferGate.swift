@@ -3,7 +3,7 @@ import Foundation
 actor TransferGate {
     private var running = 0
     private var waiters: [(id: UUID, continuation: CheckedContinuation<Void, any Error>)] = []
-
+    
     func run(_ operation: @escaping @Sendable () async throws -> Void) async throws {
         try await acquire()
         do {
@@ -15,7 +15,7 @@ actor TransferGate {
             throw error
         }
     }
-
+    
     private func acquire() async throws {
         try Task.checkCancellation()
         if running < 3 {
@@ -32,12 +32,12 @@ actor TransferGate {
             Task { await self.cancel(id) }
         }
     }
-
+    
     private func release() {
         if waiters.isEmpty { running -= 1 }
         else { waiters.removeFirst().continuation.resume() }
     }
-
+    
     private func cancel(_ id: UUID) {
         guard let index = waiters.firstIndex(where: { $0.id == id }) else { return }
         waiters.remove(at: index).continuation.resume(throwing: CancellationError())

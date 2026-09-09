@@ -6,7 +6,7 @@ struct FileActionPromptView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var nameFocused: Bool
     let action: FileMenuAction
-
+    
     var body: some View {
         @Bindable var actions = actions
         WorkspaceDialogView(title: action.rawValue, close: { dismiss() }) {

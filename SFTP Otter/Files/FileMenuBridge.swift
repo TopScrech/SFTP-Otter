@@ -11,7 +11,7 @@ struct FileMenuBridge: NSViewRepresentable {
     var dragItems: () -> [NSDraggingItem] = { [] }
     let select: (Bool, Bool, Bool) -> Void
     let action: (FileMenuAction) -> Void
-
+    
     func makeNSView(context: Context) -> FileMenuMouseView { FileMenuMouseView() }
     func updateNSView(_ view: FileMenuMouseView, context: Context) {
         view.rowSelected = rowSelected

@@ -15,21 +15,21 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
     var moveSelection: (Int, Bool) -> Void = { _, _ in }
     var openSelection: () -> Void = {}
     var goToParent: () -> Void = {}
-
+    
     func updateKeyboardFocus() {
         if keyboardFocused, let window, window.firstResponder is FileMenuMouseView || window.firstResponder === window {
             window.makeFirstResponder(self)
         }
     }
     private var menuPanel: FileMenuPanel?
-
+    
     override func hitTest(_ point: NSPoint) -> NSView? {
         guard bounds.contains(convert(point, from: superview)), let event = NSApp.currentEvent else { return nil }
         return event.type == .rightMouseDown || event.type == .leftMouseDown ? self : nil
     }
-
+    
     override var acceptsFirstResponder: Bool { true }
-
+    
     override func mouseDown(with event: NSEvent) {
         if event.modifierFlags.contains(.control) { rightMouseDown(with: event); return }
         window?.makeFirstResponder(self)
@@ -38,13 +38,13 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
         select(event.modifierFlags.contains(.shift), event.modifierFlags.contains(.command), deferredSelection)
         if event.clickCount == 2 { action(.open) }
     }
-
+    
     override func mouseUp(with event: NSEvent) {
         if deferredSelection { select(false, false, false) }
         deferredSelection = false
         mouseDownEvent = nil
     }
-
+    
     override func mouseDragged(with event: NSEvent) {
         guard !parentOnly, let start = mouseDownEvent,
               hypot(event.locationInWindow.x - start.locationInWindow.x, event.locationInWindow.y - start.locationInWindow.y) >= 4 else { return }
@@ -60,9 +60,9 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
         let session = beginDraggingSession(with: items, event: event, source: self)
         session.draggingFormation = .pile
     }
-
+    
     func draggingSession(_ session: NSDraggingSession, sourceOperationMaskFor context: NSDraggingContext) -> NSDragOperation { .copy }
-
+    
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 125 || event.keyCode == 126 {
             moveSelection(event.keyCode == 125 ? 1 : -1, event.modifierFlags.contains(.shift))
@@ -76,7 +76,7 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
             action(.refresh)
         } else { super.keyDown(with: event) }
     }
-
+    
     override func rightMouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
         select(false, false, true)
@@ -108,7 +108,7 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
         menuPanel = panel
         panel.makeKeyAndOrderFront(nil)
     }
-
+    
     override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
         if window == nil { menuPanel?.close() }

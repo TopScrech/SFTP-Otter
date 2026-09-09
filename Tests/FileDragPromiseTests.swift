@@ -23,7 +23,7 @@ struct FileDragPromiseTests {
         #expect(try String(contentsOf: destination.appending(path: "child.txt"), encoding: .utf8) == "fixture")
         #expect(await transport.downloads == ["/folder/child.txt"])
     }
-
+    
     @Test func promiseReportsCollisionWithoutOverwriting() async throws {
         let root = URL.temporaryDirectory.appending(path: UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: false)

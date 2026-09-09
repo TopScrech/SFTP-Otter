@@ -3,7 +3,7 @@ import SwiftUI
 struct RemoteBreadcrumbsView: View {
     @Environment(SFTPSession.self) private var session
     @State private var editingPath = false
-
+    
     var body: some View {
         @Bindable var session = session
         HStack {

@@ -4,7 +4,7 @@ struct HostEditorView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(\.dismiss) private var dismiss
     @State private var editor = HostEditorModel()
-
+    
     var body: some View {
         NavigationStack {
             Form {

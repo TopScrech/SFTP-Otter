@@ -5,7 +5,7 @@ struct DesktopFileRowView: View {
     let width: CGFloat
     let isSelected: Bool
     @State private var isHovered = false
-
+    
     var body: some View {
         HStack(spacing: 0) {
             HStack {

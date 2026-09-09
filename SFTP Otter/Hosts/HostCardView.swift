@@ -3,7 +3,7 @@ import ScrechKit
 struct HostCardView: View {
     @Environment(WorkspaceModel.self) private var workspace
     let host: Host
-
+    
     var body: some View {
         Button {
             workspace.requestConnection(host)

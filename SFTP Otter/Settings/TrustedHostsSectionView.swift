@@ -3,7 +3,7 @@ import ScrechKit
 struct TrustedHostsSectionView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(SettingsModel.self) private var settings
-
+    
     var body: some View {
         Section {
             if let errorMessage = settings.errorMessage {

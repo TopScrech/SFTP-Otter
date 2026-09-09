@@ -10,17 +10,17 @@ final class HostKeyTrustStore {
     private static let logger = Logger(subsystem: "SFTPOtter", category: "TrustedHosts")
     private let keychain: KeychainHostData
     private let url: URL
-
+    
     init(url: URL = URL.applicationSupportDirectory.appending(path: "SFTP Pro/known-hosts.json"), service: String = "SFTPPro.trusted-hosts") {
         keychain = KeychainHostData(service: service)
         self.url = url
     }
-
+    
     func cancel(endpoint: String) {
         let ids = requests.filter { $0.challenge.endpoint == endpoint }.map { $0.challenge.id }
         ids.forEach { cancel($0) }
     }
-
+    
     func verify(key: String, endpoint: String) async throws {
         let keys = try load()
         if let trusted = keys[endpoint] {
@@ -50,7 +50,7 @@ final class HostKeyTrustStore {
             Task { @MainActor in self.cancel(request.id) }
         }
     }
-
+    
     func resolve(trust: Bool) {
         guard let current = challenge, let index = requests.firstIndex(where: { $0.challenge.id == current.id }) else { return }
         let request = requests.remove(at: index)
@@ -75,25 +75,25 @@ final class HostKeyTrustStore {
         }
         challenge = requests.first?.challenge
     }
-
+    
     private func cancel(_ id: UUID) {
         guard let index = requests.firstIndex(where: { $0.challenge.id == id }) else { return }
         requests.remove(at: index).continuation.resume(throwing: CancellationError())
         if challenge?.id == id { challenge = requests.first?.challenge }
     }
-
+    
     func forget(endpoint: String) throws {
         var keys = try load()
         keys.removeValue(forKey: endpoint)
         try save(keys)
     }
-
+    
     func fingerprint(for key: String) -> String {
         let fields = key.split(separator: " ")
         guard fields.count >= 2, let bytes = Data(base64Encoded: String(fields[1])) else { return "Invalid key" }
         return "SHA256:" + Data(SHA256.hash(data: bytes)).base64EncodedString().replacing("=", with: "")
     }
-
+    
     func load() throws -> [String: String] {
         do {
             if let data = try keychain.load() {
@@ -109,7 +109,7 @@ final class HostKeyTrustStore {
             throw error
         }
     }
-
+    
     private func save(_ keys: [String: String]) throws {
         do {
             try keychain.save(JSONEncoder().encode(keys))

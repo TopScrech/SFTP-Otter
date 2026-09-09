@@ -4,7 +4,7 @@ import Security
 struct KeychainHostData {
     let service: String
     private let account = "saved-hosts"
-
+    
     private var query: [String: Any] {
         [
             kSecClass as String: kSecClassGenericPassword,
@@ -13,7 +13,7 @@ struct KeychainHostData {
             kSecAttrSynchronizable as String: false
         ]
     }
-
+    
     func load() throws -> Data? {
         var query = query
         query[kSecReturnData as String] = true
@@ -25,7 +25,7 @@ struct KeychainHostData {
         guard let data = result as? Data else { throw KeychainStoreError.invalidData }
         return data
     }
-
+    
     func save(_ data: Data) throws {
         let changes = [kSecValueData as String: data]
         let status = SecItemUpdate(query as CFDictionary, changes as CFDictionary)

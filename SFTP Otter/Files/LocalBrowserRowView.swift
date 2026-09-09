@@ -49,7 +49,7 @@ struct LocalBrowserRowView: View {
                 dragItems: {
                     let files = browser.files.filter {
                         (browser.selection.ids.contains(file.id) ? browser.selection.ids.contains($0.id) : $0.id == file.id)
-                        && $0.name != ".."
+                            && $0.name != ".."
                     }
                     return files.map { NSDraggingItem(pasteboardWriter: URL(filePath: $0.path) as NSURL) }
                 },
@@ -63,6 +63,6 @@ struct LocalBrowserRowView: View {
                 actions.choose(action, file: file, selectedIDs: browser.selection.ids, browser: browser)
             }
         }
-#endif
+        #endif
     }
 }

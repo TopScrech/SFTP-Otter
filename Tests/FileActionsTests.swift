@@ -17,7 +17,7 @@ struct FileActionsTests {
         model.permissionGroups[1].write = false
         #expect(!model.permissionsChanged)
     }
-
+    
     @Test func confirmsWholeSelectionBeforeDeleting() async {
         let transport = NavigationTransport()
         let model = FileActionsModel()
@@ -34,7 +34,7 @@ struct FileActionsTests {
         while model.busy { await Task.yield() }
         #expect(await transport.removedPaths == ["/one", "/two"])
     }
-
+    
     @Test func permissionSwitchesPreserveSpecialBits() async throws {
         let url = URL.temporaryDirectory.appending(path: UUID().uuidString)
         try Data().write(to: url)
@@ -49,7 +49,7 @@ struct FileActionsTests {
         #expect(model.input == "1744")
         #expect(model.error == nil)
     }
-
+    
     @Test func deleteRequiresConfirmation() throws {
         let root = URL.temporaryDirectory.appending(path: UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -68,7 +68,7 @@ struct FileActionsTests {
         model.choose(.delete)
         #expect(!model.showDeleteConfirmation)
     }
-
+    
     @Test func localRenameCreateAndPermissions() async throws {
         let root = URL.temporaryDirectory.appending(path: UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)

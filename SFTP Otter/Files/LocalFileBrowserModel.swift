@@ -6,10 +6,10 @@ final class LocalFileBrowserModel {
     private var root: URL?
     private var hasAccess = false
     private var persistenceKey: String?
-
+    
     func restoreLocation(for pane: BrowserPane) {
         persistenceKey = pane == .primary ? "localFolder.primary" : "localFolder.secondary"
-        #if os(macOS)
+#if os(macOS)
         guard UserDefaults.standard.bool(forKey: "reopenConnectedHosts"), let persistenceKey,
               let data = UserDefaults.standard.data(forKey: persistenceKey) else { return }
         do {
@@ -23,35 +23,35 @@ final class LocalFileBrowserModel {
                 if current.path(percentEncoded: false).hasPrefix(rootPath.hasSuffix("/") ? rootPath : rootPath + "/") { navigate(to: current) }
             }
         } catch { self.error = error.localizedDescription }
-        #endif
+#endif
     }
-
+    
     func rememberLocation() {
         guard let persistenceKey else { return }
         guard UserDefaults.standard.bool(forKey: "reopenConnectedHosts") else {
             UserDefaults.standard.removeObject(forKey: persistenceKey)
             return
         }
-        #if os(macOS)
+#if os(macOS)
         guard let directory, let root else { return }
         do {
             let data = try root.bookmarkData(options: [.withSecurityScope], includingResourceValuesForKeys: nil, relativeTo: nil)
             UserDefaults.standard.set(data, forKey: persistenceKey)
             UserDefaults.standard.set(directory.path(percentEncoded: false), forKey: persistenceKey + ".path")
         } catch { self.error = error.localizedDescription }
-        #endif
+#endif
     }
     private(set) var files: [RemoteFile] = []
     private(set) var error: String?
     var selection = FileSelection()
-
+    
     func open(_ url: URL) {
         close(forget: false)
         hasAccess = url.startAccessingSecurityScopedResource()
         root = url
         navigate(to: url)
     }
-
+    
     func navigate(to url: URL) {
         do {
             let keys: Set<URLResourceKey> = [.isDirectoryKey, .fileSizeKey, .contentModificationDateKey]
@@ -76,11 +76,11 @@ final class LocalFileBrowserModel {
             if directory == nil { directory = url }
         }
     }
-
+    
     func refresh() {
         if let directory { navigate(to: directory) }
     }
-
+    
     func close(forget: Bool = true) {
         if forget, let persistenceKey { UserDefaults.standard.removeObject(forKey: persistenceKey) }
         if hasAccess { root?.stopAccessingSecurityScopedResource() }

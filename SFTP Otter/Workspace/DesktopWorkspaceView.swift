@@ -2,10 +2,10 @@ import ScrechKit
 
 struct DesktopWorkspaceView: View {
     @Environment(WorkspaceModel.self) private var workspace
-
+    
     var body: some View {
         VStack(spacing: 0) {
-            #if !os(macOS)
+#if !os(macOS)
             ConnectionTabsView(showSessions: false)
             Divider().overlay(WorkspaceTheme.raised)
             #endif

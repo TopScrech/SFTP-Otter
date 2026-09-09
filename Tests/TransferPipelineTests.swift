@@ -18,14 +18,14 @@ struct TransferPipelineTests {
         try await destination.close()
         #expect(try Data(contentsOf: url) == source)
     }
-
+    
     @Test
     func shortReadFailsInsteadOfReportingSuccess() async {
         await #expect(throws: SFTPConnectionError.self, "A truncated source must fail") {
             try await TransferPipeline.copy(total: 32_000, read: { _, _ in Data([1]) }, write: { _, _ in }, progress: { _, _ in })
         }
     }
-
+    
     @Test
     func cancellationStopsTransfer() async {
         let task = Task {
@@ -39,7 +39,7 @@ struct TransferPipelineTests {
             try await task.value
         }
     }
-
+    
     @Test
     func pipeliningReducesLatencyCost() async throws {
         func measure(requests: Int) async throws -> Duration {

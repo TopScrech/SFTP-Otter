@@ -4,7 +4,7 @@ import ScrechKit
 struct PermissionsEditorView: View {
     @Environment(FileActionsModel.self) private var actions
     @Environment(\.dismiss) private var dismiss
-
+    
     var body: some View {
         @Bindable var actions = actions
         WorkspaceDialogView(title: "Edit permissions", close: { dismiss() }) {

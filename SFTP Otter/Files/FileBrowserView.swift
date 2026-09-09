@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FileBrowserView: View {
     @Environment(WorkspaceModel.self) private var workspace
-
+    
     var body: some View {
         if let session = workspace.selectedSession {
             SessionBrowserView()

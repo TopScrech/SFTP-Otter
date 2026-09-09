@@ -6,18 +6,18 @@ final class FileMenuNavigation {
     var selected: FileMenuAction?
     private var prefix = ""
     private var lastTyped: TimeInterval = 0
-
+    
     init(parentOnly: Bool = false) {
         items = parentOnly ? [.open] : FileMenuAction.allCases.filter { $0 != .refresh }
     }
-
+    
     func move(_ offset: Int) {
         prefix = ""
         guard !items.isEmpty else { return }
         let index = selected.flatMap { items.firstIndex(of: $0) }
         selected = items[index.map { ($0 + offset + items.count) % items.count } ?? (offset > 0 ? 0 : items.count - 1)]
     }
-
+    
     func type(_ text: String, at time: TimeInterval = Date.timeIntervalSinceReferenceDate) {
         guard !text.isEmpty else { return }
         if time - lastTyped > 1 { prefix = "" }

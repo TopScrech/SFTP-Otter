@@ -5,7 +5,7 @@ struct HostStore {
     private static let logger = Logger(subsystem: "SFTPOtter", category: "SavedHosts")
     private let keychain: KeychainHostData
     private let legacyURL: URL
-
+    
     init(
         service: String = "SFTPPro.saved-hosts",
         legacyURL: URL = URL.applicationSupportDirectory.appending(path: "SFTP Pro/hosts.json")
@@ -13,7 +13,7 @@ struct HostStore {
         keychain = KeychainHostData(service: service)
         self.legacyURL = legacyURL
     }
-
+    
     func load() throws -> [Host] {
         do {
             if let data = try keychain.load() {
@@ -32,7 +32,7 @@ struct HostStore {
             throw error
         }
     }
-
+    
     func save(_ hosts: [Host]) throws {
         do {
             try keychain.save(JSONEncoder().encode(hosts))
@@ -43,7 +43,7 @@ struct HostStore {
             throw error
         }
     }
-
+    
     private func removeLegacyFile() {
         guard FileManager.default.fileExists(atPath: legacyURL.path()) else { return }
         do { try FileManager.default.removeItem(at: legacyURL) }

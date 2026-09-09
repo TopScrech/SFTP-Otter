@@ -4,7 +4,7 @@ struct FileMenuButtonView: View {
     let item: FileMenuAction
     let action: () -> Void
     @Environment(FileMenuNavigation.self) private var navigation
-
+    
     var body: some View {
         Button(action: action) {
             Text(item.rawValue)

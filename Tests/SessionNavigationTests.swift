@@ -29,7 +29,7 @@ struct SessionNavigationTests {
         #expect(session.error == nil)
         session.close()
     }
-
+    
     @Test
     func reportsOnlySuccessfullyOpenedLocations() async throws {
         let session = SFTPSession(host: Host(), transport: NavigationTransport())
@@ -47,7 +47,7 @@ struct SessionNavigationTests {
         #expect(locations == ["/saved-folder", "/backups"])
         session.close()
     }
-
+    
     private func settle(_ session: SFTPSession) async throws {
         let deadline = ContinuousClock.now.advanced(by: .seconds(2))
         while session.isLoading && ContinuousClock.now < deadline { await Task.yield() }

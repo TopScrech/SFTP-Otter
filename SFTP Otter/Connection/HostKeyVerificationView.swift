@@ -3,7 +3,7 @@ import ScrechKit
 struct HostKeyVerificationView: View {
     @Environment(HostKeyTrustStore.self) private var trustStore
     let challenge: HostKeyChallenge
-
+    
     var body: some View {
         WorkspaceDialogView(title: "Verify server identity", close: { trustStore.resolve(trust: false) }) {
             Text("Verify the server key for \(challenge.endpoint)")

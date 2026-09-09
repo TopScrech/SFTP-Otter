@@ -3,7 +3,7 @@ import ScrechKit
 struct ConnectionTabsView: View {
     @Environment(WorkspaceModel.self) private var workspace
     var showSessions = true
-
+    
     var body: some View {
         HStack {
             Button("SFTP", systemImage: "folder.fill") { workspace.section = .files }

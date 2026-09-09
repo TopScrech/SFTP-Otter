@@ -7,7 +7,7 @@ struct MessageDialogView: View {
     var actionTitle = "OK"
     var destructive = false
     var action: () -> Void = {}
-
+    
     var body: some View {
         WorkspaceDialogView(title: title, close: { dismiss() }) {
             Text(message)

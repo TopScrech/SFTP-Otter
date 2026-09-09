@@ -13,7 +13,7 @@ extension WorkspaceModel {
             localPreviewURL = directory
         } catch { report(error) }
     }
-
+    
     func loadVisualPreview() {
         let host = Host(name: "Backup server · Layout preview", address: "backup.example.com", username: "preview", initialPath: "/")
         let session = SFTPSession(host: host, transport: CitadelSFTPTransport { _, _ in throw CancellationError() })

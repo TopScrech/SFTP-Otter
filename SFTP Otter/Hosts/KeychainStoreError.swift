@@ -3,7 +3,7 @@ import Security
 
 nonisolated enum KeychainStoreError: LocalizedError {
     case status(OSStatus), invalidData, unavailable
-
+    
     var errorDescription: String? {
         switch self {
         case .status(let status):

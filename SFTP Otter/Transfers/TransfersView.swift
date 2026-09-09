@@ -2,7 +2,7 @@ import ScrechKit
 
 struct TransfersView: View {
     @Environment(WorkspaceModel.self) private var workspace
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {

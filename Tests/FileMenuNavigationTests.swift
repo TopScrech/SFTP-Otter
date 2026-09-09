@@ -17,7 +17,7 @@ struct FileMenuNavigationTests {
         menu.type("e", at: 14)
         #expect(menu.selected == .permissions)
     }
-
+    
     @Test func onlyAvailableOptionsAndArrowWrapping() {
         let menu = FileMenuNavigation(parentOnly: true)
         menu.type("d", at: 10)

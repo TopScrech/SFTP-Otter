@@ -7,18 +7,18 @@ import OSLog
 nonisolated final class SSHNegotiationLogger: ChannelInboundHandler, @unchecked Sendable {
     typealias InboundIn = ByteBuffer
     typealias InboundOut = ByteBuffer
-
+    
     private static let logger = Logger(subsystem: "SFTPOtter", category: "Connection")
     private let requestID: String
     private var timeout: Scheduled<Void>?
     private var buffer = ByteBuffer()
     private var receivedVersion = false
     private var finished = false
-
+    
     init(requestID: String) {
         self.requestID = requestID
     }
-
+    
     static func inspect(host: String, port: Int, requestID: String) async {
         do {
             let channel = try await ClientBootstrap(group: MultiThreadedEventLoopGroup.singleton)
@@ -32,7 +32,7 @@ nonisolated final class SSHNegotiationLogger: ChannelInboundHandler, @unchecked 
             logger.error("event=server_ssh_probe_failed request_id=\(requestID, privacy: .public) error_type=\(String(reflecting: type(of: error)), privacy: .public)")
         }
     }
-
+    
     func channelActive(context: ChannelHandlerContext) {
         let channel = context.channel
         timeout = context.eventLoop.scheduleTask(in: .seconds(5)) {
@@ -43,16 +43,16 @@ nonisolated final class SSHNegotiationLogger: ChannelInboundHandler, @unchecked 
         context.writeAndFlush(NIOAny(version), promise: nil)
         context.fireChannelActive()
     }
-
+    
     func channelInactive(context: ChannelHandlerContext) {
         timeout?.cancel()
         context.fireChannelInactive()
     }
-
+    
     func errorCaught(context: ChannelHandlerContext, error: any Error) {
         context.close(promise: nil)
     }
-
+    
     func channelRead(context: ChannelHandlerContext, data: NIOAny) {
         guard !finished else { return }
         let incoming = unwrapInboundIn(data)

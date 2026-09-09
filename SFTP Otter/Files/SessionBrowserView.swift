@@ -5,7 +5,7 @@ struct SessionBrowserView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(SFTPSession.self) private var session
     @State private var showImporter = false
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             FileBrowserToolbarView(showImporter: $showImporter)

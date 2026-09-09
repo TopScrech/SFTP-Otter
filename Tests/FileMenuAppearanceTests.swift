@@ -16,7 +16,7 @@ struct FileMenuAppearanceTests {
         try data.write(to: URL(filePath: "/tmp/sftp-otter-permissions.png"))
         #expect(image.width == 1120)
     }
-
+    
     @Test func rendersDarkMenuWithDeleteLast() throws {
         let renderer = ImageRenderer(content: FileContextMenuView { _ in }.environment(FileMenuNavigation()))
         renderer.scale = 2

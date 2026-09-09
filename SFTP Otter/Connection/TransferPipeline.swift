@@ -3,7 +3,7 @@ import Foundation
 nonisolated enum TransferPipeline {
     static let chunkSize = 32_000
     static let concurrentRequests = 64
-
+    
     static func copy(total: UInt64, requestCount: Int = concurrentRequests,
                      read: @escaping @Sendable (UInt64, Int) async throws -> Data,
                      write: @escaping @Sendable (Data, UInt64) async throws -> Void,

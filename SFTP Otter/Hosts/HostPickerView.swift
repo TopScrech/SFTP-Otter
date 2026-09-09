@@ -3,7 +3,7 @@ import ScrechKit
 struct HostPickerView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(\.dismiss) private var dismiss
-
+    
     var body: some View {
         @Bindable var workspace = workspace
         NavigationStack {

@@ -2,7 +2,7 @@ import Foundation
 
 nonisolated enum SFTPConnectionError: LocalizedError {
     case incompatibleAlgorithms, hostKeyChanged(String), invalidHostKey, hostKeyRejected, unexpectedEndOfFile, invalidFilename, remoteFileChanged
-
+    
     var errorDescription: String? {
         switch self {
         case .incompatibleAlgorithms: "This client could not negotiate compatible SSH algorithms with the server — diagnostic details are available in the connection log"

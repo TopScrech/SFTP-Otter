@@ -4,7 +4,7 @@ struct FileConnectionEmptyView: View {
     @Environment(WorkspaceModel.self) private var workspace
     let pane: BrowserPane
     @Binding var showLocalFolderPicker: Bool
-
+    
     var body: some View {
         VStack {
             Image(systemName: "folder.fill")

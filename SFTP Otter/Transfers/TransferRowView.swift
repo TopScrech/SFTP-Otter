@@ -2,7 +2,7 @@ import ScrechKit
 
 struct TransferRowView: View {
     let transfer: FileTransfer
-
+    
     var body: some View {
         HStack {
             Image(systemName: transfer.isUpload ? "arrow.up.doc" : "arrow.down.doc")

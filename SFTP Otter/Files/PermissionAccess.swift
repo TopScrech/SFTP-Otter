@@ -6,9 +6,9 @@ struct PermissionAccess: Identifiable {
     var read: Bool
     var write: Bool
     var execute: Bool
-
+    
     var bits: UInt32 { (read ? 4 : 0) | (write ? 2 : 0) | (execute ? 1 : 0) }
-
+    
     static func groups(mode: UInt32) -> [Self] {
         ["Owner", "Groups", "Others"].enumerated().map { index, title in
             let bits = mode >> ((2 - index) * 3)

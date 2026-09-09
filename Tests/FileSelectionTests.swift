@@ -15,7 +15,7 @@ struct FileSelectionTests {
         selection.click("b", in: ids, extending: true)
         #expect(selection.ids.isEmpty)
     }
-
+    
     @Test func arrowsExtendAndContractFromAnchor() {
         var selection = FileSelection()
         let ids = ["a", "b", "c", "d"]
@@ -33,7 +33,7 @@ struct FileSelectionTests {
         selection.move(1, in: [])
         #expect(selection.ids == ["a"])
     }
-
+    
     @Test func selectsRangesInEitherDirection() {
         var selection = FileSelection()
         let ids = ["a", "b", "c", "d", "e"]
@@ -49,7 +49,7 @@ struct FileSelectionTests {
         selection.select("b", in: ids, toggling: true)
         #expect(selection.ids.isEmpty)
     }
-
+    
     @Test func missingAnchorStartsNewSelection() {
         var selection = FileSelection()
         selection.select("gone", in: ["gone"])

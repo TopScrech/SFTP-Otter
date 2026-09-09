@@ -21,7 +21,7 @@ struct HostStoreTests {
         #expect(try HostStore(service: service, legacyURL: legacyURL).load().isEmpty)
         #expect(!FileManager.default.fileExists(atPath: legacyURL.path()))
     }
-
+    
     @Test
     func migratesLegacyHostsAndKeepsKeychainAuthoritative() throws {
         let service = "SFTPOtter.tests.\(UUID().uuidString)"
@@ -38,7 +38,7 @@ struct HostStoreTests {
         #expect(try HostStore(service: service, legacyURL: url).load() == [host])
         #expect(!FileManager.default.fileExists(atPath: url.path()))
     }
-
+    
     @Test
     func corruptKeychainDataDoesNotFallBackToEmptyHosts() throws {
         let service = "SFTPOtter.tests.\(UUID().uuidString)"
@@ -49,7 +49,7 @@ struct HostStoreTests {
             try HostStore(service: service, legacyURL: url).load()
         }
     }
-
+    
     private func removeKeychainEntry(service: String) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,

@@ -3,7 +3,7 @@ import ScrechKit
 
 struct FileActionPresentationModifier: ViewModifier {
     @Environment(FileActionsModel.self) private var actions
-
+    
     func body(content: Content) -> some View {
         @Bindable var actions = actions
         content

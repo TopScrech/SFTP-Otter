@@ -3,7 +3,7 @@ import SwiftUI
 
 struct DesktopWorkspaceToolbar: ToolbarContent {
     @Environment(WorkspaceModel.self) private var workspace
-
+    
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigation) {
             Button("SFTP", systemImage: "folder.fill") { workspace.section = .files }
@@ -19,7 +19,7 @@ struct DesktopWorkspaceToolbar: ToolbarContent {
         }
         .sharedBackgroundVisibility(.hidden)
         ToolbarSpacer(.flexible, placement: .primaryAction)
-
+        
         ToolbarItem(placement: .primaryAction) {
             Button("Settings", systemImage: "gearshape") { workspace.showSettings = true }
         }

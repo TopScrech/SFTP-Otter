@@ -6,7 +6,7 @@ struct AuthenticationView: View {
     let host: Host
     @State private var password = ""
     @FocusState private var passwordFocused: Bool
-
+    
     var body: some View {
         WorkspaceDialogView(title: "Connect", close: { dismiss() }) {
             VStack(alignment: .leading) {
