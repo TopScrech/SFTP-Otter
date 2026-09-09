@@ -5,12 +5,11 @@ struct DesktopSessionBrowserView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(SFTPSession.self) private var session
     @State private var showImporter = false
-    @State private var showFilter = false
+    @State private var showActions = false
     @State private var selection = FileSelection()
     let pane: BrowserPane
     
     var body: some View {
-        @Bindable var session = session
         VStack(spacing: 0) {
             FileBrowserHeaderView {
                 HStack {
@@ -19,35 +18,15 @@ struct DesktopSessionBrowserView: View {
                         .background(Color(red: 0, green: 0.30, blue: 0.46), in: .rect(cornerRadius: 10))
                     Text(session.host.displayName).lineLimit(1)
                     Spacer()
-                    Button("Filter", systemImage: "magnifyingglass") {
-                        showFilter.toggle()
-                        if !showFilter { session.search = "" }
-                    }
-                    Menu("Actions") {
-                        Button("Upload files", systemImage: "arrow.up.to.line") { showImporter = true }
-                            .disabled(!session.isConnected || session.isPreview)
-                        Button("Download selected file", systemImage: "arrow.down.to.line") {
-                            for file in session.files where selection.ids.contains(file.id) && !file.isDirectory {
-                                workspace.download(file, from: session)
-                            }
+                    FileFilterView()
+                    Button("Actions", systemImage: "chevron.down") { showActions.toggle() }
+                        .popover(isPresented: $showActions, arrowEdge: .bottom) {
+                            BrowserActionsMenuView(showImporter: $showImporter, selectedIDs: selection.ids, pane: pane)
                         }
-                        .disabled(session.isPreview || !session.files.contains { selection.ids.contains($0.id) && !$0.isDirectory })
-                        Divider()
-                        Button("Refresh", systemImage: "arrow.clockwise", action: workspace.refreshFiles)
-                            .disabled(session.isPreview || !session.isConnected)
-                        Toggle("Show hidden files", isOn: $session.showHidden)
-                        Button("Choose host", systemImage: "server.rack") { workspace.chooseHost(for: pane) }
-                        Button("Disconnect", systemImage: "xmark.circle", role: .destructive) { workspace.close(session) }
-                    }
                     .fixedSize()
                 }
             } path: {
                 RemoteBreadcrumbsView()
-                if showFilter {
-                    TextField("Filter files", text: $session.search)
-                        .textFieldStyle(.plain)
-                        .accessibilityLabel("Filter files")
-                }
             }
             if session.isConnected && session.error == nil {
                 DesktopFileTableView(selection: $selection)
