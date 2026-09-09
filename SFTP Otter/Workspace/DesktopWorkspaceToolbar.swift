@@ -18,6 +18,8 @@ struct DesktopWorkspaceToolbar: ToolbarContent {
                 .labelStyle(.iconOnly)
         }
         .sharedBackgroundVisibility(.hidden)
+        ToolbarSpacer(.flexible, placement: .primaryAction)
+
         ToolbarItem(placement: .primaryAction) {
             Button("Settings", systemImage: "gearshape") { workspace.showSettings = true }
         }
