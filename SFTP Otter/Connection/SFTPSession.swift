@@ -4,7 +4,7 @@ import Foundation
 @Observable
 final class SFTPSession: Identifiable {
     let id = UUID()
-    let host: Host
+    private(set) var host: Host
     var path: String
     var pathInput: String
     var didLoadLocation: (String) -> Void = { _ in }
@@ -29,6 +29,11 @@ final class SFTPSession: Identifiable {
         pathInput = host.initialPath
     }
     
+    func updateLabel(from savedHost: Host) {
+        guard savedHost.id == host.id else { return }
+        host.name = savedHost.name
+    }
+
     var filteredFiles: [RemoteFile] {
         files.filter {
             (showHidden || !$0.name.hasPrefix(".")) && (search.isEmpty || $0.name.localizedStandardContains(search))

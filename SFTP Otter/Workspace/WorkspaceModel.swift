@@ -139,6 +139,7 @@ final class WorkspaceModel {
         do {
             try store.save(updated)
             hosts = updated
+            for session in sessions { session.updateLabel(from: host) }
             editingHost = nil
             return true
         } catch { report(error); return false }
