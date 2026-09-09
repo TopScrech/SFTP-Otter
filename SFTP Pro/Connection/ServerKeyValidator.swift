@@ -6,11 +6,11 @@ import Synchronization
 nonisolated final class ServerKeyValidator: NIOSSHClientServerAuthenticationDelegate, Sendable {
     private let state = Mutex<(cancelled: Bool, task: Task<Void, Never>?)>((false, nil))
     private let verify: @Sendable (String) async throws -> Void
-
+    
     init(verify: @escaping @Sendable (String) async throws -> Void) {
         self.verify = verify
     }
-
+    
     func validateHostKey(hostKey: NIOSSHPublicKey, validationCompletePromise: EventLoopPromise<Void>) {
         let key = String(openSSHPublicKey: hostKey)
         let task = Task {
@@ -28,7 +28,7 @@ nonisolated final class ServerKeyValidator: NIOSSHClientServerAuthenticationDele
             else { $0.task = task }
         }
     }
-
+    
     func cancel() {
         state.withLock {
             $0.cancelled = true
