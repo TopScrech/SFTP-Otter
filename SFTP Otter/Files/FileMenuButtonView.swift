@@ -13,7 +13,7 @@ struct FileMenuButtonView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 14)
-                .background(navigation.selected == item ? Color.white.opacity(0.08) : .clear)
+                .background(navigation.selected == item ? Color.white.opacity(0.08) : .clear, in: .rect(cornerRadius: 6))
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)

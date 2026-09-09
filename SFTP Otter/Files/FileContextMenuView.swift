@@ -10,7 +10,7 @@ struct FileContextMenuView: View {
                 FileMenuButtonView(item: item) { action(item) }
             }
         }
-        .padding(.vertical, 8)
+        .padding(8)
         .frame(width: 300)
         .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 14))
         .overlay { RoundedRectangle(cornerRadius: 14).strokeBorder(.white.opacity(0.08)) }
