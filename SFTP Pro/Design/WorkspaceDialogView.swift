@@ -4,12 +4,15 @@ struct WorkspaceDialogView<Content: View>: View {
     let title: String
     let close: () -> Void
     @ViewBuilder let content: Content
-
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text(title).title2()
+                Text(title)
+                    .title2()
+                
                 Spacer()
+                
                 Button("Close", systemImage: "xmark", action: close)
                     .labelStyle(.iconOnly)
                     .buttonStyle(.plain)
@@ -17,7 +20,7 @@ struct WorkspaceDialogView<Content: View>: View {
             }
             .padding(30)
             .background(WorkspaceTheme.raised)
-
+            
             VStack(alignment: .leading, spacing: 28) {
                 content
             }
