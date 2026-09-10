@@ -21,13 +21,13 @@
 
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* SFTP Otter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SFTP Otter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD0000000000000000000001 /* SFTPOtterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SFTPOtterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD0000000000000000000001 /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F34FD1383050D33600F7829B /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		BD2000000000000000000001 /* Exceptions for "SFTP Otter" folder in "SFTPOtterTests" target */ = {
+		BD2000000000000000000001 /* Exceptions for "SFTP Otter" folder in "Unit Tests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Connection/CitadelSFTPTransport.swift,
@@ -73,7 +73,7 @@
 				Transfers/UploadConflictChoice.swift,
 				Transfers/UploadQueue.swift,
 			);
-			target = DD0000000000000000000009 /* SFTPOtterTests */;
+			target = DD0000000000000000000009 /* Unit Tests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -81,7 +81,7 @@
 		000000000000000000000010 /* SFTP Otter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				BD2000000000000000000001 /* Exceptions for "SFTP Otter" folder in "SFTPOtterTests" target */,
+				BD2000000000000000000001 /* Exceptions for "SFTP Otter" folder in "Unit Tests" target */,
 			);
 			path = "SFTP Otter";
 			sourceTree = "<group>";
@@ -132,7 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000120 /* SFTP Otter.app */,
-				DD0000000000000000000001 /* SFTPOtterTests.xctest */,
+				DD0000000000000000000001 /* Unit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,9 +165,9 @@
 			productReference = 000000000000000000000120 /* SFTP Otter.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DD0000000000000000000009 /* SFTPOtterTests */ = {
+		DD0000000000000000000009 /* Unit Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DD0000000000000000000008 /* Build configuration list for PBXNativeTarget "SFTPOtterTests" */;
+			buildConfigurationList = DD0000000000000000000008 /* Build configuration list for PBXNativeTarget "Unit Tests" */;
 			buildPhases = (
 				DD0000000000000000000004 /* Sources */,
 				DD0000000000000000000005 /* Frameworks */,
@@ -177,7 +177,7 @@
 			fileSystemSynchronizedGroups = (
 				DD0000000000000000000002 /* Tests */,
 			);
-			name = SFTPOtterTests;
+			name = "Unit Tests";
 			packageProductDependencies = (
 				AC0000000000000000000011 /* ScrechKit */,
 				AA0000000000000000000005 /* NIOPosix */,
@@ -186,7 +186,7 @@
 				DD0000000000000000000022 /* NIOSSH */,
 			);
 			productName = SFTPOtterTests;
-			productReference = DD0000000000000000000001 /* SFTPOtterTests.xctest */;
+			productReference = DD0000000000000000000001 /* Unit Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -224,7 +224,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DD0000000000000000000009 /* SFTPOtterTests */,
+				DD0000000000000000000009 /* Unit Tests */,
 				000000000000000100000000 /* SFTP Otter */,
 			);
 		};
@@ -476,7 +476,7 @@
 			};
 			name = Release;
 		};
-		DD0000000000000000000006 /* Debug configuration for PBXNativeTarget "SFTPOtterTests" */ = {
+		DD0000000000000000000006 /* Debug configuration for PBXNativeTarget "Unit Tests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -497,7 +497,7 @@
 			};
 			name = Debug;
 		};
-		DD0000000000000000000007 /* Release configuration for PBXNativeTarget "SFTPOtterTests" */ = {
+		DD0000000000000000000007 /* Release configuration for PBXNativeTarget "Unit Tests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -537,11 +537,11 @@
 			);
 			defaultConfigurationName = Release;
 		};
-		DD0000000000000000000008 /* Build configuration list for PBXNativeTarget "SFTPOtterTests" */ = {
+		DD0000000000000000000008 /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DD0000000000000000000006 /* Debug configuration for PBXNativeTarget "SFTPOtterTests" */,
-				DD0000000000000000000007 /* Release configuration for PBXNativeTarget "SFTPOtterTests" */,
+				DD0000000000000000000006 /* Debug configuration for PBXNativeTarget "Unit Tests" */,
+				DD0000000000000000000007 /* Release configuration for PBXNativeTarget "Unit Tests" */,
 			);
 			defaultConfigurationName = Release;
 		};
