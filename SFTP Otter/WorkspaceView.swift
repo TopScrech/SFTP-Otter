@@ -1,6 +1,6 @@
 import ScrechKit
 
-struct ContentView: View {
+struct WorkspaceView: View {
     @Environment(WorkspaceModel.self) private var workspace
     
     var body: some View {
@@ -52,6 +52,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    WorkspaceView()
         .environment(WorkspaceModel())
 }

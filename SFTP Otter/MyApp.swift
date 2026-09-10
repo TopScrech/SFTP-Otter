@@ -5,7 +5,7 @@ import SwiftUI
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WorkspaceView()
                 .environment(workspace)
         }
 #if os(macOS)
