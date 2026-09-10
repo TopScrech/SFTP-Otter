@@ -7,9 +7,11 @@ struct WorkspaceView: View {
         @Bindable var workspace = workspace
         @Bindable var uploads = workspace.uploads
         @Bindable var trustStore = workspace.trustStore
+        
         ViewThatFits(in: .horizontal) {
             DesktopWorkspaceView()
                 .frame(minWidth: 760)
+            
             MobileWorkspaceView()
         }
         .task {
