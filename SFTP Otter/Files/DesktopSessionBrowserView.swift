@@ -32,6 +32,7 @@ struct DesktopSessionBrowserView: View {
                 DesktopFileTableView(selection: $selection)
             } else if let error = session.error {
                 ContentUnavailableView("Connection unavailable", systemImage: "network.slash", description: Text(error))
+                    .maxFrame(.infinity)
             } else {
                 ProgressView("Connecting")
                     .maxFrame(.infinity)
