@@ -227,8 +227,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DD0000000000000000000009 /* Unit Tests */,
 				000000000000000100000000 /* SFTP Otter */,
+				DD0000000000000000000009 /* Unit Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -514,7 +514,7 @@
 				);
 				LM_SKIP_METADATA_EXTRACTION = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26;
-				PRODUCT_BUNDLE_IDENTIFIER = devplaceholder.SFTPOtterTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.topscrech.SFTP-Otter.Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
@@ -535,7 +535,7 @@
 				);
 				LM_SKIP_METADATA_EXTRACTION = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26;
-				PRODUCT_BUNDLE_IDENTIFIER = devplaceholder.SFTPOtterTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.topscrech.SFTP-Otter.Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
