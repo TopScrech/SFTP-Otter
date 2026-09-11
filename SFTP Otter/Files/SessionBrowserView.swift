@@ -9,8 +9,8 @@ struct SessionBrowserView: View {
     var body: some View {
         VStack(alignment: .leading) {
             FileBrowserToolbarView(showImporter: $showImporter)
-            if session.isLoading {
-                ProgressView("Loading directory")
+            if session.isLoading && !session.isConnected {
+                ProgressView("Connecting")
                     .maxFrame(.infinity)
             } else if let error = session.error {
                 ContentUnavailableView {

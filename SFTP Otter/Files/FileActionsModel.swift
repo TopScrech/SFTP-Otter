@@ -71,6 +71,14 @@ final class FileActionsModel {
         let input = self.input
         prompt = nil
         error = nil
+        if action == .open && file.isDirectory {
+            navigate(file.path)
+            return
+        }
+        if action == .refresh {
+            refresh()
+            return
+        }
         busy = true
         Task {
             defer { busy = false }
@@ -78,11 +86,8 @@ final class FileActionsModel {
                 switch action {
                 case .refresh: refresh()
                 case .open:
-                    if file.isDirectory { navigate(file.path) }
-                    else {
-                        let url = try await materialize(file)
-                        guard NSWorkspace.shared.open(url) else { throw CocoaError(.fileReadUnknown) }
-                    }
+                    let url = try await materialize(file)
+                    guard NSWorkspace.shared.open(url) else { throw CocoaError(.fileReadUnknown) }
                 case .openWith:
                     let panel = NSOpenPanel()
                     panel.title = "Choose an application"

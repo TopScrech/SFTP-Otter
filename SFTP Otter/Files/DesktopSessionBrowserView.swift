@@ -38,9 +38,6 @@ struct DesktopSessionBrowserView: View {
                     .maxFrame(.infinity)
             }
         }
-        .overlay {
-            if session.isLoading && session.isConnected { ProgressView("Loading files") }
-        }
         .modifier(UploadDropZoneModifier())
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data, .content], allowsMultipleSelection: true) {
             switch $0 {
