@@ -1,0 +1,9 @@
+{
+  "id" : "5b87c5e4-9942-48f1-8496-8924dd5c4b2e",
+  "targets" : [
+    {
+      "id" : "e61bcd78-650b-4fc4-ba73-c84b27b5b6f9",
+      "name" : "SFTP Otter"
+    }
+  ]
+}
