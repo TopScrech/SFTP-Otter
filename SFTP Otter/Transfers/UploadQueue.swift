@@ -6,6 +6,7 @@ final class UploadQueue {
     var conflict: UploadConflict?
     private var pending: [QueuedUpload] = []
     private var running = false
+    private var destinations: [String: (id: UUID, task: Task<Void, Never>)] = [:]
     private var decision: CheckedContinuation<UploadConflictChoice, Never>?
     private var choice = UploadConflictChoice.stop
 
@@ -48,13 +49,19 @@ final class UploadQueue {
         guard !running, !pending.isEmpty else { return }
         running = true
         let item = pending.removeFirst()
-        item.transfer.task = Task {
+        let key = "\(item.session.host.id)/\(item.directory)/\(item.url.lastPathComponent)"
+        let preceding = destinations[key]?.task
+        let id = UUID()
+        let task = Task {
+            // Recheck collisions only after an earlier upload to this path finishes
+            await preceding?.value
             await perform(item)
             item.transfer.finished = true
             item.transfer.task = nil
-            running = false
-            startNext()
+            if destinations[key]?.id == id { destinations[key] = nil }
         }
+        item.transfer.task = task
+        destinations[key] = (id, task)
     }
 
     private func stopPending() {
@@ -80,6 +87,13 @@ final class UploadQueue {
 
     private func perform(_ item: QueuedUpload) async {
         let transfer = item.transfer
+        var preparing = true
+        defer {
+            if preparing {
+                running = false
+                startNext()
+            }
+        }
         let access = item.url.startAccessingSecurityScopedResource()
         defer { if access { item.url.stopAccessingSecurityScopedResource() } }
         do {
@@ -111,6 +125,10 @@ final class UploadQueue {
             }
             try Task.checkCancellation()
             let destination = item.directory + (item.directory.hasSuffix("/") ? "" : "/") + name
+            // Keep conflict decisions ordered while file data transfers in parallel
+            preparing = false
+            running = false
+            startNext()
             try await item.session.transport.upload(local: item.url, remote: destination, replacing: replacing) { completed, total in
                 await MainActor.run {
                     if completed == 0 { transfer.started = Date() }

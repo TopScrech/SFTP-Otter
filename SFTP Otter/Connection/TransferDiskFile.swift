@@ -8,7 +8,7 @@ actor TransferDiskFile {
     }
     
     init(writing url: URL) throws {
-        guard FileManager.default.createFile(atPath: url.path(), contents: nil) else { throw CocoaError(.fileWriteUnknown) }
+        guard FileManager.default.createFile(atPath: url.path(percentEncoded: false), contents: nil) else { throw CocoaError(.fileWriteUnknown) }
         handle = try FileHandle(forWritingTo: url)
     }
     

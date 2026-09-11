@@ -38,6 +38,8 @@ struct SettingsView: View {
                     }
                     .toggleStyle(.switch)
 
+                    TransferSettingsSectionView()
+
                     SavedHostsSectionView()
 
                     TrustedHostsSectionView()

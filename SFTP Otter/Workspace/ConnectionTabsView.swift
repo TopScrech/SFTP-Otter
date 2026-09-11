@@ -42,7 +42,7 @@ struct ConnectionTabsView: View {
             Button("Settings", systemImage: "gearshape") { workspace.showSettings = true }
                 .buttonStyle(CircularToolbarButtonStyle())
             Button("Transfers", systemImage: "arrow.down.circle") {
-                workspace.section = .transfers
+                workspace.toggleTransfers()
             }
             .buttonStyle(CircularToolbarButtonStyle())
         }

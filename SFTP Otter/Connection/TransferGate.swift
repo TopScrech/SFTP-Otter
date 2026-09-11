@@ -1,7 +1,15 @@
 import Foundation
 
 actor TransferGate {
+    static let shared = TransferGate()
+    private let fixedLimit: Int?
     private var running = 0
+
+    init(limit: Int? = nil) {
+        fixedLimit = limit.map { max(1, $0) }
+    }
+
+    private var limit: Int { fixedLimit ?? TransferPreferences.parallelTransfers }
     private var waiters: [(id: UUID, continuation: CheckedContinuation<Void, any Error>)] = []
     
     func run(_ operation: @escaping @Sendable () async throws -> Void) async throws {
@@ -18,7 +26,7 @@ actor TransferGate {
     
     private func acquire() async throws {
         try Task.checkCancellation()
-        if running < 3 {
+        if running < limit {
             running += 1
             return
         }
@@ -34,8 +42,11 @@ actor TransferGate {
     }
     
     private func release() {
-        if waiters.isEmpty { running -= 1 }
-        else { waiters.removeFirst().continuation.resume() }
+        running -= 1
+        while running < limit, !waiters.isEmpty {
+            running += 1
+            waiters.removeFirst().continuation.resume()
+        }
     }
     
     private func cancel(_ id: UUID) {

@@ -27,7 +27,7 @@ struct DesktopWorkspaceToolbar: ToolbarContent {
         }
         .sharedBackgroundVisibility(.hidden)
         ToolbarItem(placement: .primaryAction) {
-            Button("Transfers", systemImage: "arrow.down.circle") { workspace.section = .transfers }
+            Button("Transfers", systemImage: "arrow.down.circle") { workspace.toggleTransfers() }
                 .buttonStyle(CircularToolbarButtonStyle())
         }
         .sharedBackgroundVisibility(.hidden)

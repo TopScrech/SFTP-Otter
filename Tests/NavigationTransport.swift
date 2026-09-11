@@ -1,7 +1,7 @@
 import Foundation
 
 actor NavigationTransport: SFTPTransport {
-    func connect(host: SFTPOtterTests.Host, password: String) async throws {}
+    func connect(host: Host, password: String) async throws {}
     func list(path: String) async throws -> (path: String, files: [RemoteFile]) {
         if path == "/missing" { throw CocoaError(.fileNoSuchFile) }
         return (path == "." ? "/" : path, [])

@@ -1,6 +1,12 @@
 import Foundation
 
 actor UploadConflictTransport: SFTPTransport {
+    private let delay: Duration
+    private var active = 0
+    private(set) var peak = 0
+
+    init(delay: Duration = .zero) { self.delay = delay }
+
     var destinations: [String] = []
     var replacements: [Bool] = []
 
@@ -13,6 +19,10 @@ actor UploadConflictTransport: SFTPTransport {
         try await upload(local: local, remote: remote, replacing: false, progress: progress)
     }
     func upload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
+        active += 1
+        peak = max(peak, active)
+        defer { active -= 1 }
+        try await Task.sleep(for: delay)
         destinations.append(remote)
         replacements.append(replacing)
     }

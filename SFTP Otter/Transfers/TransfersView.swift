@@ -16,7 +16,7 @@ struct TransfersView: View {
             .padding(.vertical)
             if workspace.transfers.isEmpty {
                 ContentUnavailableView("No transfers yet", systemImage: "arrow.up.arrow.down", description: Text("Uploads and downloads appear here with live progress"))
-                    .frame(maxHeight: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
                     LazyVStack {

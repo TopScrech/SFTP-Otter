@@ -2,6 +2,9 @@ import Foundation
 
 @Observable
 final class WorkspaceModel {
+#if os(macOS)
+    @ObservationIgnored let dockProgress = DockTransferProgress()
+#endif
 #if DEBUG
     var localPreviewURL: URL?
 #endif
@@ -16,6 +19,10 @@ final class WorkspaceModel {
             browser.refresh()
         }
     }
+    func toggleTransfers() {
+        section = section == .transfers ? .files : .transfers
+    }
+
     var section = WorkspaceSection.files
     var hosts: [Host] = []
     var sessions: [SFTPSession] = []

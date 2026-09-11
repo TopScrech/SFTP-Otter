@@ -14,7 +14,7 @@ actor CitadelSFTPTransport: SFTPTransport {
         return algorithms
     }
     
-    private let gate = TransferGate()
+    private let gate = TransferGate.shared
     private var ssh: SSHClient?
     private var sftp: SFTPClient?
     private var validator: ServerKeyValidator?
@@ -136,8 +136,9 @@ actor CitadelSFTPTransport: SFTPTransport {
     private func performUpload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
         guard let ssh else { throw ConnectionError.notConnected }
         let sftp = try await ssh.openSFTP()
+        // Drain in-flight requests before closing the channel, including on cancellation
         defer { Task { try? await sftp.close() } }
-        try await withTaskCancellationHandler {
+        do {
             try Task.checkCancellation()
             let disk = try TransferDiskFile(reading: local)
             let temporary = remote + ".sftp-otter-" + UUID().uuidString + ".part"
@@ -146,7 +147,7 @@ actor CitadelSFTPTransport: SFTPTransport {
                 let file = try await sftp.openFile(filePath: temporary, flags: [.write, .create, .forceCreate])
                 let handle = RemoteFileHandle(file: file)
                 do {
-                    try await TransferPipeline.copy(total: total, read: { try await disk.read(offset: $0, length: $1) }, write: { try await handle.write($0, offset: $1) }, progress: progress)
+                    try await TransferPipeline.copy(total: total, requestCount: TransferPreferences.requestsPerFile, read: { try await disk.read(offset: $0, length: $1) }, write: { try await handle.write($0, offset: $1) }, progress: progress)
                     guard try await disk.size() == total else { throw SFTPConnectionError.remoteFileChanged }
                     try await handle.close()
                     try await disk.close()
@@ -174,26 +175,26 @@ actor CitadelSFTPTransport: SFTPTransport {
                 try? await self.sftp?.remove(at: temporary)
                 throw error
             }
-        } onCancel: {
-            Task { try? await sftp.close() }
         }
+
     }
     
     private func performDownload(remote: String, local: URL, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
         guard let ssh else { throw ConnectionError.notConnected }
         let sftp = try await ssh.openSFTP()
+        // Drain in-flight requests before closing the channel, including on cancellation
         defer { Task { try? await sftp.close() } }
-        try await withTaskCancellationHandler {
+        do {
             try Task.checkCancellation()
             let file = try await sftp.openFile(filePath: remote, flags: .read)
             let handle = RemoteFileHandle(file: file)
-            let temporary = local.appendingPathExtension("part")
+            let temporary = local.deletingLastPathComponent().appending(path: ".sftp-otter-" + UUID().uuidString + ".part")
             do {
                 let before = try await handle.attributes()
                 guard let total = before.size else { throw SFTPConnectionError.unexpectedEndOfFile }
                 let disk = try TransferDiskFile(writing: temporary)
                 do {
-                    try await TransferPipeline.copy(total: total, read: { try await handle.read(offset: $0, length: $1) }, write: { try await disk.write($0, offset: $1) }, progress: progress)
+                    try await TransferPipeline.copy(total: total, requestCount: TransferPreferences.requestsPerFile, read: { try await handle.read(offset: $0, length: $1) }, write: { try await disk.write($0, offset: $1) }, progress: progress)
                     let after = try await handle.attributes()
                     guard after.size == before.size, after.accessModificationTime == before.accessModificationTime else { throw SFTPConnectionError.remoteFileChanged }
                     try await disk.close()
@@ -209,9 +210,8 @@ actor CitadelSFTPTransport: SFTPTransport {
                 try? FileManager.default.removeItem(at: temporary)
                 throw error
             }
-        } onCancel: {
-            Task { try? await sftp.close() }
         }
+
     }
     
     func rename(path: String, to destination: String) async throws {

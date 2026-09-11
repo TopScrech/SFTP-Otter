@@ -50,7 +50,7 @@ final class LocalFileDropTargetView: NSView {
         if let receivers = pasteboard.readObjects(forClasses: [NSFilePromiseReceiver.self]) as? [NSFilePromiseReceiver], !receivers.isEmpty {
             for receiver in receivers {
                 receiver.receivePromisedFiles(atDestination: destination, options: [:], operationQueue: .main) { _, error in
-                    let message = error?.localizedDescription
+                    let message = error is CancellationError ? nil : error?.localizedDescription
                     Task { @MainActor in completion(message) }
                 }
             }

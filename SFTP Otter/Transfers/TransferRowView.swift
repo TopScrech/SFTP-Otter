@@ -28,6 +28,7 @@ struct TransferRowView: View {
                     }
                 }
                 .caption()
+                .monospacedDigit()
                 .foregroundStyle(WorkspaceTheme.muted)
                 if let failure = transfer.failure {
                     Text(failure).caption().foregroundStyle(.red)

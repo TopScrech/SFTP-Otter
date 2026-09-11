@@ -54,7 +54,9 @@ struct RemoteBrowserRowView: View {
                     }
                     return files.map {
                         FileRowDragPreview.item(file: $0, width: width,
-                            writer: FileDragPromise(file: $0, transport: session.transport) { actions.error = $0 }.provider())
+                            writer: FileDragPromise(file: $0, download: { file, destination in
+                                try await workspace.downloadExport(file, to: destination, using: session.transport)
+                            }, reportError: { actions.error = $0 }).provider())
                     }
                 },
                 select: { shift, command, context in

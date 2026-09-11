@@ -3,6 +3,21 @@ import Testing
 
 @MainActor
 struct UploadQueueTests {
+    @Test func uploadsRunInParallelAfterCheckingDestinations() async throws {
+        let transport = UploadConflictTransport(delay: .milliseconds(50))
+        let session = SFTPSession(host: Host(initialPath: "/uploads"), transport: transport)
+        let queue = UploadQueue()
+        let transfers = (1...3).map { FileTransfer(name: "file\($0)", isUpload: true) }
+        for transfer in transfers {
+            queue.enqueue(URL(filePath: "/" + transfer.name), session: session, transfer: transfer)
+        }
+        for _ in 0..<200 where transfers.contains(where: { !$0.finished }) {
+            try await Task.sleep(for: .milliseconds(5))
+        }
+        #expect(transfers.allSatisfy { $0.finished })
+        #expect(await transport.peak == 3)
+    }
+
     @Test func duplicateNamesPreserveExtensionsAndAvoidCollisions() {
         #expect(UploadQueue.duplicateName("photo.png", existing: ["photo.png", "photo copy.png"]) == "photo copy 2.png")
         #expect(UploadQueue.duplicateName("README", existing: ["README"]) == "README copy")

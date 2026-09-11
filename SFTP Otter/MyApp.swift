@@ -7,6 +7,9 @@ import SwiftUI
         WindowGroup {
             WorkspaceView()
                 .environment(workspace)
+#if os(macOS)
+                .task { workspace.dockProgress.start(workspace: workspace) }
+#endif
         }
 #if os(macOS)
         .windowStyle(.hiddenTitleBar)
