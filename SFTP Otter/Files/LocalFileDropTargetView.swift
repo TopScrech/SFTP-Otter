@@ -57,15 +57,10 @@ final class LocalFileDropTargetView: NSView {
             return true
         }
         guard let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? [URL], !urls.isEmpty else { return false }
+        let sources = urls.filter { !isAlreadyInDestination($0, destination: destination) }
         Task {
-            for source in urls where !isAlreadyInDestination(source, destination: destination) {
-                let access = source.startAccessingSecurityScopedResource()
-                do {
-                    try FileManager.default.copyItem(at: source, to: destination.appending(path: source.lastPathComponent))
-                    completion(nil)
-                } catch { completion(error.localizedDescription) }
-                if access { source.stopAccessingSecurityScopedResource() }
-            }
+            let failures = await LocalFileOperations.copy(sources: sources, to: destination)
+            completion(failures.isEmpty ? nil : failures.joined(separator: "\n"))
         }
         return true
     }

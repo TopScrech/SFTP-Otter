@@ -44,6 +44,12 @@ struct RemoteBrowserRowView: View {
                         session.navigate(to: file.path)
                     }
                 },
+                previewSelection: {
+                    guard session.isConnected, !session.isPreview else { return }
+                    actions.preview(
+                        session.browserFiles.filter { selection.ids.contains($0.id) },
+                        using: session.transport)
+                },
                 goToParent: {
                     if let file = session.browserFiles.first(where: { $0.name == ".." }) { session.navigate(to: file.path) }
                 },

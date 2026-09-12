@@ -39,7 +39,7 @@ struct DesktopSessionBrowserView: View {
             }
         }
         .modifier(UploadDropZoneModifier())
-        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data, .content], allowsMultipleSelection: true) {
+        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data, .content, .folder], allowsMultipleSelection: true) {
             switch $0 {
             case .success(let urls): urls.forEach { workspace.upload($0, to: session) }
             case .failure(let error): workspace.report(error)

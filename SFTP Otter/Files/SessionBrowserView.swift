@@ -52,7 +52,7 @@ struct SessionBrowserView: View {
             .padding()
         }
         .padding()
-        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data, .content], allowsMultipleSelection: true) { result in
+        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data, .content, .folder], allowsMultipleSelection: true) { result in
             switch result {
             case .success(let urls): urls.forEach { workspace.upload($0, to: session) }
             case .failure(let error): workspace.report(error)

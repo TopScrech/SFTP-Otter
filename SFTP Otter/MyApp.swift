@@ -3,6 +3,12 @@ import SwiftUI
 @main struct MyApp: App {
     @State private var workspace = WorkspaceModel()
     
+    init() {
+#if os(macOS)
+        QuickLookCache.prepareForLaunch()
+#endif
+    }
+
     var body: some Scene {
         WindowGroup {
             WorkspaceView()

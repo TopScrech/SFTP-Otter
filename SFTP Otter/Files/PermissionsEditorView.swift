@@ -9,7 +9,11 @@ struct PermissionsEditorView: View {
         @Bindable var actions = actions
         WorkspaceDialogView(title: "Edit permissions", close: { dismiss() }) {
             VStack(alignment: .leading, spacing: 24) {
-                Text(actions.file?.path ?? "").lineLimit(2).enableSelection()
+                if actions.selectedFiles.count > 1 {
+                    Text("Apply permissions to \(actions.selectedFiles.count) selected items")
+                } else {
+                    Text(actions.file?.path ?? "").lineLimit(2).enableSelection()
+                }
                 Grid(alignment: .leading, horizontalSpacing: 36, verticalSpacing: 8) {
                     GridRow {
                         Text("File Access").frame(maxWidth: .infinity, alignment: .leading)

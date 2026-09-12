@@ -3,7 +3,7 @@ import Testing
 
 @MainActor
 struct LocalFolderRestoreTests {
-    @Test func restoresDirectoryAndRetainsAuthorizedParent() throws {
+    @Test func restoresDirectoryAndRetainsAuthorizedParent() async throws {
         let defaults = UserDefaults.standard
         let keys = ["reopenConnectedHosts", "localFolder.primary", "localFolder.primary.path"]
         let original = keys.map { defaults.object(forKey: $0) }
@@ -20,18 +20,23 @@ struct LocalFolderRestoreTests {
         defer { try? FileManager.default.removeItem(at: root) }
         let first = LocalFileBrowserModel()
         first.restoreLocation(for: .primary)
+        await first.waitForNavigation()
         first.open(root)
+        await first.waitForNavigation()
         #expect(defaults.data(forKey: "localFolder.primary") == nil)
         defaults.set(true, forKey: "reopenConnectedHosts")
         first.navigate(to: child)
+        await first.waitForNavigation()
         #expect(defaults.data(forKey: "localFolder.primary") != nil)
         first.close(forget: false)
         let restored = LocalFileBrowserModel()
         restored.restoreLocation(for: .primary)
+        await restored.waitForNavigation()
         #expect(restored.error == nil)
         #expect(restored.directory?.resolvingSymlinksInPath().pathComponents == child.resolvingSymlinksInPath().pathComponents)
         #expect(restored.files.contains { $0.name == ".." })
         restored.navigate(to: root)
+        await restored.waitForNavigation()
         #expect(!restored.files.contains { $0.name == ".." })
         restored.close()
         #expect(defaults.data(forKey: "localFolder.primary") == nil)

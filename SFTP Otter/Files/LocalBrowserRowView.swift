@@ -43,6 +43,9 @@ struct LocalBrowserRowView: View {
                         browser.navigate(to: URL(filePath: file.path))
                     }
                 },
+                previewSelection: {
+                    actions.preview(browser.files.filter { browser.selection.ids.contains($0.id) })
+                },
                 goToParent: {
                     if let file = browser.files.first(where: { $0.name == ".." }) { browser.navigate(to: URL(filePath: file.path)) }
                 },

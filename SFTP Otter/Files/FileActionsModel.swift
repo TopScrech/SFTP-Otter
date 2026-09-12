@@ -5,6 +5,15 @@ import UniformTypeIdentifiers
 @MainActor
 @Observable
 final class FileActionsModel {
+    let previewCache = QuickLookCache()
+    var previewURL: URL? {
+        didSet {
+            if previewURL == nil { previewCache.scheduleCleanup() }
+        }
+    }
+    var previewURLs: [URL] = []
+    var previewTask: Task<Void, Never>?
+    var registerTransfer: (FileTransfer) -> Void = { _ in }
     var file: RemoteFile?
     var selectedFiles: [RemoteFile] = []
     var permissionGroups = PermissionAccess.groups(mode: 0o644)
@@ -44,19 +53,26 @@ final class FileActionsModel {
             showDeleteConfirmation = true
         } else if [.rename, .newFolder, .permissions].contains(action) {
             input = action == .rename ? file.name : action == .permissions ? Self.mode(from: file.permissions) : ""
-            if action == .permissions, transport == nil,
-               let attributes = try? FileManager.default.attributesOfItem(atPath: file.path),
-               let mode = attributes[.posixPermissions] as? NSNumber {
-                input = String(mode.uint32Value, radix: 8)
+            if action == .permissions, transport == nil {
+                busy = true
+                Task {
+                    defer { busy = false }
+                    do {
+                        let metadata = try await LocalFileOperations.metadata(at: URL(filePath: file.path))
+                        guard self.file?.id == file.id else { return }
+                        input = String((metadata.mode ?? 0o644) & 0o7777, radix: 8)
+                        permissionOwner = metadata.owner ?? "Unavailable"
+                        permissionGroup = metadata.group ?? "Unavailable"
+                        permissionGroups = PermissionAccess.groups(mode: UInt32(input, radix: 8) ?? 0o644)
+                        prompt = action
+                    } catch { self.error = error.localizedDescription }
+                }
+                return
             }
             if action == .permissions {
                 if let mode = file.mode { input = String(mode & 0o7777, radix: 8) }
                 permissionOwner = file.owner ?? "Unavailable"
                 permissionGroup = file.group ?? "Unavailable"
-                if transport == nil, let attributes = try? FileManager.default.attributesOfItem(atPath: file.path) {
-                    permissionOwner = attributes[.ownerAccountName] as? String ?? "Unavailable"
-                    permissionGroup = attributes[.groupOwnerAccountName] as? String ?? "Unavailable"
-                }
                 permissionGroups = PermissionAccess.groups(mode: UInt32(input, radix: 8) ?? 0o644)
             }
             prompt = action
@@ -86,16 +102,19 @@ final class FileActionsModel {
                 switch action {
                 case .refresh: refresh()
                 case .open:
-                    let url = try await materialize(file)
-                    guard NSWorkspace.shared.open(url) else { throw CocoaError(.fileReadUnknown) }
+                    for target in targets where !target.isDirectory {
+                        let url = try await materialize(target)
+                        guard NSWorkspace.shared.open(url) else { throw CocoaError(.fileReadUnknown) }
+                    }
                 case .openWith:
                     let panel = NSOpenPanel()
                     panel.title = "Choose an application"
                     panel.directoryURL = URL(filePath: "/Applications")
                     panel.allowedContentTypes = [.application]
                     guard await panel.begin() == .OK, let application = panel.url else { return }
-                    let url = try await materialize(file)
-                    try await NSWorkspace.shared.open([url], withApplicationAt: application, configuration: .init())
+                    var urls: [URL] = []
+                    for target in targets where !target.isDirectory { urls.append(try await materialize(target)) }
+                    try await NSWorkspace.shared.open(urls, withApplicationAt: application, configuration: .init())
                 case .copy:
                     let panel = NSOpenPanel()
                     panel.title = "Copy to target directory"
@@ -105,69 +124,66 @@ final class FileActionsModel {
                     guard await panel.begin() == .OK, let target = panel.url else { return }
                     let access = target.startAccessingSecurityScopedResource()
                     defer { if access { target.stopAccessingSecurityScopedResource() } }
-                    let destination = target.appending(path: file.name)
-                    if let transport {
-                        try await downloadTree(file, to: destination, using: transport)
-                    } else {
-                        try FileManager.default.copyItem(at: URL(filePath: file.path), to: destination)
+                    for file in targets {
+                        let destination = target.appending(path: file.name)
+                        if let transport {
+                            try await DownloadExporter(register: registerTransfer).downloadExport(file, to: destination, using: transport)
+                        } else {
+                            try await LocalFileOperations.copy(source: URL(filePath: file.path), to: destination)
+                        }
                     }
                     refresh()
                 case .rename:
                     let name = try Self.validName(input)
                     let target = Self.child(directory, name)
                     if let transport { try await transport.rename(path: file.path, to: target) }
-                    else { try FileManager.default.moveItem(atPath: file.path, toPath: target) }
+                    else { try await LocalFileOperations.move(from: URL(filePath: file.path), to: URL(filePath: target)) }
                     refresh()
                 case .newFolder:
                     let name = try Self.validName(input)
                     let target = Self.child(directory, name)
                     if let transport { try await transport.createDirectory(path: target) }
-                    else { try FileManager.default.createDirectory(atPath: target, withIntermediateDirectories: false) }
+                    else { try await LocalFileOperations.createDirectory(at: URL(filePath: target)) }
                     refresh()
                 case .permissions:
                     guard (3...4).contains(input.count), input.allSatisfy({ "01234567".contains($0) }), let mode = UInt32(input, radix: 8), mode <= 0o7777 else {
                         throw FileActionError.invalidPermissions
                     }
-                    if let transport { try await transport.setPermissions(path: file.path, mode: mode) }
-                    else { try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: mode)], ofItemAtPath: file.path) }
+                    for target in targets {
+                        if let transport { try await transport.setPermissions(path: target.path, mode: mode) }
+                        else { try await LocalFileOperations.setPermissions(at: URL(filePath: target.path), mode: mode) }
+                    }
                     refresh()
                 case .delete:
                     for target in targets {
                         guard target.name != "..", target.path != "/" else { throw FileActionError.invalidName }
                         if let transport { try await removeTree(target, using: transport) }
-                        else { try FileManager.default.trashItem(at: URL(filePath: target.path), resultingItemURL: nil) }
+                        else { try await LocalFileOperations.trash(at: URL(filePath: target.path)) }
                     }
                     refresh()
                 }
-            } catch { self.error = error.localizedDescription }
+            } catch {
+                if !(error is CancellationError) { self.error = error.localizedDescription }
+            }
         }
     }
     
-    private func materialize(_ file: RemoteFile) async throws -> URL {
+    func materialize(_ file: RemoteFile) async throws -> URL {
         guard let transport else { return URL(filePath: file.path) }
         let root = URL.temporaryDirectory.appending(path: "SFTP Otter Open/" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        try await LocalFileOperations.createDirectory(at: root, withIntermediateDirectories: true)
         let destination = root.appending(path: file.name)
-        try await downloadTree(file, to: destination, using: transport)
-        return destination
+        do {
+            try await DownloadExporter(register: registerTransfer).downloadExport(file, to: destination, using: transport)
+            return destination
+        } catch {
+            try? await LocalFileOperations.remove(at: root)
+            throw error
+        }
     }
     
-    func downloadTree(_ file: RemoteFile, to target: URL, using transport: any SFTPTransport, depth: Int = 0, download: ((RemoteFile, URL) async throws -> Void)? = nil) async throws {
-        try Task.checkCancellation()
-        guard depth < 64, !file.permissions.hasPrefix("l") else { throw FileActionError.symbolicLink }
-        guard !FileManager.default.fileExists(atPath: target.path(percentEncoded: false)) else { throw CocoaError(.fileWriteFileExists) }
-        if file.isDirectory {
-            try FileManager.default.createDirectory(at: target, withIntermediateDirectories: false)
-            for child in try await transport.list(path: file.path).files {
-                guard child.name != ".", child.name != ".." else { continue }
-                let name = try Self.validName(child.name)
-                try await downloadTree(child, to: target.appending(path: name), using: transport, depth: depth + 1, download: download)
-            }
-        } else if let download {
-            try await download(file, target)
-        } else {
-            try await transport.download(remote: file.path, local: target) { _, _ in }
-        }
+    func downloadTree(_ file: RemoteFile, to target: URL, using transport: any SFTPTransport, depth: Int = 0, download: (@MainActor @Sendable (RemoteFile, URL) async throws -> Void)? = nil) async throws {
+        try await DirectoryDownload().download(file, to: target, using: transport, depth: depth, perform: download)
     }
     
     private func removeTree(_ file: RemoteFile, using transport: any SFTPTransport, depth: Int = 0) async throws {
@@ -183,7 +199,7 @@ final class FileActionsModel {
         try await transport.remove(path: file.path, isDirectory: directory)
     }
     
-    static func validName(_ name: String) throws -> String {
+    nonisolated static func validName(_ name: String) throws -> String {
         guard !name.isEmpty, name != ".", name != "..", !name.contains("/"), !name.contains("\0") else { throw FileActionError.invalidName }
         return name
     }

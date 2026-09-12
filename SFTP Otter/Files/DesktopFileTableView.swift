@@ -16,7 +16,9 @@ struct DesktopFileTableView: View {
         // One width keeps the lazy rows aligned with the proportional column headers
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                FileTableHeaderView(width: geometry.size.width, showsColumnDividers: false)
+                FileTableHeaderView(width: geometry.size.width, showsColumnDividers: false, sortOrder: session.sortOrder) {
+                    session.sortOrder.select($0)
+                }
                 Divider()
                 ScrollView {
                     LazyVStack(spacing: 0) {

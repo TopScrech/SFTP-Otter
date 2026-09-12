@@ -44,7 +44,9 @@ struct LocalFileBrowserView: View {
             } else {
                 GeometryReader { geometry in
                     VStack(spacing: 0) {
-                        FileTableHeaderView(width: geometry.size.width, showsColumnDividers: false)
+                        FileTableHeaderView(width: geometry.size.width, showsColumnDividers: false, sortOrder: browser.sortOrder) {
+                            browser.sortOrder.select($0)
+                        }
                         Divider()
                         ScrollView {
                             LazyVStack(spacing: 0) {

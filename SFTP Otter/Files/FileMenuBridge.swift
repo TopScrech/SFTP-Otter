@@ -7,6 +7,7 @@ struct FileMenuBridge: NSViewRepresentable {
     var rowSelected = false
     var moveSelection: (Int, Bool) -> Void = { _, _ in }
     var openSelection: () -> Void = {}
+    var previewSelection: () -> Void = {}
     var goToParent: () -> Void = {}
     var dragItems: () -> [NSDraggingItem] = { [] }
     let select: (Bool, Bool, Bool) -> Void
@@ -21,6 +22,7 @@ struct FileMenuBridge: NSViewRepresentable {
         view.keyboardFocused = keyboardFocused
         view.moveSelection = moveSelection
         view.openSelection = openSelection
+        view.previewSelection = previewSelection
         view.goToParent = goToParent
         if needsFocus { view.updateKeyboardFocus() }
         view.select = select

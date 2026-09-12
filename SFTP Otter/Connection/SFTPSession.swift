@@ -9,6 +9,7 @@ final class SFTPSession: Identifiable {
     var pathInput: String
     var didLoadLocation: (String) -> Void = { _ in }
     var files: [RemoteFile] = []
+    var sortOrder = FileSortOrder()
     var search = ""
     var showHidden = false
     var isPreview = false
@@ -35,12 +36,9 @@ final class SFTPSession: Identifiable {
     }
 
     var filteredFiles: [RemoteFile] {
-        files.filter {
+        sortOrder.sorted(files.filter {
             (showHidden || !$0.name.hasPrefix(".")) && (search.isEmpty || $0.name.localizedStandardContains(search))
-        }.sorted {
-            if $0.isDirectory != $1.isDirectory { return $0.isDirectory }
-            return $0.name.localizedStandardCompare($1.name) == .orderedAscending
-        }
+        })
     }
     
     var browserFiles: [RemoteFile] {

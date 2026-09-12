@@ -1,11 +1,19 @@
 import Foundation
 
+@MainActor
 @Observable
 final class LocalFileBrowserModel {
     private(set) var directory: URL?
     private var root: URL?
     private var hasAccess = false
     private var persistenceKey: String?
+    private var navigationTask: Task<Void, Never>?
+    private var navigationID = UUID()
+    private var pendingDirectory: URL?
+    private var copyTask: Task<Void, Never>?
+    var sortOrder = FileSortOrder() {
+        didSet { files = sortOrder.sorted(files) }
+    }
     
     func restoreLocation(for pane: BrowserPane) {
         persistenceKey = pane == .primary ? "localFolder.primary" : "localFolder.secondary"
@@ -53,19 +61,18 @@ final class LocalFileBrowserModel {
     }
 
     func copyFiles(_ sources: [URL], to destination: URL) {
-        let destinationAccess = destination.startAccessingSecurityScopedResource()
-        defer { if destinationAccess { destination.stopAccessingSecurityScopedResource() } }
-        var failures: [String] = []
-        for source in sources {
-            let sourceAccess = source.startAccessingSecurityScopedResource()
-            defer { if sourceAccess { source.stopAccessingSecurityScopedResource() } }
-            do {
-                try FileManager.default.copyItem(at: source, to: destination.appending(path: source.lastPathComponent))
-            } catch { failures.append("\(source.lastPathComponent): \(error.localizedDescription)") }
+        let accessRoot = root
+        copyTask = Task {
+            let failures = await LocalFileOperations.copy(sources: sources, to: destination, accessRoot: accessRoot)
+            refresh()
+            await waitForNavigation()
+            if !failures.isEmpty { error = failures.joined(separator: "\n") }
         }
-        refresh()
-        if !failures.isEmpty { error = failures.joined(separator: "\n") }
     }
+
+    func waitForCopy() async { await copyTask?.value }
+
+    func waitForNavigation() async { await navigationTask?.value }
 
     func report(_ failure: any Error) { error = failure.localizedDescription }
 
@@ -78,35 +85,40 @@ final class LocalFileBrowserModel {
     }
     
     func navigate(to url: URL) {
-        do {
-            let keys: Set<URLResourceKey> = [.isDirectoryKey, .fileSizeKey, .contentModificationDateKey]
-            let urls = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: Array(keys), options: showHidden ? [] : [.skipsHiddenFiles])
-            var entries = try urls.map { item in
-                let values = try item.resourceValues(forKeys: keys)
-                return RemoteFile(path: item.path(percentEncoded: false), name: item.lastPathComponent, isDirectory: values.isDirectory == true, size: UInt64(max(0, values.fileSize ?? 0)), modified: values.contentModificationDate, permissions: "")
-            }.sorted {
-                if $0.isDirectory != $1.isDirectory { return $0.isDirectory }
-                return $0.name.localizedStandardCompare($1.name) == .orderedAscending
+        navigationTask?.cancel()
+        let request = UUID()
+        navigationID = request
+        pendingDirectory = url
+        let root = root
+        let showHidden = showHidden
+        navigationTask = Task {
+            do {
+                let entries = try await LocalFileOperations.list(directory: url, root: root, showHidden: showHidden)
+                guard !Task.isCancelled, navigationID == request else { return }
+                pendingDirectory = nil
+                directory = url
+                files = sortOrder.sorted(entries)
+                selection = FileSelection()
+                error = nil
+                rememberLocation()
+            } catch {
+                guard !Task.isCancelled, navigationID == request else { return }
+                pendingDirectory = nil
+                self.error = error.localizedDescription
+                if directory == nil { directory = url }
             }
-            if url.standardizedFileURL.pathComponents != root?.standardizedFileURL.pathComponents {
-                entries.insert(RemoteFile(path: url.deletingLastPathComponent().path(percentEncoded: false), name: "..", isDirectory: true, size: 0, permissions: ""), at: 0)
-            }
-            directory = url
-            files = entries
-            selection = FileSelection()
-            error = nil
-            rememberLocation()
-        } catch {
-            self.error = error.localizedDescription
-            if directory == nil { directory = url }
         }
     }
-    
+
     func refresh() {
-        if let directory { navigate(to: directory) }
+        if let directory = pendingDirectory ?? directory { navigate(to: directory) }
     }
     
     func close(forget: Bool = true) {
+        navigationTask?.cancel()
+        navigationTask = nil
+        navigationID = UUID()
+        pendingDirectory = nil
         if forget, let persistenceKey { UserDefaults.standard.removeObject(forKey: persistenceKey) }
         if hasAccess { root?.stopAccessingSecurityScopedResource() }
         hasAccess = false

@@ -257,27 +257,34 @@ final class WorkspaceModel {
     }
     
     func download(_ file: RemoteFile, from session: SFTPSession) {
-        guard session.isConnected && !session.isPreview && !file.isDirectory else { return }
+        guard session.isConnected && !session.isPreview else { return }
         let transfer = FileTransfer(name: file.name, isUpload: false)
         transfers.insert(transfer, at: 0)
         transfer.task = Task {
             let directory = URL.documentsDirectory.appending(path: "Downloads").appending(path: transfer.id.uuidString)
             let destination = directory.appending(path: URL(filePath: file.name).lastPathComponent)
             do {
-                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-                try await session.transport.download(remote: file.path, local: destination) { completed, total in
-                    await MainActor.run {
-                        if completed == 0 { transfer.started = Date() }
-                        transfer.status = transfer.isUpload ? "Uploading" : "Downloading"
-                        transfer.completedBytes = completed
-                        transfer.totalBytes = total
+                try await LocalFileOperations.createDirectory(at: directory, withIntermediateDirectories: true)
+                if file.isDirectory {
+                    transfer.status = "Downloading folder"
+                    let exporter = DownloadExporter { self.transfers.insert($0, at: 0) }
+                    try await exporter.downloadExport(file, to: destination, using: session.transport)
+                } else {
+                    try await session.transport.download(remote: file.path, local: destination) { completed, total in
+                        await MainActor.run {
+                            if completed == 0 { transfer.started = Date() }
+                            transfer.status = "Downloading"
+                            transfer.completedBytes = completed
+                            transfer.totalBytes = total
+                        }
                     }
                 }
                 transfer.localURL = destination
                 transfer.status = "Downloaded"
             } catch {
-                transfer.status = Task.isCancelled ? "Cancelled" : "Failed"
-                transfer.failure = Task.isCancelled ? nil : error.localizedDescription
+                let cancelled = Task.isCancelled || error is CancellationError
+                transfer.status = cancelled ? "Cancelled" : "Failed"
+                transfer.failure = cancelled ? nil : error.localizedDescription
             }
             transfer.finished = true
             transfer.task = nil

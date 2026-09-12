@@ -14,6 +14,7 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
     var rowSelected = false
     var moveSelection: (Int, Bool) -> Void = { _, _ in }
     var openSelection: () -> Void = {}
+    var previewSelection: () -> Void = {}
     var goToParent: () -> Void = {}
     
     func updateKeyboardFocus() {
@@ -69,6 +70,8 @@ final class FileMenuMouseView: NSView, NSDraggingSource {
             moveSelection(event.keyCode == 125 ? 1 : -1, event.modifierFlags.contains(.shift))
         } else if [36, 76, 124].contains(event.keyCode) {
             openSelection()
+        } else if event.keyCode == 49, event.modifierFlags.intersection([.command, .shift, .control, .option]).isEmpty {
+            previewSelection()
         } else if event.keyCode == 123 {
             goToParent()
         } else if [51, 117].contains(event.keyCode), event.modifierFlags.intersection([.command, .shift, .control, .option]).isSubset(of: .command) {

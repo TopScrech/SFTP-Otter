@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 
 @MainActor
@@ -9,7 +8,7 @@ final class DownloadExporter {
         self.register = register
     }
     func downloadExport(_ file: RemoteFile, to destination: URL, using transport: any SFTPTransport) async throws {
-        try await FileActionsModel().downloadTree(file, to: destination, using: transport) { file, target in
+        try await DirectoryDownload().download(file, to: destination, using: transport) { file, target in
             try await self.downloadTracked(file, to: target, using: transport)
         }
     }
@@ -52,4 +51,3 @@ final class DownloadExporter {
         if let failure { throw failure }
     }
 }
-#endif

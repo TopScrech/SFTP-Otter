@@ -102,6 +102,16 @@ final class UploadQueue {
                 return
             }
             try Task.checkCancellation()
+            if try await UploadSource.isDirectory(item.url) {
+                let uploaded = try await uploadFolder(item) {
+                    preparing = false
+                    running = false
+                    startNext()
+                }
+                transfer.status = uploaded ? "Uploaded" : "Skipped"
+                item.session.refresh()
+                return
+            }
             let listing = try await item.session.transport.list(path: item.directory)
             var name = item.url.lastPathComponent
             var replacing = false
@@ -140,8 +150,92 @@ final class UploadQueue {
             transfer.status = "Uploaded"
             item.session.refresh()
         } catch {
-            transfer.status = Task.isCancelled ? "Cancelled" : "Failed"
-            transfer.failure = Task.isCancelled ? nil : error.localizedDescription
+            let cancelled = Task.isCancelled || error is CancellationError
+            transfer.status = cancelled ? "Cancelled" : "Failed"
+            transfer.failure = cancelled ? nil : error.localizedDescription
         }
     }
+    private func uploadFolder(_ item: QueuedUpload, startTransfers: () -> Void) async throws -> Bool {
+        item.transfer.status = "Preparing folder"
+        var plan: [FolderUploadFile] = []
+        guard try await prepareFolder(source: item.url, parent: item.directory, transport: item.session.transport, plan: &plan) else { return false }
+        try Task.checkCancellation()
+        item.transfer.totalBytes = plan.reduce(0) { $0 + $1.size }
+        item.transfer.started = Date()
+        startTransfers()
+        let progress = FolderTransferProgress(transfer: item.transfer)
+        let transport = item.session.transport
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            var running = 0
+            for file in plan {
+                if running >= TransferPreferences.parallelTransfers {
+                    try await group.next()
+                    running -= 1
+                }
+                try Task.checkCancellation()
+                group.addTask {
+                    try await transport.upload(local: file.source, remote: file.destination, replacing: file.replacing) { bytes, _ in
+                        await progress.update(path: file.destination, bytes: bytes)
+                    }
+                }
+                running += 1
+            }
+            while try await group.next() != nil {}
+        }
+
+        return true
+    }
+
+    private func prepareFolder(source: URL, parent: String, transport: any SFTPTransport, plan: inout [FolderUploadFile], depth: Int = 0) async throws -> Bool {
+        try Task.checkCancellation()
+        guard depth < 64 else { throw CocoaError(.featureUnsupported) }
+        let listing = try await transport.list(path: parent)
+        var name = source.lastPathComponent
+        var exists = listing.files.first { $0.name == name }
+        if exists != nil {
+            switch await ask(name: name) {
+            case .stop:
+                stopPending()
+                throw CancellationError()
+            case .skip: return false
+            case .duplicate:
+                name = Self.duplicateName(name, existing: Set(listing.files.map(\.name)))
+                exists = nil
+            case .replace:
+                // Merge directories, resolving each existing child separately
+                guard exists?.isDirectory == true else { throw CocoaError(.fileWriteFileExists) }
+            }
+        }
+        let directory = parent + (parent.hasSuffix("/") ? "" : "/") + name
+        try Task.checkCancellation()
+        if exists == nil { try await transport.createDirectory(path: directory) }
+        var remoteFiles = try await transport.list(path: directory).files
+        for child in try await UploadSource.children(of: source) {
+            try Task.checkCancellation()
+            if child.isDirectory {
+                _ = try await prepareFolder(source: child.url, parent: directory, transport: transport, plan: &plan, depth: depth + 1)
+                continue
+            }
+            var childName = child.url.lastPathComponent
+            var replacing = false
+            if let existing = remoteFiles.first(where: { $0.name == childName }) {
+                switch await ask(name: childName) {
+                case .stop:
+                    stopPending()
+                    throw CancellationError()
+                case .skip: continue
+                case .duplicate:
+                    childName = Self.duplicateName(childName, existing: Set(remoteFiles.map(\.name)))
+                case .replace:
+                    guard !existing.isDirectory else { throw CocoaError(.fileWriteFileExists) }
+                    replacing = true
+                }
+            }
+            let path = directory + "/" + childName
+            plan.append(FolderUploadFile(source: child.url, destination: path, replacing: replacing, size: child.size))
+            remoteFiles.append(RemoteFile(path: path, name: childName, isDirectory: false, size: child.size, permissions: ""))
+        }
+        return true
+    }
+
 }

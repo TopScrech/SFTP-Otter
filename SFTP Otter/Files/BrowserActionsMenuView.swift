@@ -10,7 +10,7 @@ struct BrowserActionsMenuView: View {
 
     var body: some View {
         BrowserActionsListView(
-            titles: ["Upload files", "Download selected file", "Refresh", "Show hidden files", "Choose host", "Disconnect"],
+            titles: ["Upload files", "Download selected items", "Refresh", "Show hidden files", "Choose host", "Disconnect"],
             destructiveTitle: "Disconnect",
             checkedTitle: session.showHidden ? "Show hidden files" : nil,
             isEnabled: isEnabled,
@@ -21,7 +21,7 @@ struct BrowserActionsMenuView: View {
     private func isEnabled(_ title: String) -> Bool {
         switch title {
         case "Upload files", "Refresh": session.isConnected && !session.isPreview
-        case "Download selected file": !session.isPreview && session.files.contains { selectedIDs.contains($0.id) && !$0.isDirectory }
+        case "Download selected items": !session.isPreview && session.files.contains { selectedIDs.contains($0.id) }
         default: true
         }
     }
@@ -31,8 +31,8 @@ struct BrowserActionsMenuView: View {
         dismiss()
         switch title {
         case "Upload files": showImporter = true
-        case "Download selected file":
-            for file in session.files where selectedIDs.contains(file.id) && !file.isDirectory {
+        case "Download selected items":
+            for file in session.files where selectedIDs.contains(file.id) {
                 workspace.download(file, from: session)
             }
         case "Refresh": workspace.refreshFiles()
