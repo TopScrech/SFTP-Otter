@@ -266,27 +266,26 @@ final class WorkspaceModel {
             do {
                 try await LocalFileOperations.createDirectory(at: directory, withIntermediateDirectories: true)
                 if file.isDirectory {
-                    transfer.status = "Downloading folder"
+                    transfer.updateState(.downloadingFolder)
                     let exporter = DownloadExporter { self.transfers.insert($0, at: 0) }
                     try await exporter.downloadExport(file, to: destination, using: session.transport)
                 } else {
                     try await session.transport.download(remote: file.path, local: destination) { completed, total in
                         await MainActor.run {
                             if completed == 0 { transfer.started = Date() }
-                            transfer.status = "Downloading"
+                            transfer.updateState(.downloading)
                             transfer.completedBytes = completed
                             transfer.totalBytes = total
                         }
                     }
                 }
                 transfer.localURL = destination
-                transfer.status = "Downloaded"
+                transfer.updateState(.downloaded)
             } catch {
                 let cancelled = Task.isCancelled || error is CancellationError
-                transfer.status = cancelled ? "Cancelled" : "Failed"
-                transfer.failure = cancelled ? nil : error.localizedDescription
+                transfer.updateState(cancelled ? .cancelled : .failed(error.localizedDescription))
             }
-            transfer.finished = true
+
             transfer.task = nil
         }
     }

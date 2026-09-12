@@ -9,9 +9,9 @@ struct TransfersView: View {
                 Text("Transfers").largeTitle().bold()
                 Spacer()
                 Button("Clear") {
-                    workspace.transfers.removeAll { $0.finished }
+                    workspace.transfers.removeAll { $0.state.isFinished }
                 }
-                .disabled(!workspace.transfers.contains { $0.finished })
+                .disabled(!workspace.transfers.contains { $0.state.isFinished })
             }
             .padding(.vertical)
             if workspace.transfers.isEmpty {

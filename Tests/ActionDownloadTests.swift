@@ -17,8 +17,8 @@ struct ActionDownloadTests {
         let transfer = try #require(transfers.first)
         #expect(transfers.count == 1)
         #expect(transfer.name == file.name)
-        #expect(transfer.finished)
-        #expect(transfer.status == "Downloaded")
+        #expect(transfer.state.isFinished)
+        #expect(transfer.state == .downloaded)
         #expect(transfer.completedBytes == 7)
         #expect(transfer.localURL == url)
     }
@@ -49,7 +49,7 @@ struct ActionDownloadTests {
         #expect(await transport.peakDownloads == min(3, TransferPreferences.parallelTransfers))
         #expect(await transport.activeDownloads == 0)
         #expect(Set(transfers.map(\.name)) == ["one.txt", "two.txt", "three.txt"])
-        #expect(transfers.allSatisfy { $0.finished && $0.status == "Downloaded" && $0.completedBytes == 7 })
+        #expect(transfers.allSatisfy { $0.state.isFinished && $0.state == .downloaded && $0.completedBytes == 7 })
         #expect(try String(contentsOf: destination.appending(path: "nested/three.txt"), encoding: .utf8) == "content")
         #expect(try FileManager.default.contentsOfDirectory(atPath: destination.appending(path: "empty").path(percentEncoded: false)).isEmpty)
     }
@@ -65,11 +65,11 @@ struct ActionDownloadTests {
             try await exporter.downloadExport(folder, to: destination, using: transport)
         }
         #expect(await transport.activeDownloads == 0)
-        #expect(transfers.allSatisfy { $0.finished })
-        #expect(transfers.contains { $0.status == "Failed" })
+        #expect(transfers.allSatisfy { $0.state.isFinished })
+        #expect(transfers.contains { $0.state.failure != nil })
         if TransferPreferences.parallelTransfers > 1 {
             #expect(await transport.cancelledDownloads > 0)
-            #expect(transfers.contains { $0.status == "Cancelled" })
+            #expect(transfers.contains { $0.state == .cancelled })
         }
     }
 
@@ -90,7 +90,7 @@ struct ActionDownloadTests {
         #expect(await transport.activeDownloads == 0)
         #expect(await transport.cancelledDownloads > 0)
         #expect(!transfers.isEmpty)
-        #expect(transfers.allSatisfy { $0.finished && $0.status == "Cancelled" })
+        #expect(transfers.allSatisfy { $0.state.isFinished && $0.state == .cancelled })
     }
 
 }

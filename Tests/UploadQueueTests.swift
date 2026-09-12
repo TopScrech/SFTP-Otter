@@ -11,10 +11,10 @@ struct UploadQueueTests {
         for transfer in transfers {
             queue.enqueue(URL(filePath: "/" + transfer.name), session: session, transfer: transfer)
         }
-        for _ in 0..<200 where transfers.contains(where: { !$0.finished }) {
+        for _ in 0..<200 where transfers.contains(where: { !$0.state.isFinished }) {
             try await Task.sleep(for: .milliseconds(5))
         }
-        #expect(transfers.allSatisfy { $0.finished })
+        #expect(transfers.allSatisfy { $0.state.isFinished })
         #expect(await transport.peak == 3)
     }
 
@@ -37,17 +37,17 @@ struct UploadQueueTests {
         #expect(await transport.destinations.isEmpty)
         queue.resolve(choice)
         queue.dialogDismissed()
-        for _ in 0..<200 where !next.finished { try await Task.sleep(for: .milliseconds(5)) }
-        #expect(first.finished)
-        #expect(next.finished)
+        for _ in 0..<200 where !next.state.isFinished { try await Task.sleep(for: .milliseconds(5)) }
+        #expect(first.state.isFinished)
+        #expect(next.state.isFinished)
         let paths = await transport.destinations
         switch choice {
         case .stop:
             #expect(paths.isEmpty)
-            #expect(next.status == "Cancelled")
+            #expect(next.state == .cancelled)
         case .skip:
             #expect(paths == ["/uploads/next.png"])
-            #expect(first.status == "Skipped")
+            #expect(first.state == .skipped)
         case .replace:
             #expect(paths == ["/uploads/photo.png", "/uploads/next.png"])
             #expect(await transport.replacements == [true, false])

@@ -20,26 +20,25 @@ final class DownloadExporter {
         var failure: (any Error)?
         let task = Task {
             defer {
-                transfer.finished = true
                 transfer.task = nil
             }
             do {
+                if transfer.state == .cancelled { throw CancellationError() }
                 try Task.checkCancellation()
                 try await transport.download(remote: file.path, local: destination) { completed, total in
                     await MainActor.run {
                         if completed == 0 { transfer.started = Date() }
-                        transfer.status = "Downloading"
+                        transfer.updateState(.downloading)
                         transfer.completedBytes = completed
                         transfer.totalBytes = total
                     }
                 }
                 transfer.localURL = destination
-                transfer.status = "Downloaded"
+                transfer.updateState(.downloaded)
             } catch {
                 failure = error
                 let cancelled = Task.isCancelled || error is CancellationError
-                transfer.status = cancelled ? "Cancelled" : "Failed"
-                transfer.failure = cancelled ? nil : error.localizedDescription
+                transfer.updateState(cancelled ? .cancelled : .failed(error.localizedDescription))
             }
         }
         transfer.task = task

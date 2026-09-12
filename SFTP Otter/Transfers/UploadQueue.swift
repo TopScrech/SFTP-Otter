@@ -56,7 +56,6 @@ final class UploadQueue {
             // Recheck collisions only after an earlier upload to this path finishes
             await preceding?.value
             await perform(item)
-            item.transfer.finished = true
             item.transfer.task = nil
             if destinations[key]?.id == id { destinations[key] = nil }
         }
@@ -66,8 +65,7 @@ final class UploadQueue {
 
     private func stopPending() {
         for item in pending {
-            item.transfer.status = "Cancelled"
-            item.transfer.finished = true
+            item.transfer.updateState(.cancelled)
         }
         pending.removeAll()
     }
@@ -97,8 +95,8 @@ final class UploadQueue {
         let access = item.url.startAccessingSecurityScopedResource()
         defer { if access { item.url.stopAccessingSecurityScopedResource() } }
         do {
-            if transfer.cancellationRequested {
-                transfer.status = "Cancelled"
+            if transfer.state == .cancelled || transfer.state == .cancelling {
+                transfer.updateState(.cancelled)
                 return
             }
             try Task.checkCancellation()
@@ -108,7 +106,7 @@ final class UploadQueue {
                     running = false
                     startNext()
                 }
-                transfer.status = uploaded ? "Uploaded" : "Skipped"
+                transfer.updateState(uploaded ? .uploaded : .skipped)
                 item.session.refresh()
                 return
             }
@@ -116,14 +114,14 @@ final class UploadQueue {
             var name = item.url.lastPathComponent
             var replacing = false
             if let existing = listing.files.first(where: { $0.name == name }) {
-                transfer.status = "Waiting for a decision"
+                transfer.updateState(.waitingForDecision)
                 switch await ask(name: name) {
                 case .stop:
                     stopPending()
-                    transfer.status = "Cancelled"
+                    transfer.updateState(.cancelled)
                     return
                 case .skip:
-                    transfer.status = "Skipped"
+                    transfer.updateState(.skipped)
                     return
                 case .replace:
                     guard !existing.isDirectory else { throw CocoaError(.fileWriteFileExists) }
@@ -142,21 +140,20 @@ final class UploadQueue {
             try await item.session.transport.upload(local: item.url, remote: destination, replacing: replacing) { completed, total in
                 await MainActor.run {
                     if completed == 0 { transfer.started = Date() }
-                    transfer.status = "Uploading"
+                    transfer.updateState(.uploading)
                     transfer.completedBytes = completed
                     transfer.totalBytes = total
                 }
             }
-            transfer.status = "Uploaded"
+            transfer.updateState(.uploaded)
             item.session.refresh()
         } catch {
             let cancelled = Task.isCancelled || error is CancellationError
-            transfer.status = cancelled ? "Cancelled" : "Failed"
-            transfer.failure = cancelled ? nil : error.localizedDescription
+            transfer.updateState(cancelled ? .cancelled : .failed(error.localizedDescription))
         }
     }
     private func uploadFolder(_ item: QueuedUpload, startTransfers: () -> Void) async throws -> Bool {
-        item.transfer.status = "Preparing folder"
+        item.transfer.updateState(.preparingFolder)
         var plan: [FolderUploadFile] = []
         guard try await prepareFolder(source: item.url, parent: item.directory, transport: item.session.transport, plan: &plan) else { return false }
         try Task.checkCancellation()

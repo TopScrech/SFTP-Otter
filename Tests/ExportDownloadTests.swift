@@ -15,10 +15,10 @@ struct ExportDownloadTests {
             #expect(!fails)
         } catch { #expect(fails) }
         let transfer = try #require(transfers.first)
-        #expect(transfer.finished)
+        #expect(transfer.state.isFinished)
         #expect(!transfer.isUpload)
-        #expect(transfer.status == (fails ? "Failed" : "Downloaded"))
-        #expect((transfer.failure != nil) == fails)
+        #expect((fails ? transfer.state.failure != nil : transfer.state == .downloaded))
+        #expect((transfer.state.failure != nil) == fails)
         if !fails {
             #expect(transfer.completedBytes == 100)
             #expect(transfer.localURL == destination)
@@ -36,8 +36,8 @@ struct ExportDownloadTests {
         let transfer = try #require(transfers.first)
         transfer.cancel()
         await #expect(throws: CancellationError.self) { try await task.value }
-        #expect(transfer.status == "Cancelled")
-        #expect(transfer.finished)
+        #expect(transfer.state == .cancelled)
+        #expect(transfer.state.isFinished)
     }
 }
 #endif

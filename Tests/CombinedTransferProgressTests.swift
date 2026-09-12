@@ -17,10 +17,9 @@ struct CombinedTransferProgressTests {
     }
 
     @Test func ignoresFinishedFailedAndCancelledTransfers() {
-        let transfers = ["Downloaded", "Failed", "Cancelled"].map {
-            let transfer = FileTransfer(name: $0, isUpload: false)
-            transfer.status = $0
-            transfer.finished = true
+        let transfers = [TransferState.downloaded, .failed("Test failure"), .cancelled].map {
+            let transfer = FileTransfer(name: $0.title, isUpload: false)
+            transfer.updateState($0)
             transfer.totalBytes = 100
             transfer.completedBytes = 50
             return transfer

@@ -36,7 +36,7 @@ struct FilePreviewTests {
         #expect(model.previewURLs.map(\.lastPathComponent) == ["first.png", "second.pdf"])
         #expect(model.previewURL == model.previewURLs.first)
         #expect(transfers.count == 2)
-        #expect(transfers.allSatisfy { !$0.isUpload && $0.finished && $0.completedBytes == 100 })
+        #expect(transfers.allSatisfy { !$0.isUpload && $0.state.isFinished && $0.completedBytes == 100 })
         #expect(transfers.compactMap(\.localURL) == model.previewURLs)
     }
 
@@ -53,8 +53,8 @@ struct FilePreviewTests {
         await model.previewTask?.value
 
         #expect(transfers.count == 1)
-        #expect(transfers.first?.status == "Cancelled")
-        #expect(transfers.first?.finished == true)
+        #expect(transfers.first?.state == .cancelled)
+        #expect(transfers.first?.state.isFinished == true)
         #expect(model.previewURL == nil)
         #expect(model.previewURLs.isEmpty)
         #expect(model.error == nil)

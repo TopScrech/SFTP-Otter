@@ -10,6 +10,6 @@ final class FolderTransferProgress {
     func update(path: String, bytes: UInt64) {
         completed[path] = bytes
         transfer.completedBytes = completed.values.reduce(0, +)
-        transfer.status = "Uploading"
+        transfer.updateState(.uploading)
     }
 }

@@ -6,7 +6,7 @@ struct CombinedTransferProgress: Equatable {
 
     @MainActor
     init(transfers: [FileTransfer]) {
-        let active = transfers.filter { !$0.finished }
+        let active = transfers.filter { !$0.state.isFinished }
         activeCount = active.count
         let total = active.reduce(0.0) { $0 + Double($1.totalBytes) }
         let completed = active.reduce(0.0) { $0 + Double(min($1.completedBytes, $1.totalBytes)) }
