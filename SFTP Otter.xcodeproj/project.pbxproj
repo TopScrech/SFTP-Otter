@@ -24,7 +24,7 @@
 		DD0000000000000000000001 /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F34FB25C304E1C7400F7829B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F34FD1383050D33600F7829B /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
-		F3ED1CE03054C9D500B6F884 /* SFTP-Otter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "SFTP-Otter-Info.plist"; sourceTree = "<group>"; };
+		F3ED1CE03054C9D500B6F884 /* SFTP-Otter.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SFTP-Otter.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -124,7 +124,7 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
-				F3ED1CE03054C9D500B6F884 /* SFTP-Otter-Info.plist */,
+				F3ED1CE03054C9D500B6F884 /* SFTP-Otter.plist */,
 				F34FB25C304E1C7400F7829B /* README.md */,
 				F34FD1383050D33600F7829B /* AGENTS.md */,
 				000000000000000000000010 /* SFTP Otter */,
@@ -412,7 +412,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "SFTP-Otter-Info.plist";
+				INFOPLIST_FILE = "SFTP-Otter.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "SFTP Otter";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
@@ -473,7 +473,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "SFTP-Otter-Info.plist";
+				INFOPLIST_FILE = "SFTP-Otter.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "SFTP Otter";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
