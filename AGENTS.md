@@ -1,3 +1,3 @@
 # Guidelines
 
-- Always use the sui agent skill if available
+- Use the sui agent skill if available
