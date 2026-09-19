@@ -15,7 +15,7 @@ struct DesktopWorkspaceView: View {
                 if workspace.section == .files {
                     DesktopFileWorkspaceView()
                 } else {
-                    WorkspaceDetailView()
+                    TransfersView()
                         .maxFrame(.infinity)
                 }
             }

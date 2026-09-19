@@ -14,10 +14,12 @@ import SwiftUI
             WorkspaceView()
                 .environment(workspace)
 #if os(macOS)
+                .frame(minWidth: 400, minHeight: 500)
                 .task { workspace.dockProgress.start(workspace: workspace) }
 #endif
         }
 #if os(macOS)
+        .windowResizability(.contentMinSize)
         .windowStyle(.hiddenTitleBar)
         .windowToolbarStyle(.unifiedCompact)
 #endif
