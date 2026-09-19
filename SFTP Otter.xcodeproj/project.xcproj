@@ -15,13 +15,13 @@
       "kind": "remote",
       "repository": "https://github.com/TopScrech/ScrechKit",
       "version": {
-        "up-to-next-major-version": "1.0.9",
+        "up-to-next-major-version": "1.0.0",
       },
     }, {
       "kind": "remote",
-      "repository": "https://github.com/orlandos-nl/Citadel",
+      "repository": "https://github.com/TopScrech/Citadel",
       "version": {
-        "version": "0.12.1",
+        "branch": "main",
       },
     }, {
       "kind": "remote",

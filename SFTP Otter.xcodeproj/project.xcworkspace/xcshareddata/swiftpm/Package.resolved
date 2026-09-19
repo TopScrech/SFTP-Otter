@@ -1,22 +1,22 @@
 {
-  "originHash" : "c372fd28c8af82774b16535f8e07a483ed56864bbedb93992487cc68df09d81c",
+  "originHash" : "cbaa41bec1cf1ac2400bc9fb86d076d83dc868ab524467da9b01a42f73b1e137",
   "pins" : [
     {
       "identity" : "bigint",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/attaswift/BigInt.git",
+      "location" : "https://github.com/TopScrech/BigInt",
       "state" : {
-        "revision" : "e07e00fa1fd435143a2dcf8b7eec9a7710b2fdfe",
-        "version" : "5.7.0"
+        "branch" : "master",
+        "revision" : "896f4c9bbfa96d8b7e82915fed63df044d848777"
       }
     },
     {
       "identity" : "citadel",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/orlandos-nl/Citadel.git",
+      "location" : "https://github.com/TopScrech/Citadel",
       "state" : {
-        "revision" : "ae8562f895de06ccb86fdb1cbb65fd99c8976e12",
-        "version" : "0.12.1"
+        "branch" : "main",
+        "revision" : "e8eff3cd524a829f5aa3fc603e15cecf8d976e1d"
       }
     },
     {
@@ -76,10 +76,10 @@
     {
       "identity" : "swift-nio",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio.git",
+      "location" : "https://github.com/apple/swift-nio",
       "state" : {
-        "revision" : "a931f2c1de8dd49381ce3bf2e279d033f68d8865",
-        "version" : "2.102.0"
+        "revision" : "21de5f08c1a166a6dd293d0e587ad977bf8dac5d",
+        "version" : "2.103.0"
       }
     },
     {
