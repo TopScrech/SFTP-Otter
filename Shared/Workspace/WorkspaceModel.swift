@@ -50,6 +50,13 @@ final class WorkspaceModel {
     private var restorationPaths: [String: String] = [:]
     private var restorationPanes: [UUID: BrowserPane] = [:]
     
+    var splitMode = UserDefaults.standard.object(forKey: "splitMode") as? Bool ?? true {
+        didSet {
+            UserDefaults.standard.set(splitMode, forKey: "splitMode")
+            if !splitMode { activePane = .primary }
+        }
+    }
+    
     var reopenConnectedHosts = UserDefaults.standard.bool(forKey: "reopenConnectedHosts") {
         didSet {
             UserDefaults.standard.set(reopenConnectedHosts, forKey: "reopenConnectedHosts")
@@ -117,7 +124,7 @@ final class WorkspaceModel {
     private func restoreNextConnection() {
         while !restorationQueue.isEmpty {
             let host = restorationQueue.removeFirst()
-            activePane = restorationPanes[host.id] ?? .primary
+            activePane = splitMode ? restorationPanes[host.id] ?? .primary : .primary
             requestConnection(host)
             if connectingHost != nil { return }
         }

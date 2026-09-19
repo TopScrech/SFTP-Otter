@@ -7,6 +7,9 @@ struct SettingsContentView: View {
         @Bindable var workspace = workspace
 
         VStack(alignment: .leading, spacing: 28) {
+            Toggle("Split mode", isOn: $workspace.splitMode)
+                .toggleStyle(.switch)
+            
             VStack(alignment: .leading, spacing: 20) {
                 Text("Startup")
                     .headline()
