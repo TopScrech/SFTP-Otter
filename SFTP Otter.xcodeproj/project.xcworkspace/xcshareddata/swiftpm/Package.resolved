@@ -1,22 +1,22 @@
 {
-  "originHash" : "c372fd28c8af82774b16535f8e07a483ed56864bbedb93992487cc68df09d81c",
+  "originHash" : "cbaa41bec1cf1ac2400bc9fb86d076d83dc868ab524467da9b01a42f73b1e137",
   "pins" : [
     {
       "identity" : "bigint",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/attaswift/BigInt.git",
+      "location" : "https://github.com/TopScrech/BigInt",
       "state" : {
-        "revision" : "e07e00fa1fd435143a2dcf8b7eec9a7710b2fdfe",
-        "version" : "5.7.0"
+        "branch" : "master",
+        "revision" : "896f4c9bbfa96d8b7e82915fed63df044d848777"
       }
     },
     {
       "identity" : "citadel",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/orlandos-nl/Citadel.git",
+      "location" : "https://github.com/TopScrech/Citadel",
       "state" : {
-        "revision" : "ae8562f895de06ccb86fdb1cbb65fd99c8976e12",
-        "version" : "0.12.1"
+        "branch" : "main",
+        "revision" : "e8eff3cd524a829f5aa3fc603e15cecf8d976e1d"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/TopScrech/ScrechKit",
       "state" : {
-        "revision" : "40f089e897c48986d101a5630c1597241b40c6c5",
-        "version" : "1.0.9"
+        "revision" : "bc5f6b5c251ae16c5d29a50a642ac95a9fe8d0e7",
+        "version" : "1.0.10"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-asn1.git",
       "state" : {
-        "revision" : "d9a5b37470adc940d22c3bcd5ca6953a516b727f",
-        "version" : "1.7.2"
+        "revision" : "3b6410f7dee09eb33cdd26260c5fd47fda19b0e2",
+        "version" : "1.7.3"
       }
     },
     {
@@ -76,10 +76,10 @@
     {
       "identity" : "swift-nio",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio.git",
+      "location" : "https://github.com/apple/swift-nio",
       "state" : {
-        "revision" : "a931f2c1de8dd49381ce3bf2e279d033f68d8865",
-        "version" : "2.102.0"
+        "revision" : "21de5f08c1a166a6dd293d0e587ad977bf8dac5d",
+        "version" : "2.103.0"
       }
     },
     {
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Wellz26/swift-nio-ssh.git",
       "state" : {
-        "revision" : "a05e6bbe6b141ee68da3030e00275504c0595d4d",
-        "version" : "0.3.6"
+        "revision" : "d88989f3d3bb1dfb2a38ce4af598afbf7fc3095c",
+        "version" : "0.3.7"
       }
     },
     {

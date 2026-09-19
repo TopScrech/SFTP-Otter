@@ -1,0 +1,82 @@
+import SwiftUI
+
+#if os(macOS)
+import AppKit
+#endif
+
+struct LocalBrowserRowView: View {
+    @Environment(WorkspaceModel.self) private var workspace
+    @Environment(LocalFileBrowserModel.self) private var browser
+#if os(macOS)
+    @Environment(FileActionsModel.self) private var actions
+#else
+    @Environment(FilePreviewModel.self) private var preview
+#endif
+    let file: RemoteFile
+    let width: CGFloat
+    @Binding var keyboardNavigationActive: Bool
+    
+    var body: some View {
+        Button {
+#if os(macOS)
+            browser.selection.click(file.id, in: browser.files.map(\.id))
+#else
+            if file.isDirectory {
+                browser.navigate(to: URL(filePath: file.path))
+            } else {
+                preview.open(file)
+            }
+#endif
+        } label: {
+#if os(macOS)
+            FileRowView(file: file, width: width, isSelected: browser.selection.ids.contains(file.id))
+                .contentShape(.rect)
+#else
+            FileRowView(file: file, width: width, isSelected: false)
+                .contentShape(.rect)
+#endif
+        }
+        .contentShape(.rect)
+        
+#if os(macOS)
+        .overlay {
+            FileMenuBridge(
+                parentOnly: file.name == "..",
+                keyboardFocused: browser.selection.cursor == file.id
+                || (keyboardNavigationActive && browser.selection.cursor == nil && browser.files.first?.id == file.id),
+                rowSelected: browser.selection.ids.contains(file.id),
+                moveSelection: { browser.selection.move($0, in: browser.files.map(\.id), extending: $1) },
+                openSelection: {
+                    if let file = browser.files.first(where: {
+                        $0.id == browser.selection.cursor && browser.selection.ids.contains($0.id) && $0.isDirectory
+                    }) {
+                        browser.navigate(to: URL(filePath: file.path))
+                    }
+                },
+                previewSelection: {
+                    actions.preview(browser.files.filter { browser.selection.ids.contains($0.id) })
+                },
+                goToParent: {
+                    if let file = browser.files.first(where: { $0.name == ".." }) { browser.navigate(to: URL(filePath: file.path)) }
+                },
+                dragItems: {
+                    let files = browser.files.filter {
+                        (browser.selection.ids.contains(file.id) ? browser.selection.ids.contains($0.id) : $0.id == file.id)
+                        && $0.name != ".."
+                    }
+                    return files.map {
+                        FileRowDragPreview.item(file: $0, width: width, writer: URL(filePath: $0.path) as NSURL)
+                    }
+                },
+                select: { shift, command, context in
+                    keyboardNavigationActive = true
+                    browser.selection.click(
+                        file.id, in: browser.files.map(\.id), extending: shift, toggling: command, contextMenu: context)
+                }
+            ) { action in
+                actions.choose(action, file: file, selectedIDs: browser.selection.ids, browser: browser)
+            }
+        }
+#endif
+    }
+}
