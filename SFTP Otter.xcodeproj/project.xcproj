@@ -45,16 +45,11 @@
       "path": "Shared",
       "target-membership": [
         "iOS",
-        "visionOS",
         "macOS",
+        "visionOS",
       ],
       "membership-exceptions": [
         {
-          "target": "visionOS",
-          "exclusions": [
-            "AppIcon.icon",
-          ],
-        }, {
           "target": "Unit Tests",
           "inclusions": [
             "Connection/CitadelSFTPTransport.swift",
@@ -101,6 +96,11 @@
             "Transfers/UploadQueue.swift",
             "Transfers/UploadSource.swift",
           ],
+        }, {
+          "target": "visionOS",
+          "exclusions": [
+            "AppIcon.icon",
+          ],
         },
       ],
     }, {
@@ -141,9 +141,6 @@
     {
       "kind": "folder",
       "path": "visionOS",
-      "opaque-folders": [
-        "Resources/Materials",
-      ],
       "target-membership": [
         "visionOS",
       ],
@@ -151,10 +148,9 @@
         {
           "target": "visionOS",
           "exclusions": [
+            "ContentView.swift",
             "Info.plist",
             "SFTP_OtterApp.swift",
-            "ContentView.swift",
-            "Resources",
           ],
         },
       ],
