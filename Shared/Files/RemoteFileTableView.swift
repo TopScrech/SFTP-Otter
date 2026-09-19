@@ -7,6 +7,8 @@ struct RemoteFileTableView: View {
     
 #if os(macOS)
     @State private var actions = FileActionsModel()
+#else
+    @State private var preview = FilePreviewModel()
 #endif
     
     @State private var scrollTarget: String?
@@ -40,6 +42,9 @@ struct RemoteFileTableView: View {
 #if os(macOS)
             .modifier(FileActionPresentationModifier())
             .environment(actions)
+#else
+            .modifier(FilePreviewPresentationModifier())
+            .environment(preview)
 #endif
         }
     }

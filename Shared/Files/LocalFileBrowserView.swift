@@ -9,6 +9,8 @@ struct LocalFileBrowserView: View {
 #if os(macOS)
     @State private var dropTargeted = false
     @State private var actions = FileActionsModel()
+#else
+    @State private var preview = FilePreviewModel()
 #endif
     
     @State private var showActions = false
@@ -98,6 +100,9 @@ struct LocalFileBrowserView: View {
         }
         .modifier(FileActionPresentationModifier())
         .environment(actions)
+#else
+        .modifier(FilePreviewPresentationModifier())
+        .environment(preview)
 #endif
     }
 }

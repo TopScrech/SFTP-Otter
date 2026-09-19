@@ -9,6 +9,8 @@ struct LocalBrowserRowView: View {
     @Environment(LocalFileBrowserModel.self) private var browser
 #if os(macOS)
     @Environment(FileActionsModel.self) private var actions
+#else
+    @Environment(FilePreviewModel.self) private var preview
 #endif
     let file: RemoteFile
     let width: CGFloat
@@ -16,17 +18,25 @@ struct LocalBrowserRowView: View {
     
     var body: some View {
         Button {
+#if os(macOS)
             browser.selection.click(file.id, in: browser.files.map(\.id))
+#else
+            if file.isDirectory {
+                browser.navigate(to: URL(filePath: file.path))
+            } else {
+                preview.open(file)
+            }
+#endif
         } label: {
+#if os(macOS)
             FileRowView(file: file, width: width, isSelected: browser.selection.ids.contains(file.id))
                 .contentShape(.rect)
+#else
+            FileRowView(file: file, width: width, isSelected: false)
+                .contentShape(.rect)
+#endif
         }
         .contentShape(.rect)
-#if !os(macOS)
-        .onTapGesture(count: 2) {
-            if file.isDirectory { browser.navigate(to: URL(filePath: file.path)) }
-        }
-#endif
         
 #if os(macOS)
         .overlay {
@@ -52,7 +62,7 @@ struct LocalBrowserRowView: View {
                 dragItems: {
                     let files = browser.files.filter {
                         (browser.selection.ids.contains(file.id) ? browser.selection.ids.contains($0.id) : $0.id == file.id)
-                            && $0.name != ".."
+                        && $0.name != ".."
                     }
                     return files.map {
                         FileRowDragPreview.item(file: $0, width: width, writer: URL(filePath: $0.path) as NSURL)
@@ -67,6 +77,6 @@ struct LocalBrowserRowView: View {
                 actions.choose(action, file: file, selectedIDs: browser.selection.ids, browser: browser)
             }
         }
-        #endif
+#endif
     }
 }

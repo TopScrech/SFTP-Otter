@@ -10,6 +10,8 @@ struct RemoteBrowserRowView: View {
     @Binding var selection: FileSelection
 #if os(macOS)
     @Environment(FileActionsModel.self) private var actions
+#else
+    @Environment(FilePreviewModel.self) private var preview
 #endif
     let file: RemoteFile
     let width: CGFloat
@@ -17,17 +19,25 @@ struct RemoteBrowserRowView: View {
     
     var body: some View {
         Button {
+#if os(macOS)
             selection.click(file.id, in: session.browserFiles.map(\.id))
+#else
+            if file.isDirectory {
+                session.navigate(to: file.path)
+            } else if session.isConnected, !session.isPreview {
+                preview.open(file, using: session.transport)
+            }
+#endif
         } label: {
+#if os(macOS)
             FileRowView(file: file, width: width, isSelected: selection.ids.contains(file.id))
                 .contentShape(.rect)
+#else
+            FileRowView(file: file, width: width, isSelected: false)
+                .contentShape(.rect)
+#endif
         }
         .contentShape(.rect)
-#if !os(macOS)
-        .onTapGesture(count: 2) {
-            if file.isDirectory { session.navigate(to: file.path) }
-        }
-#endif
         
 #if os(macOS)
         .overlay {
