@@ -1,6 +1,7 @@
 import ScrechKit
 
 struct WorkspaceDialogView<Content: View>: View {
+    var desktopWidth: CGFloat = 460
     let title: String
     let close: () -> Void
     @ViewBuilder let content: Content
@@ -25,11 +26,18 @@ struct WorkspaceDialogView<Content: View>: View {
             .padding(30)
             .background(WorkspaceTheme.raised)
             
-            VStack(alignment: .leading, spacing: 28) {
+            #if os(macOS)
+            WorkspaceDialogContentView {
                 content
             }
-            .padding(30)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            #else
+            ScrollView {
+                WorkspaceDialogContentView {
+                    content
+                }
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            #endif
         }
         .title3()
         .foregroundStyle(WorkspaceTheme.text)
@@ -43,9 +51,11 @@ struct WorkspaceDialogView<Content: View>: View {
             }
         }
         .presentationCornerRadius(24)
-        .presentationSizing(.fitted)
         .darkSchemePreferred()
-        .frame(idealWidth: 460)
+        #if os(macOS)
+        .presentationSizing(.fitted)
+        .frame(width: desktopWidth)
         .fixedSize(horizontal: false, vertical: true)
+        #endif
     }
 }

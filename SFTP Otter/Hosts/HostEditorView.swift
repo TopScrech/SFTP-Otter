@@ -6,7 +6,7 @@ struct HostEditorView: View {
     @State private var editor = HostEditorModel()
     
     var body: some View {
-        WorkspaceDialogView(title: workspace.editingHost == nil ? "Add host" : "Edit host", close: { dismiss() }) {
+        WorkspaceDialogView(desktopWidth: 520, title: workspace.editingHost == nil ? "Add host" : "Edit host", close: { dismiss() }) {
             VStack(alignment: .leading, spacing: 16) {
                 DialogFieldView(title: "Label") {
                     TextField("", text: $editor.host.name)
@@ -62,7 +62,6 @@ struct HostEditorView: View {
                 .keyboardShortcut(.defaultAction)
             }
         }
-        .frame(width: 520)
         .onAppear { editor.load(workspace.editingHost) }
     }
 }

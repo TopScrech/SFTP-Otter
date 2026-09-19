@@ -36,13 +36,13 @@ struct HostsView: View {
             } else if workspace.filteredHosts.isEmpty {
                 ContentUnavailableView.search(text: workspace.hostSearch)
             } else {
+                #if os(macOS)
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 250), alignment: .topLeading)]) {
-                        ForEach(workspace.filteredHosts) {
-                            HostCardView(host: $0)
-                        }
-                    }
+                    HostGridView()
                 }
+                #else
+                HostGridView()
+                #endif
             }
             
             HStack {
@@ -54,6 +54,8 @@ struct HostsView: View {
                 .buttonStyle(DialogActionStyle())
             }
         }
+        #if os(macOS)
         .frame(height: 420)
+        #endif
     }
 }

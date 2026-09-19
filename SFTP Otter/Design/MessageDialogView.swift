@@ -9,7 +9,7 @@ struct MessageDialogView: View {
     var action: () -> Void = {}
     
     var body: some View {
-        WorkspaceDialogView(title: title, close: { dismiss() }) {
+        WorkspaceDialogView(desktopWidth: 460, title: title, close: { dismiss() }) {
             Text(message)
                 .foregroundStyle(WorkspaceTheme.muted)
                 .fixedSize(horizontal: false, vertical: true)
@@ -23,6 +23,5 @@ struct MessageDialogView: View {
                 .keyboardShortcut(.defaultAction)
             }
         }
-        .frame(width: 460)
     }
 }

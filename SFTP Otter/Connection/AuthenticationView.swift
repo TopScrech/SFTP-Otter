@@ -8,7 +8,7 @@ struct AuthenticationView: View {
     @FocusState private var passwordFocused: Bool
     
     var body: some View {
-        WorkspaceDialogView(title: "Connect", close: { dismiss() }) {
+        WorkspaceDialogView(desktopWidth: 460, title: "Connect", close: { dismiss() }) {
             VStack(alignment: .leading) {
                 Label(host.displayName, systemImage: "server.rack")
                 Text(host.endpoint).foregroundStyle(WorkspaceTheme.muted)
@@ -35,7 +35,6 @@ struct AuthenticationView: View {
                 .disabled(password.isEmpty)
             }
         }
-        .frame(width: 460)
         .onAppear { passwordFocused = true }
     }
 }

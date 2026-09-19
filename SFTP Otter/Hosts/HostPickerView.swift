@@ -7,10 +7,9 @@ struct HostPickerView: View {
     var body: some View {
         @Bindable var workspace = workspace
         
-        WorkspaceDialogView(title: "Select host", close: { dismiss() }) {
+        WorkspaceDialogView(desktopWidth: 600, title: "Select host", close: { dismiss() }) {
             HostsView()
         }
-        .frame(width: 600)
         .sheet($workspace.showPickerEditor) {
             HostEditorView()
         }

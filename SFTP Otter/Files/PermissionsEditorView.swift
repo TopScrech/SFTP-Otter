@@ -7,7 +7,7 @@ struct PermissionsEditorView: View {
     
     var body: some View {
         @Bindable var actions = actions
-        WorkspaceDialogView(title: "Edit permissions", close: { dismiss() }) {
+        WorkspaceDialogView(desktopWidth: 560, title: "Edit permissions", close: { dismiss() }) {
             VStack(alignment: .leading, spacing: 24) {
                 if actions.selectedFiles.count > 1 {
                     Text("Apply permissions to \(actions.selectedFiles.count) selected items")
@@ -48,7 +48,6 @@ struct PermissionsEditorView: View {
                 }
             }
         }
-        .frame(width: 560)
     }
 }
 #endif

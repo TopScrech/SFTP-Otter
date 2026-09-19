@@ -5,37 +5,16 @@ struct UploadConflictView: View {
     let name: String
     
     var body: some View {
-        WorkspaceDialogView(title: "File already exists", close: { uploads.resolve(.stop) }) {
+        WorkspaceDialogView(desktopWidth: 660, title: "File already exists", close: { uploads.resolve(.stop) }) {
             Text("An item named \"\(name)\" already exists in this location\nDo you want to replace it with the one you’re uploading?")
                 .fixedSize(horizontal: false, vertical: true)
             
-            HStack {
-                Button("Stop", role: .destructive) {
-                    uploads.resolve(.stop)
-                }
-                .buttonStyle(DialogActionStyle(destructive: true))
-                
-                Spacer()
-                
-                Button("Skip") {
-                    uploads.resolve(.skip)
-                }
-                .buttonStyle(.plain)
-                .padding(.horizontal)
-                
-                Button("Replace") {
-                    uploads.resolve(.replace)
-                }
-                .buttonStyle(DialogActionStyle(neutral: true))
-                
-                Button("Duplicate") {
-                    uploads.resolve(.duplicate)
-                }
-                .buttonStyle(DialogActionStyle())
-                .keyboardShortcut(.defaultAction)
+            ViewThatFits(in: .horizontal) {
+                UploadConflictActionsView()
+
+                UploadConflictActionsView(vertical: true)
             }
         }
-        .frame(width: 660)
         .interactiveDismissDisabled()
     }
 }

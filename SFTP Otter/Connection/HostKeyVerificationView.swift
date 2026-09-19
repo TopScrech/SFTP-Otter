@@ -5,7 +5,7 @@ struct HostKeyVerificationView: View {
     let challenge: HostKeyChallenge
     
     var body: some View {
-        WorkspaceDialogView(title: "Verify server identity", close: { trustStore.resolve(trust: false) }) {
+        WorkspaceDialogView(desktopWidth: 520, title: "Verify server identity", close: { trustStore.resolve(trust: false) }) {
             Text("Verify the server key for \(challenge.endpoint)")
             Text("Compare this fingerprint with the one provided by your server administrator before trusting the server")
                 .secondary()
@@ -23,7 +23,6 @@ struct HostKeyVerificationView: View {
                 .keyboardShortcut(.defaultAction)
             }
         }
-        .frame(width: 520)
         .interactiveDismissDisabled()
     }
 }

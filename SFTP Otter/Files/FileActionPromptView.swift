@@ -10,7 +10,7 @@ struct FileActionPromptView: View {
     var body: some View {
         @Bindable var actions = actions
         
-        WorkspaceDialogView(title: action.rawValue, close: { dismiss() }) {
+        WorkspaceDialogView(desktopWidth: 460, title: action.rawValue, close: { dismiss() }) {
             VStack(alignment: .leading, spacing: 0) {
                 Text(action == .rename ? "New filename *" : "Folder name *")
                     .callout()
@@ -46,7 +46,6 @@ struct FileActionPromptView: View {
                 .keyboardShortcut(.defaultAction)
             }
         }
-        .frame(width: 460)
         .onAppear { nameFocused = true }
     }
 }

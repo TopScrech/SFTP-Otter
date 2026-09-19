@@ -6,50 +6,18 @@ struct SettingsView: View {
     @State private var settings = SettingsModel()
     
     var body: some View {
-        @Bindable var workspace = workspace
         @Bindable var settings = settings
         
-        WorkspaceDialogView(title: "Settings", close: { dismiss() }) {
+        WorkspaceDialogView(desktopWidth: 620, title: "Settings", close: { dismiss() }) {
+            #if os(macOS)
             ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Startup")
-                            .headline()
-                        
-                        HStack {
-                            Text("Reopen hosts and local folders after relaunch")
-                            
-                            Spacer()
-                            
-                            Toggle("Reopen hosts and local folders after relaunch", isOn: $workspace.reopenConnectedHosts)
-                                .labelsHidden()
-                                .fixedSize()
-                        }
-                        
-                        Divider()
-                        
-                        HStack {
-                            Text("Remember last opened folder in connected hosts")
-                            
-                            Spacer()
-                            
-                            Toggle("Remember last opened folder in connected hosts", isOn: $workspace.rememberHostLocations)
-                                .labelsHidden()
-                                .fixedSize()
-                        }
-                        .disabled(!workspace.reopenConnectedHosts)
-                    }
-                    .toggleStyle(.switch)
-                    
-                    TransferSettingsSectionView()
-                    
-                    SavedHostsSectionView()
-                    
-                    TrustedHostsSectionView()
-                }
+                SettingsContentView()
             }
             .scrollClipDisabled()
             .frame(maxHeight: 400)
+            #else
+            SettingsContentView()
+            #endif
         }
         .sheet($settings.showConfirmation) {
             MessageDialogView(title: "Forget this trusted host?", message: settings.pendingRemoval ?? "", actionTitle: "Forget host", destructive: true) {
@@ -61,6 +29,5 @@ struct SettingsView: View {
         }
         .onAppear { settings.load(from: workspace.trustStore) }
         .environment(settings)
-        .frame(width: 620)
     }
 }
