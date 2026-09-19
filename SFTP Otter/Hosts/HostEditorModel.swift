@@ -9,8 +9,8 @@ final class HostEditorModel {
     
     var canSave: Bool {
         !host.address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            && !host.username.isEmpty
-            && (1...65535).contains(Int(port) ?? 0)
+        && !host.username.isEmpty
+        && (1...65535).contains(Int(port) ?? 0)
     }
     
     func load(_ editingHost: Host?) {

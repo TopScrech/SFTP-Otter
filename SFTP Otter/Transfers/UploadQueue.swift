@@ -9,23 +9,23 @@ final class UploadQueue {
     private var destinations: [String: (id: UUID, task: Task<Void, Never>)] = [:]
     private var decision: CheckedContinuation<UploadConflictChoice, Never>?
     private var choice = UploadConflictChoice.stop
-
+    
     func enqueue(_ url: URL, session: SFTPSession, transfer: FileTransfer) {
         pending.append(QueuedUpload(url: url, directory: session.path, session: session, transfer: transfer))
         startNext()
     }
-
+    
     func resolve(_ choice: UploadConflictChoice) {
         self.choice = choice
         conflict = nil
     }
-
+    
     func dialogDismissed() {
         let continuation = decision
         decision = nil
         continuation?.resume(returning: choice)
     }
-
+    
     private func ask(name: String) async -> UploadConflictChoice {
         await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
@@ -44,7 +44,7 @@ final class UploadQueue {
             }
         }
     }
-
+    
     private func startNext() {
         guard !running, !pending.isEmpty else { return }
         running = true
@@ -62,14 +62,14 @@ final class UploadQueue {
         item.transfer.task = task
         destinations[key] = (id, task)
     }
-
+    
     private func stopPending() {
         for item in pending {
             item.transfer.updateState(.cancelled)
         }
         pending.removeAll()
     }
-
+    
     static func duplicateName(_ name: String, existing: Set<String>) -> String {
         let url = URL(filePath: name)
         let ext = url.pathExtension
@@ -82,7 +82,7 @@ final class UploadQueue {
             number += 1
         }
     }
-
+    
     private func perform(_ item: QueuedUpload) async {
         let transfer = item.transfer
         var preparing = true
@@ -179,10 +179,10 @@ final class UploadQueue {
             }
             while try await group.next() != nil {}
         }
-
+        
         return true
     }
-
+    
     private func prepareFolder(source: URL, parent: String, transport: any SFTPTransport, plan: inout [FolderUploadFile], depth: Int = 0) async throws -> Bool {
         try Task.checkCancellation()
         guard depth < 64 else { throw CocoaError(.featureUnsupported) }
@@ -194,27 +194,34 @@ final class UploadQueue {
             case .stop:
                 stopPending()
                 throw CancellationError()
+                
             case .skip: return false
+                
             case .duplicate:
                 name = Self.duplicateName(name, existing: Set(listing.files.map(\.name)))
                 exists = nil
+                
             case .replace:
                 // Merge directories, resolving each existing child separately
                 guard exists?.isDirectory == true else { throw CocoaError(.fileWriteFileExists) }
             }
         }
+        
         let directory = parent + (parent.hasSuffix("/") ? "" : "/") + name
         try Task.checkCancellation()
         if exists == nil { try await transport.createDirectory(path: directory) }
         var remoteFiles = try await transport.list(path: directory).files
+        
         for child in try await UploadSource.children(of: source) {
             try Task.checkCancellation()
             if child.isDirectory {
                 _ = try await prepareFolder(source: child.url, parent: directory, transport: transport, plan: &plan, depth: depth + 1)
                 continue
             }
+            
             var childName = child.url.lastPathComponent
             var replacing = false
+            
             if let existing = remoteFiles.first(where: { $0.name == childName }) {
                 switch await ask(name: childName) {
                 case .stop:
@@ -228,11 +235,13 @@ final class UploadQueue {
                     replacing = true
                 }
             }
+            
             let path = directory + "/" + childName
             plan.append(FolderUploadFile(source: child.url, destination: path, replacing: replacing, size: child.size))
             remoteFiles.append(RemoteFile(path: path, name: childName, isDirectory: false, size: child.size, permissions: ""))
         }
+        
         return true
     }
-
+    
 }

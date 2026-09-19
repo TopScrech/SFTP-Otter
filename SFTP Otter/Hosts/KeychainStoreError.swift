@@ -8,8 +8,10 @@ nonisolated enum KeychainStoreError: LocalizedError {
         switch self {
         case .status(let status):
             "Unable to access saved hosts in Keychain (\(status)): \(SecCopyErrorMessageString(status, nil) as String? ?? "Unknown Keychain error")"
+        
         case .invalidData:
             "Keychain returned invalid saved-host data"
+        
         case .unavailable:
             "Saved hosts could not be loaded — restart the app after unlocking Keychain before making changes"
         }

@@ -5,18 +5,22 @@ struct HostsView: View {
     
     var body: some View {
         @Bindable var workspace = workspace
+        
         VStack(alignment: .leading, spacing: 20) {
             HStack {
                 Image(systemName: "magnifyingglass")
+                
                 TextField("Search hosts", text: $workspace.hostSearch)
                     .textFieldStyle(.plain)
             }
             .padding()
             .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
+            
             Text("SAVED HOSTS")
                 .caption()
                 .foregroundStyle(WorkspaceTheme.muted)
                 .padding(.top)
+            
             if workspace.hosts.isEmpty {
                 ContentUnavailableView {
                     Label("A home for your servers", systemImage: "server.rack")
@@ -40,10 +44,10 @@ struct HostsView: View {
                     }
                 }
             }
-
+            
             HStack {
                 Spacer()
-
+                
                 Button("Add host", systemImage: "plus") {
                     workspace.addHost()
                 }

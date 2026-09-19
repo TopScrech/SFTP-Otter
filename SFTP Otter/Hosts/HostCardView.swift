@@ -14,15 +14,22 @@ struct HostCardView: View {
                     .padding()
                     .background(WorkspaceTheme.accent.opacity(0.2), in: .rect(cornerRadius: 10))
                     .foregroundStyle(WorkspaceTheme.accent)
+                
                 VStack(alignment: .leading) {
-                    Text(host.displayName).headline()
-                    Text(host.address).subheadline()
+                    Text(host.displayName)
+                        .headline()
+                    
+                    Text(host.address)
+                        .subheadline()
                         .foregroundStyle(WorkspaceTheme.muted)
+                    
                     Text("SFTP · \(host.username)")
                         .caption()
                         .foregroundStyle(WorkspaceTheme.muted)
                 }
+                
                 Spacer()
+                
                 Image(systemName: "chevron.right")
                     .foregroundStyle(WorkspaceTheme.muted)
             }
@@ -34,6 +41,7 @@ struct HostCardView: View {
             Button("Edit host", systemImage: "pencil") {
                 workspace.edit(host)
             }
+            
             Button("Remove host", systemImage: "trash", role: .destructive) {
                 workspace.remove(host)
             }

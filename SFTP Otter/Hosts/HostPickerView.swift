@@ -6,6 +6,7 @@ struct HostPickerView: View {
     
     var body: some View {
         @Bindable var workspace = workspace
+        
         WorkspaceDialogView(title: "Select host", close: { dismiss() }) {
             HostsView()
         }

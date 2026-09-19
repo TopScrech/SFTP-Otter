@@ -9,20 +9,23 @@ final class WorkspaceModel {
     var localPreviewURL: URL?
 #endif
     var visibleLocalBrowsers: [ObjectIdentifier: LocalFileBrowserModel] = [:]
-
+    
     func refreshFiles() {
         let visibleSessionIDs = [selectedSessionID, secondarySessionID].compactMap { $0 }
+        
         for session in sessions where visibleSessionIDs.contains(session.id) && session.isConnected && !session.isPreview {
             session.refresh()
         }
+        
         for browser in visibleLocalBrowsers.values {
             browser.refresh()
         }
     }
+    
     func toggleTransfers() {
         section = section == .transfers ? .files : .transfers
     }
-
+    
     var section = WorkspaceSection.files
     var hosts: [Host] = []
     var sessions: [SFTPSession] = []
@@ -49,6 +52,7 @@ final class WorkspaceModel {
     private var restorationQueue: [Host] = []
     private var restorationPaths: [String: String] = [:]
     private var restorationPanes: [UUID: BrowserPane] = [:]
+    
     var reopenConnectedHosts = UserDefaults.standard.bool(forKey: "reopenConnectedHosts") {
         didSet {
             UserDefaults.standard.set(reopenConnectedHosts, forKey: "reopenConnectedHosts")
@@ -70,6 +74,7 @@ final class WorkspaceModel {
             restorationPaths = [:]
             return
         }
+        
         for session in sessions where session.isConnected && !session.isPreview && !session.isLoading {
             rememberLocation(session.path, for: session.host.id)
         }
@@ -96,14 +101,18 @@ final class WorkspaceModel {
         guard !didRestoreConnections else { return }
         didRestoreConnections = true
         guard reopenConnectedHosts else { return }
+        
         if rememberHostLocations {
             restorationPaths = UserDefaults.standard.dictionary(forKey: "connectedHost.locations") as? [String: String] ?? [:]
         }
+        
         let ids = UserDefaults.standard.stringArray(forKey: "connectedHostIDs") ?? []
         restorationPaths = restorationPaths.filter { ids.contains($0.key) }
+        
         for (key, pane) in [("connectedHost.primary", BrowserPane.primary), ("connectedHost.secondary", BrowserPane.secondary)] {
             if let value = UserDefaults.standard.string(forKey: key), let id = UUID(uuidString: value) { restorationPanes[id] = pane }
         }
+        
         restorationQueue = ids.compactMap { id in hosts.first { $0.id.uuidString == id } }
         restoreNextConnection()
     }
@@ -121,8 +130,9 @@ final class WorkspaceModel {
         do {
             hosts = try store.load()
             hostsLoaded = true
+        } catch {
+            report(error)
         }
-        catch { report(error) }
     }
     
     var filteredHosts: [Host] {
@@ -143,13 +153,16 @@ final class WorkspaceModel {
         var updated = hosts
         if let index = updated.firstIndex(where: { $0.id == host.id }) { updated[index] = host }
         else { updated.append(host) }
+        
         do {
             try store.save(updated)
             hosts = updated
             for session in sessions { session.updateLabel(from: host) }
             editingHost = nil
             return true
-        } catch { report(error); return false }
+        } catch {
+            report(error); return false
+        }
     }
     
     func edit(_ host: Host) {
@@ -160,15 +173,21 @@ final class WorkspaceModel {
     func remove(_ host: Host) {
         guard hostsLoaded else { report(KeychainStoreError.unavailable); return }
         let updated = hosts.filter { $0.id != host.id }
+        
         do {
             try store.save(updated)
             hosts = updated
-        } catch { report(error) }
+        } catch {
+            report(error)
+        }
     }
     
     func addHost() {
-        if showHostPicker { showPickerEditor = true }
-        else { showHostEditor = true }
+        if showHostPicker {
+            showPickerEditor = true
+        } else {
+            showHostEditor = true
+        }
     }
     
     func hostPickerDismissed() {
@@ -184,6 +203,7 @@ final class WorkspaceModel {
             showHostPicker = false
             return
         }
+        
         if let session = sessions.first(where: { $0.host.id == host.id && $0.isConnected }) {
             select(session)
         } else if let password = host.savedPassword {
@@ -203,23 +223,28 @@ final class WorkspaceModel {
             pendingAuthentication = nil
             connect(authentication.host, password: authentication.password)
         }
+        
         restoreNextConnection()
     }
     
     func connect(_ host: Host, password: String) {
         if let old = sessions.first(where: { $0.host.id == host.id }) { close(old) }
         let trust = trustStore
+        
         let session = SFTPSession(host: host, transport: CitadelSFTPTransport { key, endpoint in
             try await trust.verify(key: key, endpoint: endpoint)
         })
+        
         if reopenConnectedHosts && rememberHostLocations,
            let path = restorationPaths.removeValue(forKey: host.id.uuidString) {
             session.path = path
             session.pathInput = path
         }
+        
         session.didLoadLocation = { [weak self] path in
             self?.rememberLocation(path, for: host.id)
         }
+        
         sessions.append(session)
         select(session)
         session.connect(password: password)
@@ -260,11 +285,14 @@ final class WorkspaceModel {
         guard session.isConnected && !session.isPreview else { return }
         let transfer = FileTransfer(name: file.name, isUpload: false)
         transfers.insert(transfer, at: 0)
+        
         transfer.task = Task {
             let directory = URL.documentsDirectory.appending(path: "Downloads").appending(path: transfer.id.uuidString)
             let destination = directory.appending(path: URL(filePath: file.name).lastPathComponent)
+            
             do {
                 try await LocalFileOperations.createDirectory(at: directory, withIntermediateDirectories: true)
+                
                 if file.isDirectory {
                     transfer.updateState(.downloadingFolder)
                     let exporter = DownloadExporter { self.transfers.insert($0, at: 0) }
@@ -279,13 +307,14 @@ final class WorkspaceModel {
                         }
                     }
                 }
+                
                 transfer.localURL = destination
                 transfer.updateState(.downloaded)
             } catch {
                 let cancelled = Task.isCancelled || error is CancellationError
                 transfer.updateState(cancelled ? .cancelled : .failed(error.localizedDescription))
             }
-
+            
             transfer.task = nil
         }
     }

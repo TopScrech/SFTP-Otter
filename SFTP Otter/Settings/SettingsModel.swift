@@ -12,7 +12,9 @@ final class SettingsModel {
         do {
             keys = try store.load()
             errorMessage = nil
-        } catch { errorMessage = error.localizedDescription }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
     
     func requestRemoval(of endpoint: String) {
@@ -22,10 +24,13 @@ final class SettingsModel {
     
     func forget(in store: HostKeyTrustStore) {
         guard let endpoint = pendingRemoval else { return }
+        
         do {
             try store.forget(endpoint: endpoint)
             load(from: store)
             pendingRemoval = nil
-        } catch { errorMessage = error.localizedDescription }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 }

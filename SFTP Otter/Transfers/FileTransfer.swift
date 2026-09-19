@@ -31,7 +31,7 @@ final class FileTransfer: Identifiable {
         guard state != .cancelling || newState.isFinished else { return }
         state = newState
     }
-
+    
     func cancel() {
         guard !state.isFinished, state != .cancelling else { return }
         state = task == nil ? .cancelled : .cancelling

@@ -14,11 +14,13 @@ struct DesktopWorkspaceToolbar: ToolbarContent {
                 .background(workspace.section == .files ? WorkspaceTheme.raised : WorkspaceTheme.background, in: .rect(cornerRadius: 8))
         }
         .sharedBackgroundVisibility(.hidden)
+        
         ToolbarItem(placement: .navigation) {
             Button("New tab", systemImage: "plus") { workspace.chooseHost(for: workspace.activePane) }
                 .labelStyle(.iconOnly)
         }
         .sharedBackgroundVisibility(.hidden)
+        
         ToolbarSpacer(.flexible, placement: .primaryAction)
         
         ToolbarItem(placement: .primaryAction) {
@@ -26,6 +28,7 @@ struct DesktopWorkspaceToolbar: ToolbarContent {
                 .buttonStyle(CircularToolbarButtonStyle())
         }
         .sharedBackgroundVisibility(.hidden)
+        
         ToolbarItem(placement: .primaryAction) {
             Button("Transfers", systemImage: "arrow.down.circle") { workspace.toggleTransfers() }
                 .buttonStyle(CircularToolbarButtonStyle())

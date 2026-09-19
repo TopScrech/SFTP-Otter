@@ -7,8 +7,10 @@ struct DesktopWorkspaceView: View {
         VStack(spacing: 0) {
 #if !os(macOS)
             ConnectionTabsView(showSessions: false)
-            Divider().overlay(WorkspaceTheme.raised)
-            #endif
+            
+            Divider()
+                .overlay(WorkspaceTheme.raised)
+#endif
             HStack(spacing: 0) {
                 if workspace.section == .files {
                     DesktopFileWorkspaceView()
@@ -18,10 +20,12 @@ struct DesktopWorkspaceView: View {
                 }
             }
         }
-        #if os(macOS)
-        .toolbar { DesktopWorkspaceToolbar() }
+#if os(macOS)
+        .toolbar {
+            DesktopWorkspaceToolbar()
+        }
         .toolbarBackground(WorkspaceTheme.background, for: .windowToolbar)
         .toolbarBackgroundVisibility(.visible, for: .windowToolbar)
-        #endif
+#endif
     }
 }

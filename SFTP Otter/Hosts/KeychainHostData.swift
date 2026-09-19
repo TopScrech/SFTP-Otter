@@ -29,6 +29,7 @@ struct KeychainHostData {
     func save(_ data: Data) throws {
         let changes = [kSecValueData as String: data]
         let status = SecItemUpdate(query as CFDictionary, changes as CFDictionary)
+        
         if status == errSecItemNotFound {
             var item = query
             item[kSecValueData as String] = data

@@ -5,13 +5,13 @@ final class DockTransferProgress {
     private var view: DockTransferProgressView?
     private var previous: CombinedTransferProgress?
     private var started = false
-
+    
     func start(workspace: WorkspaceModel) {
         guard !started else { return }
         started = true
         observe(workspace: workspace)
     }
-
+    
     private func observe(workspace: WorkspaceModel) {
         let progress = withObservationTracking {
             CombinedTransferProgress(transfers: workspace.transfers)
@@ -23,9 +23,11 @@ final class DockTransferProgress {
                 self.observe(workspace: workspace)
             }
         }
+        
         guard progress != previous else { return }
         previous = progress
         let tile = NSApplication.shared.dockTile
+        
         if progress.activeCount == 0 {
             tile.contentView = nil
             view = nil
@@ -34,8 +36,10 @@ final class DockTransferProgress {
                 view = DockTransferProgressView(frame: NSRect(origin: .zero, size: tile.size))
                 tile.contentView = view
             }
+            
             view?.fraction = progress.fraction
         }
+        
         tile.display()
     }
 }

@@ -5,6 +5,7 @@ struct MobileWorkspaceView: View {
     
     var body: some View {
         @Bindable var workspace = workspace
+        
         TabView(selection: $workspace.section) {
             Tab("Connections", systemImage: "folder", value: .files) {
                 VStack(spacing: 0) {
@@ -12,6 +13,7 @@ struct MobileWorkspaceView: View {
                     FileBrowserView()
                 }
             }
+            
             Tab("Transfers", systemImage: "arrow.up.arrow.down", value: .transfers) {
                 TransfersView()
             }

@@ -46,8 +46,10 @@ struct HostStore {
     
     private func removeLegacyFile() {
         guard FileManager.default.fileExists(atPath: legacyURL.path()) else { return }
-        do { try FileManager.default.removeItem(at: legacyURL) }
-        catch {
+        
+        do {
+            try FileManager.default.removeItem(at: legacyURL)
+        } catch {
             Self.logger.error("event=legacy_hosts_cleanup_failed detail=\(error.localizedDescription, privacy: .private)")
         }
     }

@@ -8,7 +8,7 @@ import SwiftUI
         QuickLookCache.prepareForLaunch()
 #endif
     }
-
+    
     var body: some Scene {
         WindowGroup {
             WorkspaceView()
@@ -28,6 +28,7 @@ import SwiftUI
                 Button("Refresh files") { workspace.refreshFiles() }
                     .keyboardShortcut("r")
             }
+            
             CommandGroup(replacing: .appSettings) {
                 Button("Settings…") { workspace.showSettings = true }
                     .keyboardShortcut(",")
