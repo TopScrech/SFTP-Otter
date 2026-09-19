@@ -18,7 +18,7 @@ struct LocalBrowserRowView: View {
         Button {
             browser.selection.click(file.id, in: browser.files.map(\.id))
         } label: {
-            DesktopFileRowView(file: file, width: width, isSelected: browser.selection.ids.contains(file.id))
+            FileRowView(file: file, width: width, isSelected: browser.selection.ids.contains(file.id))
                 .contentShape(.rect)
         }
         .contentShape(.rect)

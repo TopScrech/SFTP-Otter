@@ -10,7 +10,7 @@ struct FileConnectionPaneView: View {
     var body: some View {
         Group {
             if let session = workspace.session(in: pane) {
-                DesktopSessionBrowserView(pane: pane)
+                SessionBrowserView(pane: pane)
                     .environment(session)
             } else if localBrowser.directory != nil {
                 LocalFileBrowserView(showFolderPicker: $showLocalFolderPicker)

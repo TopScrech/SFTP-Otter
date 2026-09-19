@@ -2,9 +2,6 @@ import Foundation
 
 @Observable
 final class WorkspaceModel {
-#if os(macOS)
-    @ObservationIgnored let dockProgress = DockTransferProgress()
-#endif
 #if DEBUG
     var localPreviewURL: URL?
 #endif

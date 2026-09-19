@@ -19,7 +19,7 @@ struct RemoteBrowserRowView: View {
         Button {
             selection.click(file.id, in: session.browserFiles.map(\.id))
         } label: {
-            DesktopFileRowView(file: file, width: width, isSelected: selection.ids.contains(file.id))
+            FileRowView(file: file, width: width, isSelected: selection.ids.contains(file.id))
                 .contentShape(.rect)
         }
         .contentShape(.rect)

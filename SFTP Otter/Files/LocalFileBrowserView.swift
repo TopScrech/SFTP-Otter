@@ -24,7 +24,11 @@ struct LocalFileBrowserView: View {
                     Image(systemName: "desktopcomputer")
                         .padding(8)
                         .background(Color(red: 0, green: 0.30, blue: 0.46), in: .rect(cornerRadius: 10))
+#if os(macOS)
                     Text("My Mac")
+#else
+                    Text("Local files")
+#endif
                     Spacer()
                     Button("Choose folder", systemImage: "folder") { showFolderPicker = true }
                     Button("Actions", systemImage: "chevron.down") { showActions.toggle() }

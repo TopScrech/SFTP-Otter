@@ -8,7 +8,13 @@ struct WorkspaceView: View {
         @Bindable var uploads = workspace.uploads
         @Bindable var trustStore = workspace.trustStore
         
-        DesktopWorkspaceView()
+        Group {
+#if os(macOS)
+            DesktopWorkspaceView()
+#else
+            MobileWorkspaceView()
+#endif
+        }
         .task {
             workspace.restoreConnections()
         }
