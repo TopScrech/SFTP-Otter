@@ -1,6 +1,7 @@
 import SwiftUI
 
-@main struct MyApp: App {
+@main
+struct MyApp: App {
     @State private var workspace = WorkspaceModel()
     @State private var dockProgress = DockTransferProgress()
     
@@ -13,7 +14,9 @@ import SwiftUI
             WorkspaceView()
                 .environment(workspace)
                 .frame(minWidth: 400, minHeight: 500)
-                .task { dockProgress.start(workspace: workspace) }
+                .task {
+                    dockProgress.start(workspace: workspace)
+                }
         }
         .windowResizability(.contentMinSize)
         .windowStyle(.hiddenTitleBar)
@@ -21,20 +24,29 @@ import SwiftUI
         .defaultSize(width: 1180, height: 760)
         .commands {
             CommandGroup(after: .newItem) {
-                Button("Refresh files") { workspace.refreshFiles() }
-                    .keyboardShortcut("r")
+                Button("Refresh files") {
+                    workspace.refreshFiles()
+                }
+                .keyboardShortcut("r")
             }
             
             CommandGroup(replacing: .appSettings) {
-                Button("Settings…") { workspace.showSettings = true }
-                    .keyboardShortcut(",")
+                Button("Settings…") {
+                    workspace.showSettings = true
+                }
+                .keyboardShortcut(",")
             }
         }
 #if DEBUG
         .commands {
             CommandMenu("Development") {
-                Button("Load visual preview") { workspace.loadVisualPreview() }
-                Button("Load local file preview") { workspace.loadLocalFilePreview() }
+                Button("Load visual preview") {
+                    workspace.loadVisualPreview()
+                }
+                
+                Button("Load local file preview") {
+                    workspace.loadLocalFilePreview()
+                }
             }
         }
 #endif

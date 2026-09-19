@@ -42,7 +42,7 @@
     { "path": "AGENTS.md" },
     {
       "kind": "folder",
-      "path": "SFTP Otter",
+      "path": "Shared",
       "target-membership": [
         "iOS",
         "macOS",
