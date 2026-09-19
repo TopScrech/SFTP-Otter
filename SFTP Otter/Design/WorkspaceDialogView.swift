@@ -25,6 +25,7 @@ struct WorkspaceDialogView<Content: View>: View {
             }
             .padding(30)
             .background(WorkspaceTheme.raised)
+            .zIndex(1)
             
             #if os(macOS)
             WorkspaceDialogContentView {

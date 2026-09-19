@@ -13,7 +13,6 @@ struct SettingsView: View {
             ScrollView {
                 SettingsContentView()
             }
-            .scrollClipDisabled()
             .frame(maxHeight: 400)
             #else
             SettingsContentView()
