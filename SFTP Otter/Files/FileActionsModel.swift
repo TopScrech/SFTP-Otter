@@ -36,6 +36,7 @@ final class FileActionsModel {
     var deletionTitle: String {
         selectedFiles.count > 1 ? "Delete \(selectedFiles.count) items?" : "Delete “\(file?.name ?? "")”?"
     }
+    
     var transport: (any SFTPTransport)?
     var directory = ""
     var refresh: () -> Void = {}
@@ -48,6 +49,7 @@ final class FileActionsModel {
     
     func choose(_ action: FileMenuAction) {
         guard !busy, let file else { return }
+        
         if action == .delete {
             guard file.name != "..", file.path != "/" else { return }
             showDeleteConfirmation = true
@@ -87,15 +89,19 @@ final class FileActionsModel {
         let input = self.input
         prompt = nil
         error = nil
+        
         if action == .open && file.isDirectory {
             navigate(file.path)
             return
         }
+        
         if action == .refresh {
             refresh()
             return
         }
+        
         busy = true
+        
         Task {
             defer { busy = false }
             do {
@@ -106,6 +112,7 @@ final class FileActionsModel {
                         let url = try await materialize(target)
                         guard NSWorkspace.shared.open(url) else { throw CocoaError(.fileReadUnknown) }
                     }
+                    
                 case .openWith:
                     let panel = NSOpenPanel()
                     panel.title = "Choose an application"
@@ -115,6 +122,7 @@ final class FileActionsModel {
                     var urls: [URL] = []
                     for target in targets where !target.isDirectory { urls.append(try await materialize(target)) }
                     try await NSWorkspace.shared.open(urls, withApplicationAt: application, configuration: .init())
+                
                 case .copy:
                     let panel = NSOpenPanel()
                     panel.title = "Copy to target directory"
@@ -124,6 +132,7 @@ final class FileActionsModel {
                     guard await panel.begin() == .OK, let target = panel.url else { return }
                     let access = target.startAccessingSecurityScopedResource()
                     defer { if access { target.stopAccessingSecurityScopedResource() } }
+                    
                     for file in targets {
                         let destination = target.appending(path: file.name)
                         if let transport {
@@ -132,19 +141,23 @@ final class FileActionsModel {
                             try await LocalFileOperations.copy(source: URL(filePath: file.path), to: destination)
                         }
                     }
+                    
                     refresh()
+                
                 case .rename:
                     let name = try Self.validName(input)
                     let target = Self.child(directory, name)
                     if let transport { try await transport.rename(path: file.path, to: target) }
                     else { try await LocalFileOperations.move(from: URL(filePath: file.path), to: URL(filePath: target)) }
                     refresh()
+                
                 case .newFolder:
                     let name = try Self.validName(input)
                     let target = Self.child(directory, name)
                     if let transport { try await transport.createDirectory(path: target) }
                     else { try await LocalFileOperations.createDirectory(at: URL(filePath: target)) }
                     refresh()
+                    
                 case .permissions:
                     guard (3...4).contains(input.count), input.allSatisfy({ "01234567".contains($0) }), let mode = UInt32(input, radix: 8), mode <= 0o7777 else {
                         throw FileActionError.invalidPermissions
@@ -153,13 +166,16 @@ final class FileActionsModel {
                         if let transport { try await transport.setPermissions(path: target.path, mode: mode) }
                         else { try await LocalFileOperations.setPermissions(at: URL(filePath: target.path), mode: mode) }
                     }
+                    
                     refresh()
+                    
                 case .delete:
                     for target in targets {
                         guard target.name != "..", target.path != "/" else { throw FileActionError.invalidName }
                         if let transport { try await removeTree(target, using: transport) }
                         else { try await LocalFileOperations.trash(at: URL(filePath: target.path)) }
                     }
+                    
                     refresh()
                 }
             } catch {
@@ -173,6 +189,7 @@ final class FileActionsModel {
         let root = URL.temporaryDirectory.appending(path: "SFTP Otter Open/" + UUID().uuidString)
         try await LocalFileOperations.createDirectory(at: root, withIntermediateDirectories: true)
         let destination = root.appending(path: file.name)
+        
         do {
             try await DownloadExporter(register: registerTransfer).downloadExport(file, to: destination, using: transport)
             return destination
@@ -182,13 +199,10 @@ final class FileActionsModel {
         }
     }
     
-    func downloadTree(_ file: RemoteFile, to target: URL, using transport: any SFTPTransport, depth: Int = 0, download: (@MainActor @Sendable (RemoteFile, URL) async throws -> Void)? = nil) async throws {
-        try await DirectoryDownload().download(file, to: target, using: transport, depth: depth, perform: download)
-    }
-    
     private func removeTree(_ file: RemoteFile, using transport: any SFTPTransport, depth: Int = 0) async throws {
         guard depth < 64 else { throw FileActionError.symbolicLink }
         let directory = file.isDirectory && !file.permissions.hasPrefix("l")
+        
         if directory {
             for child in try await transport.list(path: file.path).files {
                 guard child.name != ".", child.name != ".." else { continue }
@@ -196,6 +210,7 @@ final class FileActionsModel {
                 try await removeTree(child, using: transport, depth: depth + 1)
             }
         }
+        
         try await transport.remove(path: file.path, isDirectory: directory)
     }
     
