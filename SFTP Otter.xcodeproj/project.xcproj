@@ -19,19 +19,19 @@
       },
     }, {
       "kind": "remote",
-      "repository": "https://github.com/orlandos-nl/Citadel.git",
+      "repository": "https://github.com/orlandos-nl/Citadel",
       "version": {
         "version": "0.12.1",
       },
     }, {
       "kind": "remote",
-      "repository": "https://github.com/apple/swift-nio.git",
+      "repository": "https://github.com/apple/swift-nio",
       "version": {
         "up-to-next-major-version": "2.81.0",
       },
     }, {
       "kind": "remote",
-      "repository": "https://github.com/Wellz26/swift-nio-ssh.git",
+      "repository": "https://github.com/Wellz26/swift-nio-ssh",
       "version": {
         "up-to-next-minor-version": "0.3.4",
       },
