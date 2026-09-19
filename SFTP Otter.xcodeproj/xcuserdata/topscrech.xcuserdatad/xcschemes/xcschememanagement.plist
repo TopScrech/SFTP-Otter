@@ -7,7 +7,7 @@
 		<key>Demo (Playground).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>4</integer>
 		</dict>
 		<key>MyApp.xcscheme_^#shared#^_</key>
 		<dict>
@@ -19,11 +19,6 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>SFTP-Otter.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 		<key>iOS Release.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -33,6 +28,11 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
+		</dict>
+		<key>visionOS.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -48,6 +48,11 @@
 			<true/>
 		</dict>
 		<key>F3981993305F31A8004F04A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F3981F61305F40BE004F04A9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
