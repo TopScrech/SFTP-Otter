@@ -50,16 +50,6 @@ struct SettingsView: View {
             }
             .scrollClipDisabled()
             .frame(maxHeight: 400)
-            
-            HStack {
-                Spacer()
-                
-                Button("Done") {
-                    dismiss()
-                }
-                .buttonStyle(DialogActionStyle())
-                .keyboardShortcut(.defaultAction)
-            }
         }
         .sheet($settings.showConfirmation) {
             MessageDialogView(title: "Forget this trusted host?", message: settings.pendingRemoval ?? "", actionTitle: "Forget host", destructive: true) {
