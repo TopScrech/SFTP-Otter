@@ -45,10 +45,16 @@
       "path": "Shared",
       "target-membership": [
         "iOS",
+        "visionOS",
         "macOS",
       ],
       "membership-exceptions": [
         {
+          "target": "visionOS",
+          "exclusions": [
+            "AppIcon.icon",
+          ],
+        }, {
           "target": "Unit Tests",
           "inclusions": [
             "Connection/CitadelSFTPTransport.swift",
@@ -131,7 +137,7 @@
         },
       ],
     },
-    { "kind": "folder", "path": "iOS", "target-membership": [ "iOS" ] },
+    { "kind": "folder", "path": "iOS", "target-membership": [ "iOS", "visionOS" ] },
     {
       "kind": "folder",
       "path": "visionOS",
@@ -146,6 +152,9 @@
           "target": "visionOS",
           "exclusions": [
             "Info.plist",
+            "SFTP_OtterApp.swift",
+            "ContentView.swift",
+            "Resources",
           ],
         },
       ],
@@ -368,6 +377,29 @@
         "frameworks",
         "resources",
       ],
+      "package-product-members": [
+        {
+          "package": "Citadel",
+          "product-name": "Citadel",
+          "build-phase": { "build-phase": "frameworks" },
+        }, {
+          "package": "ScrechKit",
+          "product-name": "ScrechKit",
+          "build-phase": { "build-phase": "frameworks" },
+        }, {
+          "package": "swift-nio",
+          "product-name": "NIOCore",
+          "build-phase": { "build-phase": "frameworks" },
+        }, {
+          "package": "swift-nio",
+          "product-name": "NIOPosix",
+          "build-phase": { "build-phase": "frameworks" },
+        }, {
+          "package": "swift-nio-ssh",
+          "product-name": "NIOSSH",
+          "build-phase": { "build-phase": "frameworks" },
+        },
+      ],
       "build-settings": {
         "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
         "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
@@ -377,6 +409,8 @@
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_FILE": "$(TARGET_NAME)/Info.plist",
         "INFOPLIST_KEY_CFBundleDisplayName": "SFTP Otter",
+        "INFOPLIST_KEY_ITSAppUsesNonExemptEncryption": "NO",
+        "INFOPLIST_KEY_NSLocalNetworkUsageDescription": "Connect to SFTP servers on your local network",
         "LD_RUNPATH_SEARCH_PATHS": [
           "$(inherited)",
           "@executable_path/Frameworks",
@@ -390,7 +424,7 @@
         "SWIFT_DEFAULT_ACTOR_ISOLATION": "MainActor",
         "SWIFT_EMIT_LOC_STRINGS": "YES",
         "SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY": "YES",
-        "SWIFT_VERSION": "5.0",
+        "SWIFT_VERSION": "6.0",
         "TARGETED_DEVICE_FAMILY": "7",
         "VALIDATE_PRODUCT[config=Release]": "YES",
         "XROS_DEPLOYMENT_TARGET": "26",
