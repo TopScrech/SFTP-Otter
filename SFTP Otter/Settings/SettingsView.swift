@@ -23,6 +23,7 @@ struct SettingsView: View {
                             
                             Toggle("Reopen hosts and local folders after relaunch", isOn: $workspace.reopenConnectedHosts)
                                 .labelsHidden()
+                                .fixedSize()
                         }
                         
                         Divider()
@@ -34,6 +35,7 @@ struct SettingsView: View {
                             
                             Toggle("Remember last opened folder in connected hosts", isOn: $workspace.rememberHostLocations)
                                 .labelsHidden()
+                                .fixedSize()
                         }
                         .disabled(!workspace.reopenConnectedHosts)
                     }
@@ -46,6 +48,7 @@ struct SettingsView: View {
                     TrustedHostsSectionView()
                 }
             }
+            .scrollClipDisabled()
             .frame(maxHeight: 400)
             
             HStack {
