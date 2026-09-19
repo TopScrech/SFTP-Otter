@@ -23,6 +23,7 @@ final class HostEditorModel {
     
     func save(to workspace: WorkspaceModel) -> Bool {
         guard canSave else { return false }
+        host.address = host.connectionAddress
         host.port = Int(port) ?? 22
         host.savedPassword = savePassword ? password : nil
         return workspace.save(host)

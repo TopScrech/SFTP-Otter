@@ -9,6 +9,7 @@ struct SessionBrowserView: View {
     var body: some View {
         VStack(alignment: .leading) {
             FileBrowserToolbarView(showImporter: $showImporter)
+            
             if session.isLoading && !session.isConnected {
                 ProgressView("Connecting")
                     .maxFrame(.infinity)
@@ -36,20 +37,14 @@ struct SessionBrowserView: View {
                 .background(WorkspaceTheme.surface, in: .rect(cornerRadius: 14))
                 .overlay {
                     if session.filteredFiles.isEmpty {
-                        ContentUnavailableView("No files", systemImage: "folder", description: Text(session.search.isEmpty ? "This directory is empty" : "No files match your search"))
+                        ContentUnavailableView(
+                            "No files",
+                            systemImage: "folder",
+                            description: Text(session.search.isEmpty ? "This directory is empty" : "No files match your search")
+                        )
                     }
                 }
             }
-            HStack {
-                Label(session.isPreview ? "Layout preview · No server connection" : (session.isConnected ? "Connected" : "Disconnected"), systemImage: "circle.fill")
-                    .foregroundStyle(session.isConnected && !session.isPreview ? .green : WorkspaceTheme.muted)
-                Spacer()
-                Text("\(session.files.count) items")
-                Text("SFTP")
-            }
-            .caption()
-            .foregroundStyle(WorkspaceTheme.muted)
-            .padding()
         }
         .padding()
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data, .content, .folder], allowsMultipleSelection: true) { result in

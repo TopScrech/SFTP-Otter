@@ -40,7 +40,8 @@ actor CitadelSFTPTransport: SFTPTransport {
             Self.logger.notice("event=connection_completed request_id=\(token.uuidString, privacy: .public) stage=\(stage, privacy: .public) outcome=\(outcome, privacy: .public) duration_ms=\(durationMS) error_type=\(errorType, privacy: .public) error_code=\(errorCode)")
         }
         Self.logger.notice("event=connection_started request_id=\(token.uuidString, privacy: .public) host_id=\(host.id.uuidString, privacy: .public) port=\(host.port) auth_method=password")
-        let endpoint = "\(host.address.lowercased()):\(host.port)"
+        let address = host.connectionAddress
+        let endpoint = "\(address.lowercased()):\(host.port)"
         let verify = verifyHostKey
         let validator = ServerKeyValidator {
             Self.logger.notice("event=host_key_verification_started request_id=\(token.uuidString, privacy: .public)")
@@ -56,7 +57,7 @@ actor CitadelSFTPTransport: SFTPTransport {
         do {
             try await withTaskCancellationHandler {
                 let client = try await SSHClient.connect(
-                    host: host.address, port: host.port,
+                    host: address, port: host.port,
                     authenticationMethod: .passwordBased(username: host.username, password: password),
                     hostKeyValidator: .custom(validator),
                     reconnect: .never,
@@ -84,7 +85,7 @@ actor CitadelSFTPTransport: SFTPTransport {
             errorCode = (error as NSError).code
             Self.logger.error("event=connection_error request_id=\(token.uuidString, privacy: .public) stage=\(stage, privacy: .public) error_type=\(errorType, privacy: .public) error_code=\(errorCode) detail=\(String(describing: error), privacy: .private)")
             if let sshError = error as? NIOSSHError, sshError.type == .keyExchangeNegotiationFailure {
-                await SSHNegotiationLogger.inspect(host: host.address, port: host.port, requestID: token.uuidString)
+                await SSHNegotiationLogger.inspect(host: address, port: host.port, requestID: token.uuidString)
                 throw SFTPConnectionError.incompatibleAlgorithms
             }
             throw error
