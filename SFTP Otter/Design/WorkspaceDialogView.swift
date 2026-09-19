@@ -35,9 +35,15 @@ struct WorkspaceDialogView<Content: View>: View {
         .foregroundStyle(WorkspaceTheme.text)
         .tint(WorkspaceTheme.accent)
         .background(WorkspaceTheme.surface)
-        .clipShape(.rect(cornerRadius: 24))
-        .presentationBackground(.clear)
+        .presentationBackground {
+            // Match the content edges in the sheet's outer insets
+            VStack(spacing: 0) {
+                WorkspaceTheme.raised
+                WorkspaceTheme.surface
+            }
+        }
         .presentationCornerRadius(24)
+        .presentationSizing(.fitted)
         .darkSchemePreferred()
         .frame(idealWidth: 460)
         .fixedSize(horizontal: false, vertical: true)
