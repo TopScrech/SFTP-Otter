@@ -113,7 +113,7 @@
         {
           "target": "macOS",
           "exclusions": [
-            "SFTP-Otter.plist",
+            "macOS.plist",
           ],
         }, {
           "target": "Unit Tests",
@@ -149,8 +149,8 @@
           "target": "visionOS",
           "exclusions": [
             "ContentView.swift",
-            "Info.plist",
             "SFTP-Otter.swift",
+            "visionOS.plist",
           ],
         },
       ],
@@ -220,7 +220,7 @@
         "ENABLE_RESOURCE_ACCESS_USB": "NO",
         "ENABLE_USER_SELECTED_FILES": "readwrite",
         "GENERATE_INFOPLIST_FILE": "YES",
-        "INFOPLIST_FILE": "macOS/SFTP-Otter.plist",
+        "INFOPLIST_FILE": "macOS/macOS.plist",
         "INFOPLIST_KEY_CFBundleDisplayName": "SFTP Otter",
         "INFOPLIST_KEY_ITSAppUsesNonExemptEncryption": "NO",
         "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.developer-tools",
@@ -403,7 +403,7 @@
         "DEVELOPMENT_TEAM": "8FQUA2F388",
         "ENABLE_PREVIEWS": "YES",
         "GENERATE_INFOPLIST_FILE": "YES",
-        "INFOPLIST_FILE": "$(TARGET_NAME)/Info.plist",
+        "INFOPLIST_FILE": "$(TARGET_NAME)/visionOS.plist",
         "INFOPLIST_KEY_CFBundleDisplayName": "SFTP Otter",
         "INFOPLIST_KEY_ITSAppUsesNonExemptEncryption": "NO",
         "INFOPLIST_KEY_NSLocalNetworkUsageDescription": "Connect to SFTP servers on your local network",
