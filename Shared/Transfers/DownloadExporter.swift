@@ -23,6 +23,7 @@ final class DownloadExporter {
             defer {
                 transfer.task = nil
             }
+            
             do {
                 if transfer.state == .cancelled { throw CancellationError() }
                 try Task.checkCancellation()
