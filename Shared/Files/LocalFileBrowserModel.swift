@@ -62,6 +62,7 @@ final class LocalFileBrowserModel {
 
     func copyFiles(_ sources: [URL], to destination: URL) {
         let accessRoot = root
+        
         copyTask = Task {
             let failures = await LocalFileOperations.copy(sources: sources, to: destination, accessRoot: accessRoot)
             refresh()
@@ -91,6 +92,7 @@ final class LocalFileBrowserModel {
         pendingDirectory = url
         let root = root
         let showHidden = showHidden
+        
         navigationTask = Task {
             do {
                 let entries = try await LocalFileOperations.list(directory: url, root: root, showHidden: showHidden)

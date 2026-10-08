@@ -52,6 +52,7 @@ final class UploadQueue {
         let key = "\(item.session.host.id)/\(item.directory)/\(item.url.lastPathComponent)"
         let preceding = destinations[key]?.task
         let id = UUID()
+        
         let task = Task {
             // Recheck collisions only after an earlier upload to this path finishes
             await preceding?.value
@@ -59,6 +60,7 @@ final class UploadQueue {
             item.transfer.task = nil
             if destinations[key]?.id == id { destinations[key] = nil }
         }
+        
         item.transfer.task = task
         destinations[key] = (id, task)
     }

@@ -31,8 +31,14 @@ struct FileConnectionPaneView: View {
             if pane == .primary, let url = workspace.localPreviewURL { localBrowser.open(url) }
         }
         #endif
-        .task { localBrowser.restoreLocation(for: pane) }
-        .onChange(of: workspace.reopenConnectedHosts) { localBrowser.rememberLocation() }
-        .onDisappear { localBrowser.close(forget: false) }
+        .task {
+            localBrowser.restoreLocation(for: pane)
+        }
+        .onChange(of: workspace.reopenConnectedHosts) {
+            localBrowser.rememberLocation()
+        }
+        .onDisappear {
+            localBrowser.close(forget: false)
+        }
     }
 }

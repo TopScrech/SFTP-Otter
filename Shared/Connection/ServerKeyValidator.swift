@@ -13,6 +13,7 @@ nonisolated final class ServerKeyValidator: NIOSSHClientServerAuthenticationDele
     
     func validateHostKey(hostKey: NIOSSHPublicKey, validationCompletePromise: EventLoopPromise<Void>) {
         let key = String(openSSHPublicKey: hostKey)
+        
         let task = Task {
             do {
                 try Task.checkCancellation()

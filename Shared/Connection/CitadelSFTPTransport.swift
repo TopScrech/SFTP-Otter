@@ -125,7 +125,7 @@ actor CitadelSFTPTransport: SFTPTransport {
     func upload(local: URL, remote: String, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
         try await upload(local: local, remote: remote, replacing: false, progress: progress)
     }
-
+    
     func upload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
         try await gate.run { try await self.performUpload(local: local, remote: remote, replacing: replacing, progress: progress) }
     }
@@ -137,32 +137,41 @@ actor CitadelSFTPTransport: SFTPTransport {
     private func performUpload(local: URL, remote: String, replacing: Bool, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
         guard let ssh else { throw ConnectionError.notConnected }
         let sftp = try await ssh.openSFTP()
+        
         // Drain in-flight requests before closing the channel, including on cancellation
-        defer { Task { try? await sftp.close() } }
+        defer {
+            Task { try? await sftp.close() }
+        }
+        
         do {
             try Task.checkCancellation()
             let disk = try TransferDiskFile(reading: local)
             let temporary = remote + ".sftp-otter-" + UUID().uuidString + ".part"
+            
             do {
                 let total = try await disk.size()
                 let file = try await sftp.openFile(filePath: temporary, flags: [.write, .create, .forceCreate])
                 let handle = RemoteFileHandle(file: file)
+                
                 do {
                     try await TransferPipeline.copy(total: total, requestCount: TransferPreferences.requestsPerFile, read: { try await disk.read(offset: $0, length: $1) }, write: { try await handle.write($0, offset: $1) }, progress: progress)
                     guard try await disk.size() == total else { throw SFTPConnectionError.remoteFileChanged }
                     try await handle.close()
                     try await disk.close()
                     try Task.checkCancellation()
+                    
                     if replacing {
                         // Keep the original until the completed upload is installed
                         let backup = remote + ".sftp-otter-" + UUID().uuidString + ".backup"
                         try await sftp.rename(at: remote, to: backup)
+                        
                         do {
                             try await sftp.rename(at: temporary, to: remote)
                         } catch {
                             try await sftp.rename(at: backup, to: remote)
                             throw error
                         }
+                        
                         try await sftp.remove(at: backup)
                     } else {
                         try await sftp.rename(at: temporary, to: remote)
@@ -177,7 +186,7 @@ actor CitadelSFTPTransport: SFTPTransport {
                 throw error
             }
         }
-
+        
     }
     
     private func performDownload(remote: String, local: URL, progress: @escaping @Sendable (UInt64, UInt64) async -> Void) async throws {
@@ -212,7 +221,6 @@ actor CitadelSFTPTransport: SFTPTransport {
                 throw error
             }
         }
-
     }
     
     func rename(path: String, to destination: String) async throws {

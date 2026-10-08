@@ -16,6 +16,7 @@ struct FileActionPresentationModifier: ViewModifier {
                 let pendingPreview = actions.previewTask
                 pendingPreview?.cancel()
                 actions.previewURL = nil
+                
                 Task {
                     await pendingPreview?.value
                     if actions.previewTask == nil, actions.previewURL == nil {
