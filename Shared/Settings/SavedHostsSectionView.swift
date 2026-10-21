@@ -2,6 +2,7 @@ import ScrechKit
 
 struct SavedHostsSectionView: View {
     @Environment(WorkspaceModel.self) private var workspace
+    
     @State private var showEditor = false
     
     var body: some View {

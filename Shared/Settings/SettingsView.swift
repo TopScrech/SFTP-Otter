@@ -3,30 +3,32 @@ import ScrechKit
 struct SettingsView: View {
     @Environment(WorkspaceModel.self) private var workspace
     @Environment(\.dismiss) private var dismiss
-    @State private var settings = SettingsModel()
+    @State private var vm = SettingsVM()
     
     var body: some View {
-        @Bindable var settings = settings
+        @Bindable var vm = vm
         
         WorkspaceDialogView(desktopWidth: 620, title: "Settings", close: { dismiss() }) {
-            #if os(macOS)
+#if os(macOS)
             ScrollView {
                 SettingsContentView()
             }
             .frame(maxHeight: 400)
-            #else
+#else
             SettingsContentView()
-            #endif
+#endif
         }
-        .sheet($settings.showConfirmation) {
-            MessageDialogView(title: "Forget this trusted host?", message: settings.pendingRemoval ?? "", actionTitle: "Forget host", destructive: true) {
-                settings.forget(in: workspace.trustStore)
+        .sheet($vm.showConfirmation) {
+            MessageDialogView(title: "Forget this trusted host?", message: vm.pendingRemoval ?? "", actionTitle: "Forget host", destructive: true) {
+                vm.forget(in: workspace.trustStore)
             }
         }
-        .sheet($settings.showTrustedHostsHelp) {
+        .sheet($vm.showTrustedHostsHelp) {
             MessageDialogView(title: "Trusted SSH hosts", message: "These server keys were approved when connecting. Forgetting a key asks you to verify the server again on your next connection")
         }
-        .onAppear { settings.load(from: workspace.trustStore) }
-        .environment(settings)
+        .onAppear {
+            vm.load(from: workspace.trustStore)
+        }
+        .environment(vm)
     }
 }
