@@ -208,7 +208,7 @@ final class WorkspaceModel {
             return
         }
         
-        if let session = sessions.first(where: { $0.host.id == host.id && $0.isConnected }) {
+        if let session = sessions.first(where: { $0.host.id == host.id && $0.isConnected && $0.id != otherPaneSessionID }) {
             select(session)
         } else if let password = host.savedPassword {
             connect(host, password: password)
@@ -232,7 +232,7 @@ final class WorkspaceModel {
     }
     
     func connect(_ host: Host, password: String) {
-        if let old = sessions.first(where: { $0.host.id == host.id }) { close(old) }
+        if let old = sessions.first(where: { $0.host.id == host.id && $0.id != otherPaneSessionID }) { close(old) }
         let trust = trustStore
         
         let session = SFTPSession(host: host, transport: CitadelSFTPTransport { key, endpoint in
@@ -264,7 +264,19 @@ final class WorkspaceModel {
         showHostPicker = true
     }
     
+    // A pane's session holds its path, so two panes must never share one
+    private var otherPaneSessionID: UUID? {
+        guard splitMode else { return nil }
+        return activePane == .primary ? secondarySessionID : selectedSessionID
+    }
+
     func select(_ session: SFTPSession) {
+        if session.id == otherPaneSessionID {
+            activePane = activePane == .primary ? .secondary : .primary
+            section = .files
+            return
+        }
+
         if activePane == .primary { selectedSessionID = session.id }
         else { secondarySessionID = session.id }
         section = .files
