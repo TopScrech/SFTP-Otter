@@ -7,32 +7,35 @@ struct HostsView: View {
         @Bindable var workspace = workspace
         
         VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                
-                TextField("Search hosts", text: $workspace.hostSearch)
-                    .textFieldStyle(.plain)
+            if !workspace.hosts.isEmpty {
+                HStack {
+                    Image(systemName: "magnifyingglass")
+
+                    TextField("Search hosts", text: $workspace.hostSearch)
+                        .textFieldStyle(.plain)
+                }
+                .padding()
+                .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
+
+                Text("SAVED HOSTS")
+                    .caption()
+                    .foregroundStyle(WorkspaceTheme.muted)
+                    .padding(.top)
             }
-            .padding()
-            .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 12))
-            
-            Text("SAVED HOSTS")
-                .caption()
-                .foregroundStyle(WorkspaceTheme.muted)
-                .padding(.top)
-            
+
             if workspace.hosts.isEmpty {
                 ContentUnavailableView {
                     Label("A home for your servers", systemImage: "server.rack")
                 } description: {
                     Text("Add a host to browse files and transfer them securely over SFTP")
+                        .foregroundStyle(.secondary)
                 } actions: {
                     Button("Add your first host", systemImage: "plus") {
                         workspace.addHost()
                     }
                     .buttonStyle(DialogActionStyle())
                 }
-                .frame(maxHeight: .infinity)
+                .maxFrame(.infinity)
             } else if workspace.filteredHosts.isEmpty {
                 ContentUnavailableView.search(text: workspace.hostSearch)
             } else {
@@ -45,13 +48,15 @@ struct HostsView: View {
                 #endif
             }
             
-            HStack {
-                Spacer()
-                
-                Button("Add host", systemImage: "plus") {
-                    workspace.addHost()
+            if !workspace.hosts.isEmpty {
+                HStack {
+                    Spacer()
+
+                    Button("Add host", systemImage: "plus") {
+                        workspace.addHost()
+                    }
+                    .buttonStyle(DialogActionStyle())
                 }
-                .buttonStyle(DialogActionStyle())
             }
         }
         #if os(macOS)
