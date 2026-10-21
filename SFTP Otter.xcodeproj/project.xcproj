@@ -148,8 +148,6 @@
         {
           "target": "visionOS",
           "exclusions": [
-            "ContentView.swift",
-            "SFTP-Otter.swift",
             "visionOS.plist",
           ],
         },
