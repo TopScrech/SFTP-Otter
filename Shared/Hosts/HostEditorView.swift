@@ -17,6 +17,9 @@ struct HostEditorView: View {
                     DialogFieldView(title: "Address *") {
                         TextField("", text: $editor.host.address)
                             .autocorrectionDisabled()
+                            #if os(iOS) || os(visionOS)
+                            .textInputAutocapitalization(.never)
+                            #endif
                             .accessibilityLabel("Address")
                     }
                     
