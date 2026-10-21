@@ -30,6 +30,9 @@ struct HostEditorView: View {
                 DialogFieldView(title: "Username *") {
                     TextField("", text: $editor.host.username)
                         .autocorrectionDisabled()
+                        #if os(iOS) || os(visionOS)
+                        .textInputAutocapitalization(.never)
+                        #endif
                         .accessibilityLabel("Username")
                 }
                 
