@@ -8,7 +8,7 @@ struct FileTableHeaderView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(FileSortColumn.allCases, id: \.self) { column in
+            ForEach(FileSortColumn.visibleColumns(for: width), id: \.self) { column in
                 Button {
                     onSort(column)
                 } label: {
@@ -23,14 +23,14 @@ struct FileTableHeaderView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
-                    .frame(width: width * column.widthFraction, height: 45)
+                    .frame(width: width * column.widthFraction(for: width), height: 45)
                     .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
                 .accessibilityValue(sortOrder.column == column ? (sortOrder.ascending ? "Ascending" : "Descending") : "Not sorted")
                 .help("Sort by " + column.title)
                 .overlay(alignment: .trailing) {
-                    if showsColumnDividers, column != .kind {
+                    if showsColumnDividers, column != FileSortColumn.visibleColumns(for: width).last {
                         Rectangle().fill(WorkspaceTheme.raised).frame(width: 1)
                     }
                 }

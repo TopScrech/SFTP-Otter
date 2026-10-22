@@ -17,13 +17,18 @@ struct FileConnectionEmptyView: View {
                 .caption2()
                 .foregroundStyle(WorkspaceTheme.muted)
                 .multilineTextAlignment(.center)
-            Button("Select host") { workspace.chooseHost(for: pane) }
-                .caption().bold()
-                .buttonStyle(.plain)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 8))
-                .padding(.top)
+            Button {
+                workspace.chooseHost(for: pane)
+            } label: {
+                Text("Select host")
+                    .caption().bold()
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(WorkspaceTheme.raised, in: .rect(cornerRadius: 8))
+                    .contentShape(.rect(cornerRadius: 8))
+            }
+            .buttonStyle(.plain)
+            .padding(.top)
             #if os(macOS)
             Button("Browse my Mac", systemImage: "desktopcomputer") {
                 showLocalFolderPicker = true

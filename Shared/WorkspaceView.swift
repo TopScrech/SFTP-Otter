@@ -2,6 +2,9 @@ import ScrechKit
 
 struct WorkspaceView: View {
     @Environment(WorkspaceModel.self) private var workspace
+#if os(iOS)
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+#endif
     
     var body: some View {
         @Bindable var workspace = workspace
@@ -16,6 +19,9 @@ struct WorkspaceView: View {
 #endif
         }
         .task {
+#if os(iOS)
+            workspace.configureDefaultSplitMode(isCompact: horizontalSizeClass == .compact)
+#endif
             workspace.restoreConnections()
         }
         .onChange(of: workspace.connectedHostIDs) {

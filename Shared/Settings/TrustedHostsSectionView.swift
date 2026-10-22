@@ -2,7 +2,7 @@ import ScrechKit
 
 struct TrustedHostsSectionView: View {
     @Environment(WorkspaceModel.self) private var workspace
-    @Environment(SettingsModel.self) private var settings
+    @Environment(SettingsVM.self) private var settings
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {

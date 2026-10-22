@@ -1,7 +1,7 @@
 import Foundation
 
 @Observable
-final class SettingsModel {
+final class SettingsVM {
     var keys: [String: String] = [:]
     var pendingRemoval: String?
     var showConfirmation = false
