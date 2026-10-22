@@ -50,13 +50,23 @@ final class WorkspaceModel {
     private var restorationPaths: [String: String] = [:]
     private var restorationPanes: [UUID: BrowserPane] = [:]
     
-    var splitMode = UserDefaults.standard.object(forKey: "splitMode") as? Bool ?? true {
-        didSet {
-            UserDefaults.standard.set(splitMode, forKey: "splitMode")
-            if !splitMode { activePane = .primary }
+    private var savedSplitMode = UserDefaults.standard.object(forKey: "splitMode") as? Bool
+    private var defaultSplitMode = true
+
+    var splitMode: Bool {
+        get { savedSplitMode ?? defaultSplitMode }
+        set {
+            savedSplitMode = newValue
+            UserDefaults.standard.set(newValue, forKey: "splitMode")
+            if !newValue { activePane = .primary }
         }
     }
-    
+
+    func configureDefaultSplitMode(isCompact: Bool) {
+        defaultSplitMode = !isCompact
+        if !splitMode { activePane = .primary }
+    }
+
     var reopenConnectedHosts = UserDefaults.standard.bool(forKey: "reopenConnectedHosts") {
         didSet {
             UserDefaults.standard.set(reopenConnectedHosts, forKey: "reopenConnectedHosts")

@@ -21,7 +21,7 @@ struct FileRowView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
-            .frame(width: width * 0.44, alignment: .leading)
+            .frame(width: width * FileSortColumn.name.widthFraction(for: width), alignment: .leading)
             Group {
                 if let date = file.modified {
                     Text(date.formatted(date: .numeric, time: .shortened))
@@ -30,7 +30,7 @@ struct FileRowView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
-            .frame(width: width * 0.24)
+            .frame(width: width * FileSortColumn.modified.widthFraction(for: width))
             Group {
                 if !file.isDirectory {
                     Text(Int64(clamping: file.size), format: .byteCount(style: .binary))
@@ -38,11 +38,13 @@ struct FileRowView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
-            .frame(width: width * 0.16)
-            Text(file.name == ".." ? "" : file.isDirectory ? "Folder" : (file.name.split(separator: ".").dropFirst().last.map(String.init) ?? "File"))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-                .frame(width: width * 0.16)
+            .frame(width: width * FileSortColumn.size.widthFraction(for: width))
+            if FileSortColumn.visibleColumns(for: width).contains(.kind) {
+                Text(file.name == ".." ? "" : file.isDirectory ? "Folder" : (file.name.split(separator: ".").dropFirst().last.map(String.init) ?? "File"))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .frame(width: width * FileSortColumn.kind.widthFraction(for: width))
+            }
         }
         .lineLimit(1)
         .frame(minHeight: 40)

@@ -29,6 +29,14 @@ struct FileSortOrderTests {
         #expect(order.ascending)
     }
 
+    @Test func compactColumnsReuseTheEntireTableWidth() {
+        for width in [320.0, 599.0, 600.0, 1024.0] {
+            let columns = FileSortColumn.visibleColumns(for: width)
+            #expect(columns.contains(.kind) == (width >= 600))
+            #expect(abs(columns.reduce(0) { $0 + $1.widthFraction(for: width) } - 1) < 0.001)
+        }
+    }
+
     private func file(_ name: String, directory: Bool = false, size: UInt64 = 0, modified: TimeInterval = 0) -> RemoteFile {
         RemoteFile(path: "/" + name, name: name, isDirectory: directory, size: size, modified: Date(timeIntervalSince1970: modified), permissions: "")
     }
