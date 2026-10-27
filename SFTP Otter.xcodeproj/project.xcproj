@@ -17,8 +17,7 @@
       "version": {
         "up-to-next-major-version": "0.65.1",
       },
-    },
-    {
+    }, {
       "kind": "remote",
       "repository": "https://github.com/TopScrech/ScrechKit",
       "version": {
@@ -40,7 +39,7 @@
       "kind": "remote",
       "repository": "https://github.com/Wellz26/swift-nio-ssh",
       "version": {
-        "up-to-next-minor-version": "0.3.4",
+        "up-to-next-minor-version": "0.3.7",
       },
     },
   ],
@@ -184,17 +183,16 @@
           "name": "Check Package Updates",
           "run-on-every-build": true,
           "shell": "/bin/sh",
-          "script": "/usr/bin/python3 \"$SRCROOT/Scripts/check-package-updates.py\""
-        }
+          "script": "/usr/bin/python3 \"$SRCROOT/Scripts/check-package-updates.py\"",
+        },
       ],
       "build-settings": {
-        "SDKROOT": "macosx",
-        "SUPPORTED_PLATFORMS": "macosx",
         "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
-        "SKIP_INSTALL": "YES"
-      }
-    },
-    {
+        "SDKROOT": "macosx",
+        "SKIP_INSTALL": "YES",
+        "SUPPORTED_PLATFORMS": "macosx",
+      },
+    }, {
       "name": "macOS",
       "id": "000000000000000100000000",
       "product": "Products/macOS.app",
