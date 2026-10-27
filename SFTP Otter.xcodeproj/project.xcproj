@@ -175,11 +175,32 @@
   ],
   "targets": [
     {
+      "name": "Check Package Updates",
+      "id": "02611E9866B7404F99FF209F",
+      "kind": "aggregate",
+      "build-phases": [
+        {
+          "kind": "script",
+          "name": "Check Package Updates",
+          "run-on-every-build": true,
+          "shell": "/bin/sh",
+          "script": "/usr/bin/python3 \"$SRCROOT/Scripts/check-package-updates.py\""
+        }
+      ],
+      "build-settings": {
+        "SDKROOT": "macosx",
+        "SUPPORTED_PLATFORMS": "macosx",
+        "ENABLE_USER_SCRIPT_SANDBOXING": "NO",
+        "SKIP_INSTALL": "YES"
+      }
+    },
+    {
       "name": "macOS",
       "id": "000000000000000100000000",
       "product": "Products/macOS.app",
       "product-type": "application",
       "dependencies": [
+        "Check Package Updates",
         { "kind": "package", "package": "SwiftLintPlugins", "product-name": "SwiftLintBuildToolPlugin", "product-type": "build-tool-plugin" },
       ],
       "build-phases": [
@@ -257,6 +278,7 @@
       "product": "Products/iOS.app",
       "product-type": "application",
       "dependencies": [
+        "Check Package Updates",
         { "kind": "package", "package": "SwiftLintPlugins", "product-name": "SwiftLintBuildToolPlugin", "product-type": "build-tool-plugin" },
       ],
       "build-phases": [
@@ -330,6 +352,7 @@
       "product": "Products/visionOS.app",
       "product-type": "application",
       "dependencies": [
+        "Check Package Updates",
         { "kind": "package", "package": "SwiftLintPlugins", "product-name": "SwiftLintBuildToolPlugin", "product-type": "build-tool-plugin" },
       ],
       "build-phases": [
@@ -395,6 +418,7 @@
       "product": "Products/Unit Tests.xctest",
       "product-type": "bundle.unit-test",
       "dependencies": [
+        "Check Package Updates",
         { "kind": "package", "package": "SwiftLintPlugins", "product-name": "SwiftLintBuildToolPlugin", "product-type": "build-tool-plugin" },
       ],
       "build-phases": [
