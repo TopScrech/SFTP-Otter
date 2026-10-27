@@ -1,5 +1,5 @@
 import Foundation
-@preconcurrency import Citadel
+import Citadel
 import NIOCore
 
 struct FixtureFile: SFTPFileHandle, Sendable {

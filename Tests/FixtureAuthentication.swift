@@ -1,14 +1,14 @@
 import NIOCore
-@preconcurrency import NIOSSH
+import NIOSSH
 
-final class FixtureAuthentication: NIOSSHServerUserAuthenticationDelegate {
+nonisolated final class FixtureAuthentication: NIOSSHServerUserAuthenticationDelegate, Sendable {
     let password: String
-    let supportedAuthenticationMethods: NIOSSHAvailableUserAuthenticationMethods = .password
+    var supportedAuthenticationMethods: NIOSSHAvailableUserAuthenticationMethods { .password }
     init(password: String) { self.password = password }
     
     func requestReceived(request: NIOSSHUserAuthenticationRequest, responsePromise: EventLoopPromise<NIOSSHUserAuthenticationOutcome>) {
         if request.username == "fixture", case .password(let value) = request.request, value.password == password {
-            responsePromise.succeed(.success)
-        } else { responsePromise.succeed(.failure) }
+            responsePromise.assumeIsolated().succeed(.success)
+        } else { responsePromise.assumeIsolated().succeed(.failure) }
     }
 }

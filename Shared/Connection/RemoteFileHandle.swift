@@ -1,11 +1,11 @@
 import Foundation
-@preconcurrency import Citadel
+import Citadel
 import NIOCore
 
 actor RemoteFileHandle {
     private let file: SFTPFile
     
-    init(file: sending SFTPFile) { self.file = file }
+    init(file: SFTPFile) { self.file = file }
     
     func read(offset: UInt64, length: Int) async throws -> Data {
         var result = Data()

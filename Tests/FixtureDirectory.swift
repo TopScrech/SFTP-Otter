@@ -1,4 +1,4 @@
-@preconcurrency import Citadel
+import Citadel
 
 struct FixtureDirectory: SFTPDirectoryHandle {
     let filesystem: FixtureFilesystem

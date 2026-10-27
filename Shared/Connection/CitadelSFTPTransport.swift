@@ -2,7 +2,7 @@ import Foundation
 import CryptoKit
 import OSLog
 import NIOSSH
-@preconcurrency import Citadel
+import Citadel
 
 actor CitadelSFTPTransport: SFTPTransport {
     private static let logger = Logger(subsystem: "SFTPOtter", category: "Connection")

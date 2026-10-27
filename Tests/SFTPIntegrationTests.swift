@@ -1,7 +1,7 @@
 import Foundation
 import CryptoKit
 import Testing
-@preconcurrency import Citadel
+import Citadel
 import NIOSSH
 
 @MainActor

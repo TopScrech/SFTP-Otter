@@ -1,5 +1,5 @@
 import Foundation
-@preconcurrency import Citadel
+import Citadel
 
 actor FixtureFilesystem: SFTPDelegate {
     private var directories: Set<String> = []
