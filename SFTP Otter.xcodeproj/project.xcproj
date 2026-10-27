@@ -17,8 +17,7 @@
       "version": {
         "up-to-next-major-version": "1.1.0",
       },
-    },
-    {
+    }, {
       "kind": "remote",
       "repository": "https://github.com/SimplyDanny/SwiftLintPlugins",
       "version": {
@@ -40,7 +39,7 @@
       "kind": "remote",
       "repository": "https://github.com/apple/swift-nio",
       "version": {
-        "up-to-next-major-version": "2.81.0",
+        "up-to-next-major-version": "2.104.0",
       },
     },
   ],
@@ -178,28 +177,28 @@
     {
       "name": "Package Update Tools",
       "id": "75948651AD7D2A5B74F0EDC2",
-      "product": "id:125FDAAD57E078B6AC0B403B",
+      "product": "Products/Package Update Tools.bundle",
       "product-type": "bundle",
       "dependencies": [
         { "kind": "package", "package": "swift-update", "product-name": "swift-update" },
       ],
-      "build-phases": [],
       "build-settings": {
-        "SDKROOT": "macosx",
-        "SUPPORTED_PLATFORMS": "macosx",
-        "MACOSX_DEPLOYMENT_TARGET": "13.0",
         "CODE_SIGNING_ALLOWED": "NO",
         "GENERATE_INFOPLIST_FILE": "YES",
+        "MACOSX_DEPLOYMENT_TARGET": "13.0",
         "PRODUCT_BUNDLE_IDENTIFIER": "dev.topscrech.PackageUpdateTools",
         "PRODUCT_NAME": "Package Update Tools",
+        "SDKROOT": "macosx",
         "SKIP_INSTALL": "YES",
+        "SUPPORTED_PLATFORMS": "macosx",
       },
-    },
-    {
+    }, {
       "name": "Check Package Updates",
       "id": "02611E9866B7404F99FF209F",
       "kind": "aggregate",
-      "dependencies": [ "Package Update Tools" ],
+      "dependencies": [
+        "Package Update Tools",
+      ],
       "build-phases": [
         {
           "kind": "script",
