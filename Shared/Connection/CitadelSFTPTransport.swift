@@ -6,13 +6,7 @@ import Citadel
 
 actor CitadelSFTPTransport: SFTPTransport {
     private static let logger = Logger(subsystem: "SFTPOtter", category: "Connection")
-    private static var connectionAlgorithms: SSHAlgorithms {
-        // Citadel 0.12.1 provides RSA and AES128CTR in this preset
-        // Keep NIOSSH’s default key exchanges by removing the preset’s DH additions
-        var algorithms = SSHAlgorithms.all
-        algorithms.keyExchangeAlgorithms = nil
-        return algorithms
-    }
+    private static var connectionAlgorithms: SSHAlgorithms { .all }
     
     private let gate = TransferGate.shared
     private var ssh: SSHClient?

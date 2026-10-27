@@ -24,7 +24,7 @@ struct SFTPIntegrationTests {
                 catch { continuation.resume(throwing: error) }
             }
             try #require(exitStatus == 0)
-            key = NIOSSHPrivateKey(custom: try Insecure.RSA.PrivateKey(sshRsa: String(contentsOf: keyURL, encoding: .utf8)))
+            key = NIOSSHPrivateKey(rsaKey: try Insecure.RSA.PrivateKey(sshRsa: String(contentsOf: keyURL, encoding: .utf8)))
         } else {
             key = NIOSSHPrivateKey(p521Key: .init())
         }
@@ -33,9 +33,6 @@ struct SFTPIntegrationTests {
         var algorithms = SSHAlgorithms()
         if algorithmProfile != 0 {
             algorithms.transportProtectionSchemes = .replace(with: [AES128CTR.self])
-        }
-        if algorithmProfile == 2 {
-            algorithms.publicKeyAlgorihtms = .add([(Insecure.RSA.PublicKey.self, Insecure.RSA.Signature.self)])
         }
         let server = try await SSHServer.host(host: "127.0.0.1", port: port, hostKeys: [key], algorithms: algorithms, authenticationDelegate: FixtureAuthentication(password: password))
         server.enableSFTP(withDelegate: FixtureFilesystem())

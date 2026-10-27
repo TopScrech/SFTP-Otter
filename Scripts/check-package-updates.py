@@ -59,8 +59,11 @@ def collect(project, resolved, tool, environment):
     try:
         result = subprocess.run(command, cwd=project, env=environment,
                                 capture_output=True, text=True, timeout=30)
-        messages += [line for line in result.stdout.splitlines() if line.startswith('warning:')]
-        if result.returncode or result.stderr.strip():
+        version_warnings = [line for line in result.stdout.splitlines() if line.startswith('warning:')]
+        messages += version_warnings
+        # swift-outdated can report lookup failures on stdout while exiting successfully
+        lookup_failed = any('could not check' in line.lower() for line in version_warnings)
+        if result.returncode or result.stderr.strip() or lookup_failed:
             messages.append(warning('Version check was incomplete; will retry next build'))
             success = False
     except (OSError, subprocess.TimeoutExpired):

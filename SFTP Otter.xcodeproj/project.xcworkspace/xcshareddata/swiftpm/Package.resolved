@@ -1,5 +1,5 @@
 {
-  "originHash" : "04eec1dc32cd9b5dab1d159e5672364aa1d89d2ca6cfdf1e0b7ca80462ffbd45",
+  "originHash" : "729c52ff5f4e12c0614687ab5a13d2befd43b8662e54dc701899a8e2f8ef1180",
   "pins" : [
     {
       "identity" : "bigint",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/TopScrech/Citadel",
       "state" : {
         "branch" : "main",
-        "revision" : "0558a258f651b849d308edd127dcffe2990db734"
+        "revision" : "c2cde0d28e32253278a3cae25634305379df53bf"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-crypto.git",
       "state" : {
-        "revision" : "95ba0316a9b733e92bb6b071255ff46263bbe7dc",
-        "version" : "3.15.1"
+        "revision" : "c2cbadd7263439d8015189668f96ff5b5be565ce",
+        "version" : "5.0.3"
       }
     },
     {
@@ -85,10 +85,10 @@
     {
       "identity" : "swift-nio-ssh",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Wellz26/swift-nio-ssh.git",
+      "location" : "https://github.com/TopScrech/swift-nio-ssh",
       "state" : {
-        "revision" : "d88989f3d3bb1dfb2a38ce4af598afbf7fc3095c",
-        "version" : "0.3.7"
+        "branch" : "main",
+        "revision" : "603b7eef86805e26a500a275b6082fdf6bbed1f7"
       }
     },
     {
